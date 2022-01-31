@@ -1,0 +1,1335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocks>
+  <block id="3001e4ae08bf9a79c89dd57343beab35" category="summary">온라인 FLI는 VMware Atomic Test and Set(ATS)/SCSI Compare and Write(caw)를 지원하지 않습니다. VMFS5를 사용하고 소스 스토리지에서 caw를 지원하는 경우 이 기능이 중요합니다. 호스트를 교정하려면 이 섹션에 설명된 프로세스를 따라야 합니다.</block>
+  <block id="4647cab828c01608536e096c16a296f6" category="doc">ESXi caw/ATS 개선</block>
+  <block id="e8ecd4d0b2a51d73e1b5ecd19ca6985b" category="paragraph">FLI 온라인 LUN 관계는 ATS/caw 명령을 지원하지 않으며 VMFS5 파일 시스템이 대상 ESXi 5.x 호스트에 마운트되지 않습니다. 이는 VMware가 VMFS5 헤더에서 ATS 비트를 유지함으로써 Cw/ATS를 실행하고 ATS가 없는 호스트 또는 스토리지에서 헤더로 작업을 수행할 수 없게 된 결과입니다. ATS 비트는 _ partitions spmed _ 에 나열된 첫 번째 LUN의 일부인 VMFS 헤더에서 전달됩니다. 이것은 여러 익스텐트가 나열된 경우 해결해야 하는 유일한 LUN입니다.</block>
+  <block id="62e58027176c815788550db4eae6864e" category="paragraph">LUN을 둘 이상의 호스트에서 공유하는 경우에는 호스트 중 하나에서 LUN을 업데이트해도 충분합니다. 다른 모든 호스트는 재검색 후 자동으로 업데이트됩니다. 공유 호스트의 VM 또는 ESXi 활성 입출력이 LUN에서 실행 중인 경우 ATS/caw를 해제하면 실패합니다. 필요한 ATS/caw 변경을 수행하는 동안 LUN을 공유하는 VM 및 기타 호스트 시스템을 종료하는 것이 좋습니다. 이 작업은 해당 FLI 워크플로우의_Disruptive cutover_섹션에 나와 있는 호스트 시점/컷오버의 운영 중단 부분을 시작할 때 수행할 수 있습니다.</block>
+  <block id="af500a5659130b953b1aaa544c6a0927" category="paragraph">LUN을 두 개 이상의 호스트에서 공유하는 경우 ATS 비트가 설정 또는 해제된 동안 모든 호스트가 오프라인 상태여야 합니다. ATS를 활성화 또는 비활성화한 후 LUN을 새로 고쳐야 합니다. 다시 매핑을 완료한 후에는 호스트를 다시 백업하고 LUN에 액세스할 수 있는지 확인할 수 있습니다.</block>
+  <block id="d4c0da0e413010dec4d7c586a702cb9a" category="paragraph">이전 버전의 VMFS를 실행하거나 이전 버전에서 업그레이드하는 경우에는 문제 해결을 수행할 필요가 없습니다. ATS/caw를 활성화 또는 비활성화해야 하는 경우 아래 나열된 명령을 사용할 수 있습니다. 그러나 VM이 활성 상태이고 VMFS5 데이터 저장소에 실행 중인 입출력이 있는 경우에는 두 가지 모두 작동하지 않습니다. 적절한 FLI 워크플로우의_Disruptive cutover_섹션에 나와 있는 호스트 시스템을 종료하고, 필요한 ATS/caw 변경을 수행한 다음, 호스트 중단 부분의 나머지 부분을 수행하는 것이 좋습니다.</block>
+  <block id="b9125bb0d0a2719952566e797bbc87d8" category="paragraph">다음 명령을 실행하여 ATS/caw 상태를 확인할 수 있습니다.</block>
+  <block id="a74b9c9d4b6c9527065b4031f26db010" category="paragraph">모드가 public only라는 단어를 나열한 경우 수정할 필요가 없습니다. 이 경우 abovepublic ATS-only 는 ATS가 활성화되어 있고 가져오기가 완료될 때까지 비활성화해야 하며, 이 시점에 다시 활성화할 수 있음을 의미합니다.</block>
+  <block id="786f914160b8e10857d5043def09e1f5" category="paragraph">LUN에서 ATS/caw를 비활성화하려면 다음 명령을 사용합니다.</block>
+  <block id="bcd5c5dc804423a93948f3bfaaf2b8d0" category="paragraph">ATS/caw를 다시 활성화하려면 마이그레이션이 완료된 후 다음을 사용합니다.</block>
+  <block id="82ace49e37ca11b2bc063013ceb3d2d2" category="summary">FLI 오프라인 워크플로우에서 소스 LUN 및 대상 LUN을 구성해야 합니다.</block>
+  <block id="4ea91fc35c8b19f849cfc83b862459f4" category="doc">마이그레이션 작업 구성</block>
+  <block id="f3a29486bed19a90f2da6d007818b427" category="list-title">단계</block>
+  <block id="1325a03e6641ddcfc5c553ebc3fc8ff3" category="list-text">FLI 마이그레이션의 경우 소스 LUN을 이물질로 표시해야 합니다. 일련 번호를 사용하여 소스 LUN을 외부 LUN으로 표시합니다.</block>
+  <block id="70bb1cc8e593f7eb9d8240ff24d61769" category="list-text">소스 LUN이 외부 LUN으로 표시되어 있는지 확인합니다.</block>
+  <block id="9692868257519ccb615d00a9853dac5d" category="list-text">대상 볼륨을 생성합니다.</block>
+  <block id="32c8809b18d339c57d80cacf6ff84fdf" category="list-text">각 볼륨에서 기본 스냅샷 정책을 사용하지 않도록 설정합니다. FLI 마이그레이션 전에 기본 Snapshot 복사본이 있는 경우 변경된 데이터를 저장하려면 볼륨에 추가 공간이 필요합니다.</block>
+  <block id="bbadc91015d706e267bef2746666da6a" category="list-text">각 볼륨에 fraction_reserveoption을 "0"으로 설정하고 스냅샷 정책을 "없음"으로 설정합니다.</block>
+  <block id="46de8012f25de6b7a2ed7afb30ea8b96" category="list-text">볼륨 설정을 확인합니다.</block>
+  <block id="1c025b39c8b67a4d1b797bcbf820d495" category="list-text">기존 스냅샷 복사본을 삭제합니다</block>
+  <block id="0175c3352c72e3f43f9b7637a22aa319" category="paragraph">FLI 마이그레이션은 대상 LUN의 모든 블록을 수정합니다. FLI 마이그레이션 전에 볼륨에 기본 또는 기타 Snapshot 복사본이 있으면 볼륨이 가득 차게 됩니다. FLI 마이그레이션이 필요하기 전에 정책을 변경하고 기존 Snapshot 복사본을 제거합니다. 마이그레이션 후 스냅샷 정책을 다시 설정할 수 있습니다.</block>
+  <block id="3644a7d72ac18a40683f8e9814dd7ef3" category="paragraph">LUN create 명령은 파티션 오프셋을 기반으로 크기와 정렬을 감지하고 그에 따라 외부 디스크 옵션을 사용하여 LUN을 생성합니다. 검토는 NetApp 기술 자료 문서 * 정렬되지 않은 I/O란 무엇입니까? * 를 참조하십시오. 또한 일부 I/O는 항상 부분 쓰기이므로 잘못 정렬될 수 있습니다. 예를 들어 데이터베이스 로그가 있습니다.</block>
+  <block id="3c332b8fa3a17ad36b936ebf080e9552" category="inline-link">정렬되지 않은 I/O란 무엇입니까?</block>
+  <block id="5e1eaea7a4b47f3e85120d23f6b5f6d3" category="paragraph"><block ref="5e1eaea7a4b47f3e85120d23f6b5f6d3" category="inline-link-rx"></block></block>
+  <block id="8d8b326fda71c226e861bc77f2a88e39" category="list-text">외부 LUN을 사용하여 대상 LUN을 생성합니다.</block>
+  <block id="d01636005dfea87040ff24ea1efb74d9" category="list-text">대상 LUN을 나열하고 소스 LUN이 있는 LUN 크기를 확인합니다.</block>
+  <block id="efd8ae6f6fa1c8098ff5382ce9468866" category="paragraph">FLI 오프라인 마이그레이션의 경우 LUN 임포트 관계를 생성하기 전에 LUN을 igroup에 매핑한 다음 오프라인으로 전환해야 합니다.</block>
+  <block id="9d4c18ab2622dba2bc077f82640619fa" category="list-text">프로토콜 FCP의 호스트 igroup을 생성하고 이니시에이터를 추가합니다. 사이트 설문조사 계획 워크시트의 스토리지 그룹 섹션에서 이니시에이터 WWPN을 찾습니다.</block>
+  <block id="32ce0380a8281d8635c5e10f098f4cd7" category="paragraph">소스와 동일한 LUN ID를 사용합니다. 사이트 조사 계획 워크시트의 소스 LUN 섹션을 참조하십시오.</block>
+  <block id="f974256d753b5c19c6f13f9606d04f76" category="list-text">대상 LUN을 igroup에 매핑합니다.</block>
+  <block id="8087a3bc15138385a21f12cbc7622543" category="list-text">대상 LUN을 오프라인 상태로 전환합니다.</block>
+  <block id="f876948a72c44db95e30fc6c2089a056" category="list-text">대상 LUN 및 소스 LUN과의 가져오기 관계를 생성합니다.</block>
+  <block id="8431523289b624b6c700307921c31465" category="list-text">가져오기 작업이 생성되었는지 확인합니다.</block>
+  <block id="bbe386f48597d37f98c1fa83d2290817" category="summary">고객 환경을 문서화하려면 AutoSupport 명령을 실행해야 합니다.</block>
+  <block id="612c6ba81aba3ac58aded1a4788f669e" category="doc">새로 마이그레이션된 환경 문서화</block>
+  <block id="4b01ccfdb3280d21ab30c98722404e14" category="paragraph">고객 환경을 문서화하려면 "AutoSupport" 명령을 실행해야 합니다.</block>
+  <block id="eab8fbcbd63b2bcc58a738edcf07ee89" category="paragraph">고객 환경을 문서화하려면 다음 단계를 수행하십시오.</block>
+  <block id="d3bc15134b9b89158a56f1a4958ee36d" category="list-text">AutoSupport 명령을 실행하여 최종 구성을 문서화합니다.</block>
+  <block id="0170954f27b1bc746248a2082fc577ca" category="list-text">새로 마이그레이션된 환경을 완전히 문서화합니다.</block>
+  <block id="0815db692d92e6b68693c7dc13e0e8e1" category="summary">마이그레이션 전에 수행되지 않은 모든 서버 개선 작업은 마이그레이션 후 수행됩니다.</block>
+  <block id="6793732288bb5f2142753d1aacd2e36d" category="doc">FLI 온라인 마이그레이션 후 작업</block>
+  <block id="a39f5c618e0d64c8fd6478de7c699877" category="paragraph">모든 타사 소프트웨어가 제거됩니다. NetApp 소프트웨어가 설치 및 구성되었습니다. 특정 호스트 유형에 대한 마이그레이션 후 개선 작업의 예는 호스트 개선 을 참조하십시오.</block>
+  <block id="e729cdc318bd95286f3bd093cabb1aaf" category="paragraph">로그에서 오류를 검토하고, 경로를 확인하고, 애플리케이션 테스트를 수행하여 마이그레이션이 완전히 성공적으로 완료되었는지 확인합니다.</block>
+  <block id="80cf7b1e2f3a6eb700df545f53fc35ce" category="summary">다음 단계에서는 소스 LUN에서 대상 LUN으로 데이터를 가져오는 방법을 설명합니다.</block>
+  <block id="90f958290599dbd7bf414b64e5451345" category="doc">FLI 오프라인: 데이터 가져오기</block>
+  <block id="671cd4b2e80816faac52efc2dd60f3c0" category="list-text">마이그레이션 가져오기를 시작합니다.</block>
+  <block id="a065c5e22748be69f76070b1617df200" category="list-text">가져오기 진행률을 모니터링합니다. 여기서 보는 진행률을 테스트 마이그레이션을 수행한 후 개발한 마이그레이션 성능 예측과 비교할 수 있습니다.</block>
+  <block id="6fb459e749d9fd185556292952260212" category="list-text">가져오기 작업이 성공적으로 완료되었는지 확인합니다.</block>
+  <block id="8c0b0439d6366451bf78824af79d5085" category="summary">FLI 계획 단계에서는 세부적인 마이그레이션 계획을 세우고 고객 환경을 실제 마이그레이션을 준비하는 데 필요한 작업에 초점을 맞춥니다. 이 단계에서 외부 LUN 가져오기의 설치 및 설정을 확인하기 위해 하나 이상의 테스트 마이그레이션이 수행됩니다.</block>
+  <block id="1710e939bc78370d1721b65cfede5318" category="doc">단계 절차를 계획 및 준비합니다</block>
+  <block id="4f7f184473b2f286bdfb0f5c8ccc0ba7" category="paragraph">계획 단계 중에 완료해야 하는 작업은 다음과 같습니다.</block>
+  <block id="93be49ca71ad60de6e62a8a80d6ffe26" category="list-text">사이트 조사 및 계획 워크시트의 LUN 세부 정보 섹션에 각 스토리지 배열에 대한 스토리지 매핑 정보를 입력하여 소스 및 대상 LUN의 매핑을 생성합니다.</block>
+  <block id="b3888438e095e5e09a171355cea8bc36" category="list-text">계획 정보를 기반으로 소스 스토리지를 Fabric에 연결합니다.</block>
+  <block id="9a90fd64b87ec5e09f9317f2ce0ecbeb" category="list-text">스위치 영역을 구성합니다.</block>
+  <block id="b7f781b04092f1cfe1f95b7cbcefb36d" category="list-text">하나 이상의 테스트 마이그레이션을 수행하여 설치 및 설정을 확인합니다.</block>
+  <block id="c325740b88bc7824de214f4d6e733701" category="summary">데이터 마이그레이션 프로그램은 고객이 NetApp 스토리지로 마이그레이션하고 NetApp 7-Mode에서 ONTAP로 LUN을 마이그레이션하는 데 필요한 데이터 마이그레이션 솔루션을 제공합니다. FLI(Foreign LUN Import)는 데이터 마이그레이션 포트폴리오의 일부입니다.</block>
+  <block id="d7371dc776676e3a6d70db24fcc2e188" category="doc">데이터 마이그레이션 프로그램 개요</block>
+  <block id="e839b6988533f4d5776ce1903e47ded0" category="paragraph">이 프로그램은 성공적인 데이터 마이그레이션에 필요한 툴, 제품, 서비스 자료를 제공하여 생산성을 향상합니다. 이 프로그램의 목적은 데이터 마이그레이션을 수행하는 데 필요한 적절한 기술과 지식을 제공함으로써 NetApp 기술의 채택을 앞당기는 것입니다.</block>
+  <block id="54011b62f41dfb303a3eed8e66adacf5" category="summary">사이트 조사 및 계획 워크시트의 일부로 대상 스토리지 장치에 대한 정보가 포함된 탭이 있어야 합니다.</block>
+  <block id="cd1e0a3493fa61cb2dd0db1374b4f62b" category="doc">사이트 조사 및 계획 워크시트 대상 스토리지 디바이스 탭</block>
+  <block id="5c6ab1284b6b7a5a7102854a969c99be" category="cell">스토리지 시스템</block>
+  <block id="d41d8cd98f00b204e9800998ecf8427e" category="doc"></block>
+  <block id="d6ed36bb2b00046e0edf3d24b526b7ad" category="paragraph">클러스터 이름</block>
+  <block id="5b8c99dad1893a85076709b2d3c2d2d0" category="paragraph">IP 주소</block>
+  <block id="592841d56fa2f5fffbdfe26b71543b0b" category="paragraph">배열 모드</block>
+  <block id="253b40ae359ba25b56231803430c4873" category="paragraph">ONTAP</block>
+  <block id="5999e4ab912c7c1d8aa6fd2225491ef2" category="paragraph">SVM</block>
+  <block id="bd9f125b279a19f0d5b7f09c7d793d35" category="paragraph">포트 유형</block>
+  <block id="ac97493a7a4344a27e4727eb70ab63e3" category="paragraph">DataMig-cDOT</block>
+  <block id="fbe81839497361b2bc3142e1922a671e" category="paragraph">10.x.x.x</block>
+  <block id="8ed24dd5fb292ecefe76fe92a5fc3988" category="paragraph">FAS8080</block>
+  <block id="8f1f86a971ce00988b00293498eafbfb" category="paragraph">8.3.1로 업그레이드하기</block>
+  <block id="1b523fdae68699bfe92c5f6bfc8a0a7d" category="paragraph">데이터마이그</block>
+  <block id="c41a31890959544c6523af684561abe5" category="paragraph">타겟</block>
+  <block id="4dfeba53942501e41d9280492b2e66ed" category="paragraph">DataMig-01</block>
+  <block id="4bd7c2ff07dcc66801a9368957d4bff8" category="paragraph">이니시에이터</block>
+  <block id="bc3c828cce582fafd1e35e77b8c84327" category="paragraph">포트 이름</block>
+  <block id="12ba1b5b56273e90b8bda667b93c30c8" category="paragraph">LIF 이름</block>
+  <block id="b94141d4fe2f2d88bcdad136fc07a3b7" category="paragraph">WWPN입니다</block>
+  <block id="48ea07c17b81374f4e31405454d61cf0" category="paragraph">패브릭 이름</block>
+  <block id="b682dc481b1877dbaaec615eaed0b7d8" category="paragraph">대상 유형</block>
+  <block id="0fa2fc5954ab40ecfe658625c4adbea5" category="paragraph">0C</block>
+  <block id="fbe94f0f103eba4bb688fa96980242e9" category="paragraph">편두통1</block>
+  <block id="dd82ff336ed7619dec6938808fc08d7c" category="paragraph">20:01:00:a0:98:2f:xx:xx</block>
+  <block id="0ea88051ccace8518cd7faf783839e20" category="paragraph">제품 A</block>
+  <block id="23a326d0b546a12f3fd23a278dfba0ed" category="paragraph">0D</block>
+  <block id="93b778c76e14ee7e5bc3bfab95fbb0b4" category="paragraph">편두통2</block>
+  <block id="b6d39500f5651e5bab0adc006de3ba76" category="paragraph">제품 B</block>
+  <block id="e99bb33727d338314912e86fbdec87af" category="paragraph">0A</block>
+  <block id="274b68192b056e268f128ff63bfcd4a4" category="paragraph">해당 없음</block>
+  <block id="61c84893442e8d448753228d506c5ea1" category="paragraph">50:0a:09:81:00:xx:xx:xx</block>
+  <block id="347017fd1e37a22faf91875981bc4fb3" category="paragraph">0b</block>
+  <block id="e3be5aecfb0260579fe80049e1c8a50c" category="paragraph">다음은 대상 스토리지 디바이스 탭을 설정하는 방법의 예입니다.</block>
+  <block id="5de6b93b6bf9ec704eaeabd6643ae0c4" category="summary">FLI 상호 운용성 매트릭스(IMT)는 FlexArray IMT와 매우 유사하나, FLI에서 작동하는 NetApp 공인 소스 어레이를 더 잘 지원하기 위해 명백히 다른 상호 운용성 툴로 추가되었습니다.</block>
+  <block id="2a37c6b1b4932254bf5792ec6f52e0fc" category="doc">FLI 상호 운용성 및 지원 기준</block>
+  <block id="a4600dce963004a41457e38f18ab9470" category="paragraph">외부 LUN 가져오기를 수행하기 전에 두 가지 상호 운용성 영역을 확인해야 합니다.</block>
+  <block id="86af0a34f3847c9f63762fbabc885521" category="list-text">FLI가 지원되는지 확인하십시오. FLI IMT를 검토하면 됩니다.</block>
+  <block id="12af4ba3cc49bf607fd7d0fb334e9167" category="list-text">가져오기가 완료된 후 전체 종단 간 구성이 지원되는 구성인지 확인합니다. 이는 FAS/AFF IMT에서 가능합니다.</block>
+  <block id="273fe665f80abbac555fbaecac2be654" category="paragraph">또한 대상 ONTAP 버전과 비교하여 다음 세 가지 기준을 확인하십시오.</block>
+  <block id="719882350dd7f0a0d5ce924d9b280587" category="list-text">소스 스토리지 플랫폼 모델 및 마이크로코드 버전</block>
+  <block id="9b62752b414b792b6d99a22085bba7f1" category="list-text">SAN 스위치 모델 및 마이크로코드 버전</block>
+  <block id="3280ebd308af09d428a66e6892fee625" category="list-text">마이그레이션 후 LUN을 마운트하는 NetApp 컨트롤러, 고객 환경(스위치, HBA, 펌웨어, 서버 하드웨어 등) 및 SAN 연결 클라이언트</block>
+  <block id="82666fc037e2bcc78b49a6ee9e0c7552" category="paragraph">이러한 세 가지 구성 요소 중 하나라도 지원되지 않는 경우 마이그레이션 프로세스 도중과 이후에 완벽한 성공과 지원을 보장하기 위해 몇 가지 해결 조치가 필요할 수 있습니다.</block>
+  <block id="d33f2a600ba4fe43084a26e95e4908c0" category="paragraph">* 관련 정보 *</block>
+  <block id="10f02f59043b28fac9ff50a9e24e6044" category="inline-link">NetApp 상호 운용성</block>
+  <block id="8ae1a8b6dc4a3df150f27ca419fb9a6c" category="paragraph"><block ref="8ae1a8b6dc4a3df150f27ca419fb9a6c" category="inline-link-rx"></block></block>
+  <block id="9c91be7c4284b0caf7411de855e051a0" category="summary">다음 단계에서는 마이그레이션이 완료된 후 ONTAP 스토리지에서 소스 LUN을 제거하는 방법을 설명합니다.</block>
+  <block id="8dfef620bd63a19de922d6fd5b7e1a14" category="doc">ONTAP 스토리지에서 소스 LUN을 제거하는 중입니다</block>
+  <block id="2f26d82fcc492ff87e69a65f6fe142ef" category="admonition">이 작업에서는 예제에 _HDS AMS2100_어레이를 사용합니다. 다른 어레이 또는 다른 버전의 어레이 GUI를 사용하는 경우 작업이 다를 수 있습니다.</block>
+  <block id="15f2ef2f14473a3fed75c7c31afd6115" category="list-text">Hitachi Storage Navigator Modular에 로그인합니다.</block>
+  <block id="9c2f631c3b248015706fac8c951d9c2e" category="list-text">계획 단계 중에 생성된 ONTAP 호스트 그룹을 선택하고 * 호스트 그룹 편집 * 을 선택합니다.</block>
+  <block id="7dc0f85f089ebdfce9f7c48b0fa94ae9" category="image-alt">호스트 그룹</block>
+  <block id="55f9a6545253be753da13bfa19ed39bb" category="list-text">포트 * 를 선택하고 선택한 모든 포트에 대해 * 강제 설정 * 을 선택합니다.</block>
+  <block id="d1d7ad384c51ea55bb59ff5d43a8d68d" category="image-alt">호스트 그룹을 편집합니다</block>
+  <block id="65dff2da7c6b1d550ddea5c786a3c66b" category="list-text">할당된 논리 LUN에서 마이그레이션되는 호스트 LUN을 선택합니다. 소스 LUN 워크시트에 언급된 각 호스트에 대해 LUN 이름을 사용합니다. 여기에서 Windows 2012, RHEL 5.10 및 ESXi 5.5 호스트의 LUN을 선택하고 * Remove * 를 선택합니다.</block>
+  <block id="018e6717cb26bb683acaeb00a2666e18" category="image-alt">ONTAP 스토리지에서 소스 LUN을 제거합니다. 3</block>
+  <block id="3d648a1b7064ebcecfe1e6c08a5a1530" category="summary">계획 목적으로 특정 가정을 사용하여 데이터 마이그레이션의 노력 수준 및 기간을 추정할 수 있습니다.</block>
+  <block id="8e94185148e108a39b3101ed4c1bafd9" category="doc">마이그레이션 기간 추정을 위한 벤치마크</block>
+  <block id="bc104667bcbfcfc0a37425919ac2dd58" category="paragraph">실제 성능을 정확히 예측하려면 특정 환경에 맞는 정확한 성능 수치를 얻기 위해 다양한 크기의 테스트 마이그레이션을 실행해야 합니다.</block>
+  <block id="5c4e522aa1b09948e09548f0097ce4ff" category="paragraph">다음 벤치마크는 계획 목적으로만 엄격히 사용되며 특정 환경에서 특히 정확하지는 않습니다.</block>
+  <block id="befddf42be49f0ca600570cf2bd7d093" category="paragraph">가정: 총 2TB의 데이터가 포함된 8개의 LUN이 있는 호스트를 기준으로 한 호스트당 5시간 마이그레이션 이러한 매개 변수는 시간당 약 400GB의 계획 번호를 제공합니다.</block>
+  <block id="bce9fade38befeda7e50ae556c80a80a" category="summary">온라인 마이그레이션 워크플로는 마이그레이션 프로세스의 실행 단계에서 수행됩니다. 온라인 워크플로우 다이어그램에서는 호스트, 패브릭, 타겟 스토리지 및 소스 스토리지에서 수행되는 작업을 보여 줍니다.</block>
+  <block id="2fb3498de44b62c20b8ce57d8d187b14" category="doc">온라인 마이그레이션 워크플로</block>
+  <block id="22c6c33d6054ef7fe383f8db81dd5c8d" category="image-alt">온라인 마이그레이션 1</block>
+  <block id="9f6801036d4e8f2676721826ab34c70e" category="paragraph">온라인 워크플로 작업이 다음 표에 나열되어 있습니다.</block>
+  <block id="2cb05e4bb7830be982f0922fed86b4cd" category="cell">구성 요소</block>
+  <block id="ef615563c8e8ea902c7fcac3cd2c4246" category="cell">작업</block>
+  <block id="c2ca16d048ec66e04bca283eab048ec2" category="paragraph">호스트</block>
+  <block id="31798a9391676be4271bb9ab303fc563" category="list-text">모든 파일 시스템이 마운트되었으며 모든 LUN 경로 및 애플리케이션을 사용할 수 있는지 확인합니다.</block>
+  <block id="16596591fc43c3ec50554eab5f344abb" category="list-text">* 선택 사항: * 가져오는 LUN이 ESX를 위한 것이라면 부록 A: ESX caw/ATS 수정 에 나와 있는 지침을 검토하고 따르십시오.</block>
+  <block id="c149d95495dfbb74f9dc7ff729a42ec7" category="list-text">호스트를 준비하고 종료합니다.</block>
+  <block id="f6f9043b09cef25148e36ff434710fc7" category="list-text">대상 LUN이 있는 호스트의 전원을 켭니다.</block>
+  <block id="4dcb8a1f0ffb02c6a6406ffb7f665672" category="list-text">새 SAN 부팅 LUN을 사용하도록 HBA를 구성합니다(SAN 부팅만 해당).</block>
+  <block id="9122ffb191708d707e29ae39997a7198" category="list-text">타사 MPIO를 제거합니다.</block>
+  <block id="d628b84fc468d86804cc06ba1ca5f9e3" category="list-text">NetApp 호스트 소프트웨어를 설치하고 다중 경로를 구성합니다.</block>
+  <block id="d13f1707dd4540ab89e46f932307b91e" category="list-text">SAN 부팅 LUN에 대한 모든 경로가 정상인지 확인합니다(SAN 부팅만 해당).</block>
+  <block id="4bc9c19bba8144b4f9a2a55e122ac715" category="list-text">새 장치를 반영하도록 시스템 파일 및 구성을 업데이트합니다.</block>
+  <block id="7d9e9ba26600e47839078e9f2193d829" category="list-text">모든 LUN에 대한 모든 경로가 정상인지 확인합니다.</block>
+  <block id="dc65a262582faca85cd89f8164508b0a" category="list-text">모든 서비스를 다시 설정하고 호스트를 재부팅합니다(호스트가 백업되는지, 모든 파일 시스템이 마운트되었는지, 모든 서비스가 시작되는지 확인).</block>
+  <block id="edde6aa783bd49b9a936ad7b450b769b" category="list-text">새 SAN 부팅 LUN에 대한 두 번째 경로를 사용하여 HBA를 구성합니다(SAN 부팅만 해당).</block>
+  <block id="0ac79129f2a7ba5db5e1f4d755cb3231" category="paragraph">패브릭</block>
+  <block id="89cc65834beb6315d71e8bdaa6383b99" category="list-text">소스 스토리지에서 호스트 존(Zone)을 해제합니다.</block>
+  <block id="dbae8470bfb3042ecb4aa5dcab43ff77" category="list-text">대상 스토리지 영역에 대한 호스트를 생성합니다.</block>
+  <block id="dfd8648adfee6cda1db76a90bd87a139" category="paragraph">대상 스토리지</block>
+  <block id="33f9ea2477a1989746032a8b07f426ee" category="list-text">소스 스토리지 및 새 LUN을 검색합니다.</block>
+  <block id="50516e6e433cc6f7b8b04de730c51db4" category="list-text">소스 LUN을 외부 LUN으로 표시합니다.</block>
+  <block id="5ffa0936b36ca05aba5b60f19ec05a42" category="list-text">외부 LUN을 사용하여 대상 LUN을 생성합니다.</block>
+  <block id="0a27a24cc9393c8829a8f73a3a5418f5" category="list-text">호스트 이니시에이터 igroup을 생성하고 대상 LUN을 igroup에 매핑합니다.</block>
+  <block id="29062c8abc951b51a474869aa63890bc" category="list-text">소스 스토리지 LUN 마스킹(igroup)에서 호스트를 제거합니다.</block>
+  <block id="3ec9f32db2a115e19e6b34327d82cd0c" category="list-text">가져오기 관계를 생성하고 가져오기 작업을 시작합니다.</block>
+  <block id="eb081f2880bc11f4e9fc62913d51081b" category="list-text">앞서 호스트 4단계를 수행합니다(호스트를 새 LUN 위치에 다시 매핑).</block>
+  <block id="817503e6670519bc05ab7d4a1d4778bd" category="list-text">단일 경로로 연결을 제한합니다(SAN 부팅만 해당).</block>
+  <block id="a78fb88d77cf2dc16ee621112b80228d" category="list-text">SAN 부팅 LUN을 호스트에 할당합니다. 이 시점에는 데이터 LUN을 할당하지 마십시오(SAN 부팅만 해당).</block>
+  <block id="78272b6163e5a4b60e6d492152d66126" category="list-text">주기적인 스냅샷 복사본을 생성하여 대상 SAN 부팅 LUN의 롤백을 활성화합니다(SAN 부팅만 해당).</block>
+  <block id="69c3f43d2201d7905f27fddbec2c0326" category="list-text">SAN 부팅 LUN에 대한 모든 경로를 설정합니다(SAN 부팅만 해당).</block>
+  <block id="39cd355d97dce28f5e026aa23fc28f8f" category="list-text">온라인 대상 LUN</block>
+  <block id="9c76089c166eeb57e7926b5ca52a0217" category="list-text">스냅샷 복사본을 생성하여 대상 LUN의 롤백을 설정합니다.</block>
+  <block id="fb938c9ef49728e310a77270890d93af" category="list-text">관계 가져오기를 시작합니다(소스에서 대상 LUN으로 데이터 복제 시작).</block>
+  <block id="08487c79ba68e0329282340a8eca876d" category="list-text">확인 작업을 생성하고 관계 가져오기를 중지합니다(선택 사항).</block>
+  <block id="4b85dae6890278fbe66752fc32084f13" category="list-text">가져오기 관계를 삭제합니다.</block>
+  <block id="66f58964deb38b50e554671332547aae" category="list-text">외부 LUN 속성을 false로 표시합니다.</block>
+  <block id="c6a31ba05909ce78983fa0c110cd3243" category="paragraph">소스 스토리지</block>
+  <block id="342af600e8c0a79a1330e878e7932b92" category="list-text">소스 LUN을 대상 스토리지에 할당합니다.</block>
+  <block id="249c2e6b878e03b8b12410be4c718a90" category="list-text">호스트에 대한 소스 LUN 매핑을 해제합니다.</block>
+  <block id="6817cc7ece1a2e33a547816c06538d4c" category="list-text">스냅샷 복사본을 생성하여 대상 LUN의 롤백을 설정합니다.</block>
+  <block id="41e9311c19ecdfb8da021abc760f8751" category="list-text">대상 스토리지에 할당된 소스 LUN을 제거합니다.</block>
+  <block id="df3569b3f7ae63d215541676162d0242" category="summary">FLI와 함께 워크플로우 자동화를 사용하여 마이그레이션 전/후, 마이그레이션, 전환 작업 및 상태 점검을 자동화할 수 있습니다. 자동화된 마이그레이션에서 FLI는 워크플로우 자동화 소프트웨어를 사용하여 마이그레이션 프로세스의 일부를 자동화합니다. WFA를 사용하는 FLI는 온라인 또는 오프라인 모드에서 사용할 수 있습니다.</block>
+  <block id="b3fe8593326427f7ee6173c0e19d70ac" category="doc">WFA(워크플로우 자동화)를 사용하는 FLI</block>
+  <block id="0881149a52ef8b902c268913db43e15f" category="paragraph">FLI와 함께 WFA를 사용하려면 사용자 환경의 적합한 서버에 WFA를 다운로드하여 설치해야 합니다. WFA를 설치한 후에는 지정된 워크플로우를 다운로드합니다. FLI 자동화 팩 2개를 온라인으로 FLI와 FLI로 다운로드할 수 있습니다. 자동화 팩은 FLI 오프라인 및 FLI 온라인 워크플로우와 동일한 지원 규칙을 따릅니다. 여기에는 FLI를 온라인으로 지원하는 호스트 운영 체제 목록이 포함됩니다.</block>
+  <block id="a84a2a646f902fe5c7c0de553f4ca5ae" category="paragraph">WFA 자동화 팩은 WFA 자동화 스토어에서 다운로드할 수 있습니다. 수행된 특정 작업 및 기타 자세한 워크플로 정보에 대한 자세한 내용은 각 팩에 포함된 도움말 파일을 검토하십시오.</block>
+  <block id="cae9699520a1262eccdcdb2b806e442c" category="inline-link">OnCommand Workflow Automation - 워크플로 개발자 가이드</block>
+  <block id="1210da8c5df471154d7e52e13fb7ffb2" category="paragraph"><block ref="1210da8c5df471154d7e52e13fb7ffb2" category="inline-link-rx"></block></block>
+  <block id="5fa18b883fe64a43fd9c938e377a5347" category="summary">모든 마이그레이션, 전환 및 검증이 완료되면 소스 및 대상 스토리지의 존 기능을 해제할 수 있습니다.</block>
+  <block id="5106f178a263fac201d176277c0f4abc" category="doc">소스 및 대상 스토리지의 조닝(zoning)을 해제합니다</block>
+  <block id="4bb52e37f09fec839d0dc6ba1defa384" category="paragraph">소스 및 대상 스토리지의 존(Zone)을 해제하려면 두 Fabric에서 소스 스토리지와 대상 영역을 모두 제거합니다.</block>
+  <block id="c5f483d1696c8d031a140ac05463cbff" category="paragraph">Brocade 패브릭의 예</block>
+  <block id="b5e2f9562a51f33a384ae7be1415ddac" category="list-text">패브릭 A의 zoneset에서 영역을 제거합니다</block>
+  <block id="74863323244304aff10b35c32c31abb4" category="list-text">패브릭 A에서 Zoneset을 활성화합니다</block>
+  <block id="43ba6657c4f4e7530405ab5336090456" category="list-text">패브릭 B의 zoneset에서 영역을 제거합니다</block>
+  <block id="e9497856652d0046bf57cfde9533357c" category="list-text">패브릭 B에서 zoneset을 활성화합니다</block>
+  <block id="00638c4d1a05535ef1e35dda5d0df3aa" category="paragraph">Cisco 패브릭의 예</block>
+  <block id="8970c458447db1c2605bb5f15b71b109" category="summary">FLI는 NetApp FlexArray과 동일한 배선 요구사항을 가지고 있습니다. NetApp 스토리지 이니시에이터 포트는 소스 스토리지 타겟 포트가 연결되는 패브릭에 연결됩니다. 소스 스토리지를 NetApp 스토리지에 연결하는 동안 FlexArray 모범 사례를 따르십시오.</block>
+  <block id="3ce8bd6c1992bd681505fc41c17c030b" category="doc">FLI의 물리적 배선 요구사항</block>
+  <block id="e23cfe3f5f5db6eba97c79167e9f598f" category="paragraph">마이그레이션 중에 사용되는 스토리지 어레이에는 두 Fabric에 있는 각 컨트롤러의 기본 경로(사용 중)가 있어야 합니다. 즉, 마이그레이션할 소스 스토리지 및 대상 스토리지 노드가 두 Fabric의 공통 영역에 있어야 합니다. NetApp 클러스터에 다른 컨트롤러를 추가할 필요는 없으며 실제로 LUN을 임포트/마이그레이션하는 컨트롤러만 추가하면 됩니다. 마이그레이션에 간접 경로를 사용할 수 있지만, 모범 사례는 소스와 대상 어레이 간에 액티브/최적화 경로를 사용하는 것입니다. 다음 그림은 두 패브릭 모두에 기본(활성) 경로가 있는 HDS AMS2100 및 NetApp ONTAP 스토리지를 보여 줍니다.</block>
+  <block id="b86568f0ab2436e9a4ea2cfd9d49fcd5" category="paragraph">이 그림은 이중 패브릭용 스토리지 배선의 예입니다.</block>
+  <block id="e0bf412f811af5d2ff097a082cf5c13d" category="image-alt">물리적 배선 1</block>
+  <block id="3798557e78dc0ab485623d8d2387bacb" category="paragraph">다음 배선 모범 사례를 따르십시오.</block>
+  <block id="ba960e8e33af1699383d16d8dd33e718" category="list-text">_FlexArray 가상화 설치 요구사항 및 참조 가이드_에서 설명한 대로 소스 및 타겟 스토리지의 배선에 대한 NetApp FlexArray 모범 사례를 사용하십시오.</block>
+  <block id="363d30e9a00e0b43fea3e9ac48cdf525" category="list-text">ONTAP 스토리지를 사용하려면 Fabric에 연결할 수 있는 무료 이니시에이터 포트가 필요합니다. 사용 가능한 포트가 없는 경우 이니시에이터 포트를 구성합니다.</block>
+  <block id="70894d5c0a41692947485c0d0a19e60a" category="inline-link">FlexArray 가상화 설치 요구 사항 및 참조 자료</block>
+  <block id="458876feaed6a906ecafed4badb622d0" category="paragraph"><block ref="458876feaed6a906ecafed4badb622d0" category="inline-link-rx"></block></block>
+  <block id="5944df1e5ed1e52e4fe16947c1409df9" category="summary">이 절차에서는 Cisco Fabric zoneset에서 소스 스토리지 및 호스트 영역을 제거하는 방법을 보여 줍니다.</block>
+  <block id="86a4dc023813209073ffb6165caf17d6" category="paragraph">예제의 영역 이름은 _rx21_AMS2100_입니다.</block>
+  <block id="bf3c5489c33b59824c4bd80dbd544bb9" category="list-text">패브릭 A에서 zoneset을 활성화합니다</block>
+  <block id="68fe0d5323090e0130245cbabead23d6" category="list-text">패브릭 B에서 zoneset을 활성화합니다</block>
+  <block id="66c7867758c2b3c498c775a41f71905a" category="summary">이 예는 FLI 전환 프로세스에서 무중단 컷오버를 수행하는 일반 단계를 보여줍니다.</block>
+  <block id="2e25e3df612551716b573bfc4e48254c" category="doc">FLI 7-Mode에서 ONTAP로 운영 중단 컷오버 수행</block>
+  <block id="e751e6c6b3387c32a87a8633b44a7256" category="paragraph">Windows, Linux 및 ESXi 호스트에 대한 호스트 개선 연습은 호스트 운영 체제 및 호스트 연결 키트 설명서와 이 가이드의 관련 항목을 참조하십시오.</block>
+  <block id="a4d212c349a12dc67caaf1bdfa5e4d19" category="list-text">7-Mode 시스템에서 소스 LUN이 매핑되는 igroup을 표시합니다.</block>
+  <block id="db44befee07d23bb1b809e30950d2c3c" category="paragraph">unmap 명령이 실행된 직후 중단이 시작됩니다. 일반적으로 중단 기간은 분 단위로 측정할 수 있습니다. 말 그대로 호스트를 새 NetApp 타겟으로 이동하고 LUN을 검색하는 데 걸리는 시간입니다.</block>
+  <block id="fa405c1c690c46367f1ef1157ddf641c" category="list-text">가져오는 LUN이 ESXi 호스트용 LUN인 경우, _ESXi caw/ATS refolling_항목의 지침을 검토하고 따르십시오.</block>
+  <block id="f42b3dd272148a8d6162afe53e1aa0b6" category="list-text">unmap 명령을 사용하여 LUN을 호스트에서 이동합니다. (여기서 중단 기간이 시작됩니다.)</block>
+  <block id="17b0701d0156a56f3b06f4e8ca360a2d" category="list-text">호스트 이니시에이터가 더 이상 존재하지 않는지 확인합니다.</block>
+  <block id="81b4eb05f5436ff7d6fa2f03ab1c0cf7" category="list-text">ONTAP 클러스터에서 대상 LUN을 온라인 상태로 전환하고 매핑되었는지 확인합니다.</block>
+  <block id="e62bb1753cacdbef374c3d6549f43f42" category="list-text">호스트의 디스크를 재검색하고 ONTAP 타겟에서 LUN을 찾습니다.</block>
+  <block id="7cdc445c58172c8471e7b465bfbb2534" category="paragraph">여기서 중단 기간이 종료됩니다.</block>
+  <block id="54abc54782ef4714657f07e14443d8c1" category="paragraph">LUN이 온라인 상태이고 매핑되었으며 호스트는 이제 새로운 ONTAP 호스팅 LUN을 마운트하고 있습니다. 읽기 작업은 ONTAP 스토리지를 통해 소스 LUN으로 전달되고 쓰기 작업은 새 ONTAP 호스팅 LUN과 원본 소스 LUN 모두에 기록됩니다. 마이그레이션이 완료되고 LUN 관계가 끊어질 때까지 소스 및 대상 LUN이 모두 동기화 상태로 유지됩니다.</block>
+  <block id="ec59a082cedf4b26b971396986bb5fed" category="summary">이니시에이터 포트에 대한 호스트 항목(LUN 마스킹, NetApp의 igroup)을 추가하려면 소스 어레이에 대한 어레이 설명서를 참조하십시오. 이 정보는 사이트 조사 및 계획 워크시트의 저장소 그룹 섹션에서 검색할 수 있습니다.</block>
+  <block id="5ee8ee2a99ffe423b13a541e47bc95ab" category="doc">소스 스토리지 구성 방법</block>
+  <block id="430bb9de60ed37ded761bc53823e00d8" category="summary">다음은 소스 LUN에서 대상 LUN으로 데이터를 가져오는 단계입니다.</block>
+  <block id="8a3d18b4a87fce9fd30e1b06c8c97dd1" category="doc">FLI 온라인: 데이터 가져오기</block>
+  <block id="fcd58d8ff11fa75a65432bee980f3a36" category="list-text">FLI 상태를 표시합니다.</block>
+  <block id="6e25df31da1e71534f8796a6f959ba6c" category="summary">차이 분석은 고객의 현재 및 NetApp 권장 환경에 대한 보고서입니다. 마이그레이션 후 수행해야 하는 고객 환경에 대한 모든 권장 업그레이드를 제공합니다.</block>
+  <block id="ec322643bc7f184bacaaffdb6d7f8792" category="doc">차이 분석 보고서</block>
+  <block id="7167080c13bc68f5d5ca3606a811cf8f" category="paragraph">차이 분석은 고객의 현재 환경과 NetApp 권장 환경에 대한 보고서입니다. 마이그레이션 후 수행해야 하는 고객 환경에 대한 모든 권장 업그레이드를 제공합니다.</block>
+  <block id="18b01b4a7bc63c856f7bfc605d4c1db3" category="paragraph">대상 구성(마이그레이션 후)에는 각 호스트에 대한 세부 정보(OS 구성, MPIO, HBA 세부 정보, Host Utility Kit 버전 등)가 포함됩니다. SnapDrive 및 SnapManager와 같은 NetApp 필수 추가 제품에 대한 정보도 제공됩니다.</block>
+  <block id="9d394fd64d52277e34b6478f3116be34" category="paragraph">일반적으로 유지 관리 기간을 예약해야 하므로 실제 마이그레이션 이벤트가 발생할 때까지 필요한 변경 사항이 적용되지 않습니다. 일반적으로 마이그레이션 전에 MPIO 구성을 변경하면 현재 스토리지의 지원도 영향을 받습니다.</block>
+  <block id="3980e7fb5116c733aeb5a4fc02fad438" category="paragraph">사이트 설문조사 및 계획 워크시트의 호스트 섹션에 있는 완료된 NetApp 권장 섹션이 차이 분석 보고서로 사용됩니다. 마이그레이션 프로젝트에 포함된 모든 호스트에 대해 격차 분석을 완료해야 합니다. 완료된 차이 분석 보고서는 고객과 함께 검토해야 합니다.</block>
+  <block id="9c778c3c375b04ff9f5870bdd4a07e73" category="paragraph">다음은 Gap 분석 보고서의 예입니다.</block>
+  <block id="313a854fd8839de2bdf22552f3bc8fb2" category="image-alt">차이 분석 보고서 1을 작성합니다</block>
+  <block id="cb3628a430baab7a93ffd421b659b087" category="summary">사이트 조사 및 계획 워크시트의 일부로 마이그레이션 소스 스토리지 디바이스에 대한 정보가 포함된 탭이 있어야 합니다.</block>
+  <block id="66d379978b8364c9b7e4cace88b5bf8f" category="doc">사이트 조사 및 계획 워크시트 소스 스토리지 디바이스 탭</block>
+  <block id="e11ebb23473888246705e815adf2fb83" category="paragraph">다음은 소스 스토리지 디바이스 탭을 설정하는 방법의 예입니다.</block>
+  <block id="55fe6d37857f38fc5f2d32415d6be244" category="paragraph">스토리지 이름</block>
+  <block id="ec9ceefe0c19f4c029008c23e3c947b7" category="paragraph">공급업체</block>
+  <block id="30bc81580630f6d911cfee5d6263cf74" category="paragraph">어레이 모델</block>
+  <block id="2ed6bfa07172eba7ba146d891930dd89" category="paragraph">마이크로코드 FW/ONTAP</block>
+  <block id="7f4e435c9932b651ff456e49ed6d2d3f" category="paragraph">AMS2100</block>
+  <block id="c76e5f5afd86d0ca4d39ff7bb3fd722d" category="paragraph">부족했습니다</block>
+  <block id="39742290629deaa24fb4da25f39e3f3c" category="paragraph">AMS 2100</block>
+  <block id="8619d3dcc4c85973cf93d7a20cba74e8" category="paragraph">0893/B-X</block>
+  <block id="09743c6a43ce1cb7cde1627cfbb65d1c" category="paragraph">컨트롤러/노드</block>
+  <block id="ed2a0557a5215eaf11b83a42b8df0448" category="paragraph">컨트롤러0</block>
+  <block id="15b9f4876fc8489ef5516bc1b9985dcc" category="paragraph">50060E80xxxxxxxx</block>
+  <block id="a31602925d8b996c2869e769b407a9bc" category="paragraph">프로덕션 패브릭 A</block>
+  <block id="f31bbdd1b3e85bccd652680e16935819" category="paragraph">출처</block>
+  <block id="e50c0cb9a8def39e67ea2d350ab19773" category="paragraph">0e</block>
+  <block id="1081e3cb1cbc255f00400d2727adf660" category="paragraph">프로덕션 패브릭 B</block>
+  <block id="6a1ab89ed912a96429c83ff1ba0f48d0" category="paragraph">컨트롤러1</block>
+  <block id="efaa153b0f682ae5170a3184fa0df28c" category="paragraph">1a</block>
+  <block id="c5f590d18e1ea128362eeafb7192cc21" category="paragraph">1E</block>
+  <block id="753b4debef9758f946c62b3504aa0e5a" category="summary">다음은 프로덕션 패브릭 B에 있는 Cisco 패브릭의 예입니다</block>
+  <block id="03056dc3bfcca9e8b9f3ea7cf4739428" category="doc">운영 패브릭 B의 Cisco 패브릭</block>
+  <block id="0f935f59620d67f39f5a7c3deccdda56" category="list-text">운영 패브릭 B에 영역을 생성합니다</block>
+  <block id="1fdab799789df4703c0465cc9b2beb1b" category="list-text">운영 패브릭 B에서 영역을 활성화합니다</block>
+  <block id="2f449876355c69512df7e569fe9c6a65" category="summary">FLI는 성능을 더욱 효과적으로 관리하고 워크로드 부족 현상이 발생하지 않도록 일부 기능이 향상되었습니다. ONTAP 8.3.1의 FLI 개선 사항에는 새로운 스로틀 명령 및 LUN 임포트 기능에 처리량 및 QoS 정책 그룹을 보여주는 향상된 기능이 포함되어 있습니다.</block>
+  <block id="8c4a124ca6c953340797ff9481b86241" category="doc">ONTAP 8.3.1의 성능 향상</block>
+  <block id="63eeae1818a9dfec81b1b6cd4746532c" category="paragraph">LUN 임포트 스로틀 명령은 불러오기가 실행될 수 있는 최대 속도를 제한하는 데 사용됩니다.</block>
+  <block id="e0e081b71a49cfb03b7e6586a50b4ec6" category="paragraph">LUN import show가 있는 인스턴스 스위치를 사용하면 임계치 조절 및 QoS 정보 등 확장된 LUN 임포트 정보를 표시할 수 있습니다.</block>
+  <block id="1110e5db0b802b9d4685f94410bce548" category="paragraph">현재 처리량의 값은 가져오기 또는 확인 작업의 현재 처리량입니다. 사용자는 스로틀 값을 설정하기 전에 이를 확인해야 합니다. 실행 중이 아닐 때는 비어 있습니다. LUN 가져오기 스로틀이 사용된 경우 QoS 정책 그룹이 표시됩니다.</block>
+  <block id="197e64993a9bd9d23c9208a3a59ae427" category="summary">이 가이드는 외부 어레이에서 ONTAP로 데이터를 마이그레이션하거나 NetApp 7-Mode 어레이에서 ONTAP로 LUN을 전환하려는 NetApp 고객을 위한 것입니다.</block>
+  <block id="f2b84afd0523a6df7547c404aa3647d8" category="doc">대상</block>
+  <block id="6a0084c43e3b07ca1669a87939d166f2" category="paragraph">이 가이드의 다른 대상 고객은 다음과 같습니다.</block>
+  <block id="76b24a3784b33e4ce635868ce091da49" category="list-text">NetApp의 이기종 HeSAN(Storage Area Network) 마이그레이션 서비스 고객</block>
+  <block id="f03c5a57377de686e50617ce08b51eca" category="list-text">NetApp 세일즈 엔지니어(SE)</block>
+  <block id="966055f7cebb6103e11fa83f105dac29" category="list-text">컨설팅 세일즈 엔지니어(CSE)</block>
+  <block id="1295b40a9546cbd753ad696fafca430f" category="list-text">PSE(프로페셔널 서비스 엔지니어)</block>
+  <block id="244dfbf3a07dab1c6bbe4aebed28e520" category="list-text">전문 서비스 컨설턴트(PSC)</block>
+  <block id="af9825daba7879a001106256849f17ac" category="list-text">채널 파트너 엔지니어</block>
+  <block id="36fa43d399c70772782de29dfdc1bfcf" category="paragraph">이 가이드의 독자는 조닝, LUN 마스킹, LUN을 마이그레이션해야 하는 호스트 운영 체제, ONTAP 및 타사 소스 스토리지를 비롯한 일반적인 SAN 개념 및 프로세스를 숙지해야 합니다.</block>
+  <block id="da0ef72dfd2318a7b3ea7fd19201f389" category="summary">호스트가 정상 작동이 확인된 상태인지 확인하기 위해 이 워크플로우를 시작하기 전에 호스트를 재부팅할 수 있습니다.</block>
+  <block id="76f2c890386ab31204bf3f74245ae16c" category="doc">호스트를 재부팅합니다</block>
+  <block id="9423c8dcb51a54db4db7f2071a9575e8" category="paragraph">나중에 필요할 경우 쉽게 복구할 수 있도록 스냅샷 복사본을 사용하는 것이 좋습니다. 재부팅 후에도 서버 구성이 영구적이고 원시적인 상태인지 확인하려면 다음 단계를 수행하십시오.</block>
+  <block id="915fd36cea0113ed597d22509c21831d" category="list-text">열려 있는 모든 응용 프로그램을 종료합니다.</block>
+  <block id="b433d62b93139571f2c5e75d00980d3f" category="list-text">로그에서 오류를 검토합니다.</block>
+  <block id="0d3718718c4a112824f4482899be98cd" category="list-text">호스트에 모든 경로가 표시되는지 확인합니다.</block>
+  <block id="8418b94a2a307b3e96b6474bc55e08b7" category="list-text">호스트를 재부팅합니다.</block>
+  <block id="3bbc7678c52bd0801017ddfa4f16d674" category="summary">NetApp 및 파트너 프로페셔널 서비스는 시간 테스트를 거친 방법론을 사용하여 모든 주요 단계에서 SAN 마이그레이션을 지원합니다.</block>
+  <block id="3174d5c84d2e904799612ab35441237b" category="doc">SAN 마이그레이션 솔루션을 위한 프로페셔널 서비스</block>
+  <block id="309370af78f0a18542f150a9e1094f53" category="paragraph">NetApp FLI 기술과 타사 데이터 마이그레이션 소프트웨어의 숙련도를 습득하여 프로페셔널 서비스에서 SAN 데이터 마이그레이션 프로젝트를 전 세계에서 성공적으로 실행할 수 있도록 지원합니다. NetApp 및 파트너 프로페셔널 서비스를 활용하여 고객은 내부 리소스를 확보하고 다운타임을 최소화하고 위험을 줄일 수 있습니다.</block>
+  <block id="e5dfd6a0c376fd042680bac52d8b5ea3" category="paragraph">ONTAP를 사용하면 프로페셔널 서비스를 실행하는 마이그레이션이 더 이상 필요하지 않습니다. 그러나 NetApp은 여전히 프로페셔널 서비스 또는 파트너 프로페셔널 서비스 계약을 통해 마이그레이션을 범위 지정 및 계획하고 FLI를 사용하여 데이터 마이그레이션을 수행하는 방법을 고객 담당자에게 교육하는 것이 좋습니다.</block>
+  <block id="fdecad17e386bdc5ab1eca5d53907be3" category="summary">마이그레이션 프로세스의 검색 단계에서는 호스트 조정에 사용되는 정보를 수집하고 마이그레이션 계획을 이후 단계에서 생성하는 데 중점을 둡니다. 대부분의 정보 수집은 OneCollect와 같은 데이터 수집 도구를 사용하여 자동화됩니다.</block>
+  <block id="338c47dc58565ebf90b38f82b1a78ab1" category="doc">위상 워크플로를 검색합니다</block>
+  <block id="36bf5858463397b1ff924ea03c5822fc" category="paragraph">다음 그림은 검색 단계 워크플로를 보여 줍니다.</block>
+  <block id="46bc9d3fb968b4c71e1c07b8dee740c3" category="image-alt">1단계를 알아보십시오</block>
+  <block id="9f9080f3b976922f4cfc4db2052e5599" category="paragraph">검색 단계 작업은 다음 표에 나열되어 있습니다.</block>
+  <block id="04320a61909653cc31562fa2760af192" category="list-text">HBA WWPN 확인(영역 생성에 사용됨)</block>
+  <block id="5b9b6c7213c2067325eb7bd3d7ff0615" category="list-text">LUN 정보(크기, 일련 번호, 파티션 레이아웃 및 오프셋)를 식별합니다.</block>
+  <block id="f810b0ce180c88a8eddccb8372adf0d1" category="list-text">타사 MPIO 구성, 호스트 운영 체제, HBA/CNA 모델 및 펌웨어 등을 확인합니다.</block>
+  <block id="7d0ddd750a28d47551b20d6a5805295a" category="paragraph">소스 스토리지 영역에 대한 호스트 파악 (마이그레이션 후 제거됨).</block>
+  <block id="72e7294de5e9af8aec62a686317160d0" category="paragraph">이니시에이터/타겟 사용에 사용될 포트의 WWPN을 식별합니다.</block>
+  <block id="b7a0741ebdd8953defe4d1137412ce80" category="list-text">WWPN 확인(영역 생성에 사용됨)</block>
+  <block id="fcf1d94475a05cdaeb4d16ce4665bc19" category="list-text">호스트에 매핑된 LUN을 식별합니다.</block>
+  <block id="4db694fc7cadcfea617ef931365bbac7" category="list-text">호스트의 이니시에이터 레코드를 식별합니다.</block>
+  <block id="2021cbde5bf5dfd18378e28e081ea40f" category="summary">사이트 조사 및 계획 워크시트의 일부로 마이그레이션 프로젝트 연락처 정보가 포함된 탭을 설정해야 합니다.</block>
+  <block id="9f2428b49944ffbe41d6eaaae6141691" category="doc">사이트 조사 및 계획 워크시트 연락처 탭</block>
+  <block id="830bf6266222d642dda54d3adac324b5" category="paragraph">다음은 연락처 탭을 설정하는 방법의 예입니다.</block>
+  <block id="23bd44903908dd85f008af4416f452f2" category="cell">마이그레이션 프로젝트 연락처 정보</block>
+  <block id="cfad9f5ea3aed693642b36f141e70160" category="paragraph">자원 이름</block>
+  <block id="d6b258792ff06f82933c74eeb8aef591" category="paragraph">조직</block>
+  <block id="ecbcc181807f2e16c1fffabe98b24f39" category="paragraph">프로젝트 역할</block>
+  <block id="4f3f60f06dd4a2365e91cc32386e2065" category="paragraph">사무실 전화</block>
+  <block id="faab5da77b26184402e64e2ee7a70060" category="paragraph">휴대 전화</block>
+  <block id="ce8ae9da5b7cd6c3df2929543a9af92d" category="paragraph">이메일</block>
+  <block id="da561bf84fa67d613a7bc697632e7936" category="summary">사이트 조사 및 계획 워크시트의 일부로 스토리지 그룹에 대한 정보가 포함된 탭이 있어야 합니다.</block>
+  <block id="a2aabbf550b46ec2c7ba272d1cc49cfe" category="doc">사이트 조사 및 계획 워크시트 스토리지 그룹 탭</block>
+  <block id="d11cedfe393a70a8914339a7ddcf0db4" category="paragraph">다음은 스토리지 그룹 탭을 설정하는 방법의 예입니다.</block>
+  <block id="e16f703e68085397177a15356b6f6195" category="cell">스토리지 그룹</block>
+  <block id="12007e1d59f4d09c87dbe2c438256244" category="paragraph">목적지</block>
+  <block id="1c07f24dbaeb847f4662960d2691d528" category="paragraph">호스트 이름</block>
+  <block id="71e14e1f53e0c10dc815eae1e0682878" category="paragraph">스토리지 그룹</block>
+  <block id="9507dd645d6ad56791c558168f66d3c5" category="paragraph">iGroup 명령</block>
+  <block id="802f2bf667be29e0ca8082ad52482254" category="paragraph">dm-rx200s6-21</block>
+  <block id="7251b713b49e2e6be954fafc0fe27b6b" category="paragraph">21:00:00:24:ff:30:14:C521:00:00:24:ff:30:14:C4</block>
+  <block id="290b88d0742b98941ed7618fe459bec1" category="paragraph">igroup create-OSType "windows"-protocol "fcp"-vserver "datamig"-igroup "dm-rx200s6-21"-initiator" 21:00:00:24:ff:30:14:c4,21:00:24:ff:30:14:C5</block>
+  <block id="15a51affb5fc53cade38a72eb576e3ca" category="paragraph">dm-rx200s6-22</block>
+  <block id="d91d2501ebbdd78591417a13ccc46dcb" category="paragraph">21:00:00:24:ff:30:04:8521:00:00:24:ff:30:04:84</block>
+  <block id="c452f9aeebe9eb1d5fe45b104b9196d3" category="paragraph">igroup create-OSType Linux 프로토콜 -protocol fcp -vserver "datamig" -igroup "dm-rx200s6-22" -initiator" 21:00:00:24:ff:30:04:85,21:00:24:ff:30:04:84</block>
+  <block id="4ba5b6a831309528d9dc56c4b6c9d2bc" category="paragraph">dm-rx200s6-20</block>
+  <block id="a1f5a153bb25ffa89fc874e242492ae8" category="paragraph">21:00:00:24:ff:30:03:ea21:00:00:24:ff:30:03:eb</block>
+  <block id="ca4cbb35f003ffb63d5fef7c9ccb68ba" category="paragraph">igroup create-OSType VMware -protocol -fcp -vserver 'datamig-' igroup 'dm-rx200s6-20' -initiator' 21:00:00:24:ff:30:03:ea, 21:00:24:ff:30:03:eb</block>
+  <block id="aaac0f62190964901b0fea7afcc7fdbd" category="summary">이기종 SAN 환경을 위한 데이터 마이그레이션 서비스는 FLI 기술을 사용하는 포괄적인 데이터 마이그레이션 솔루션입니다. SAN 데이터 마이그레이션 서비스는 오류를 줄이고 생산성을 높이며 NetApp 및 파트너 프로페셔널 서비스를 위한 데이터 마이그레이션을 일관되게 제공할 수 있는 소프트웨어 및 서비스를 제공합니다.</block>
+  <block id="b7840b3a91b661e5d4610af4a93335ad" category="doc">이기종 SAN 환경을 위한 데이터 마이그레이션 서비스</block>
+  <block id="8521efbff974561784410c0a6d50f116" category="summary">다음 단계에서는 FLI 마이그레이션이 완료된 후 호스트에서 소스 LUN을 제거하는 방법을 설명합니다.</block>
+  <block id="9a2c19262a187bcd4df293aeb52e1f4c" category="doc">호스트에서 소스 LUN을 제거하는 중입니다</block>
+  <block id="c6e498e8376efcb4f757c84c3a3e8c6c" category="paragraph">호스트에서 소스 LUN을 제거하려면 다음 단계를 수행하십시오.</block>
+  <block id="86478cc867d8e2aa1f61370fd34f1954" category="list-text">마이그레이션되는 호스트를 선택하고 * 호스트 그룹 편집 * 을 선택합니다.</block>
+  <block id="6eece95105089574d413e5558218d874" category="image-alt">호스트 1에서 소스 LUN을 제거합니다</block>
+  <block id="6346b96a2b0626379f6debc6634e2ac3" category="image-alt">호스트 2에서 소스 LUN을 제거합니다</block>
+  <block id="e4bd4ad1c3c660ca40f9bcf83893ee4c" category="list-text">할당된 논리 LUN에서 마이그레이션되는 호스트 LUN을 선택합니다. 소스 LUN 워크시트에 언급된 각 호스트에 대해 LUN 이름을 사용합니다. 여기에서 Windows 2012 호스트의 LUN을 선택하고 * Remove * 를 선택합니다.</block>
+  <block id="d80c56eff54b89020c751b58c97ed631" category="image-alt">호스트 3에서 소스 LUN을 제거합니다</block>
+  <block id="6e0070e0532e1c48bfd6eca0a07a0120" category="list-text">Linux 및 VMware ESX 호스트에 대해 이 단계를 반복합니다.</block>
+  <block id="d6bd93468ec139fb3210b412a692cf3c" category="summary">가져오기 로그는 클러스터 이벤트 로그 파일에 저장됩니다. 마이그레이션에 성공했는지 확인하려면 로그에서 오류를 검토해야 합니다.</block>
+  <block id="35c0629618c7002c8c170854c5ac05ed" category="doc">마이그레이션 보고서</block>
+  <block id="8b95ee4c026e6f2fce7d0e1d1f6a629d" category="paragraph">마이그레이션 보고서는 다음과 같이 나타나야 합니다.</block>
+  <block id="3c91db5167fea30a381768373328161e" category="paragraph">소스 LUN과 대상 LUN을 비교하는 검증 단계는 마이그레이션 실행 단계에서 다룹니다. 가져오기 작업 및 외부 LUN에 연결되어 있으므로 가져오기 및 LUN 검증 단계는 마이그레이션 실행 단계에서 다룹니다.</block>
+  <block id="82beca5dd3e21da8b12776479d520195" category="summary">사이트 조사 및 계획 워크시트의 일부로 마이그레이션 스위치 정보가 포함된 탭을 설정해야 합니다.</block>
+  <block id="9924c373f5e060d3e81782c12188defd" category="doc">사이트 조사 및 계획 워크시트 스위치 탭</block>
+  <block id="e309370bdd52477ef0d27ea92e98564d" category="paragraph">다음은 스위치 탭을 설정하는 방법의 예입니다.</block>
+  <block id="0052efad5d260a806d52bfcfe640936f" category="cell">스위치</block>
+  <block id="222a267cc5778206b253be35ee3ddab5" category="paragraph">현재</block>
+  <block id="2fc6fbf9fba075ae2c24a4af4477f7f0" category="paragraph">NetApp을 추천합니다</block>
+  <block id="a559b87068921eec05086ce5485e9784" category="paragraph">모델</block>
+  <block id="b4cafd0ce791b930f1587ef7c7e3367b" category="paragraph">vSAN/도메인</block>
+  <block id="a940a548ba41bc988f99d51fd02f21de" category="paragraph">펌웨어</block>
+  <block id="97f43739abccd9753ce69e154a443f9b" category="paragraph">C9506-1-A</block>
+  <block id="7b1d1185b835814de783483f686e9825" category="paragraph">Cisco의</block>
+  <block id="babcff88f8be8c4795bd6f0f8cccca61" category="paragraph">9506)을 참조하십시오</block>
+  <block id="d3d9446802a44259755d38e6d163e820" category="paragraph">10</block>
+  <block id="8532afb409ba7a990336bdee27558254" category="paragraph">3.3(5a)</block>
+  <block id="f8ff369927dd6eb656cb8e5c3816d447" category="summary">분석 단계에서는 마이그레이션 계획 전에 해결해야 하는 항목을 중점적으로 다룹니다. 상호 운용성 매트릭스를 벗어나는 호스트 구성 세부 사항을 식별해야 합니다.</block>
+  <block id="b23f084bc4b793cabde88264a77e7e1f" category="doc">단계 워크플로 분석</block>
+  <block id="54ae97625c9d120b93acb4c8b0ce7a02" category="paragraph">각 호스트에 대해 타겟 구성(마이그레이션 후)이 식별되고 지원되지 않는 특정 구성 요소를 식별하기 위해 갭 분석이 수행됩니다. 호스트 분석은 완료되면 즉시 검토해야 합니다. 필수 업데이트로 인해 각 호스트에서 실행 중인 응용 프로그램과의 호환성이 깨질 수 있습니다.</block>
+  <block id="1683f823caf2498a246a027f100e38ac" category="paragraph">일반적으로 필요한 호스트 변경은 실제 마이그레이션 이벤트가 발생할 때까지 적용되지 않습니다. 이는 유지 보수 기간을 예약해야 하는 일반적인 요구 사항으로 인해 발생하지만, 시스템 패치 및 HBA(호스트 버스 어댑터) 업데이트와 같이 가능한 경우 호스트 변경을 미리 수행하는 것이 위험하지 않은 경우가 많습니다. 또한 동일한 유지보수 이벤트를 사용하여 애플리케이션 업데이트와 함께 시스템 업데이트를 자주 수행합니다. 일반적으로 마이그레이션 전에 MPIO(다중 경로 I/O) 구성을 변경하면 현재 스토리지의 지원도 영향을 받습니다. 예를 들어 호스트에서 PowerPath를 제거하고 Linux에서 기본 MPIO 및 ALUA(Asymmetric Logical Unit Access)를 사용하도록 다시 구성하는 것은 현재 스토리지 구성에서 지원되지 않을 수 있습니다.</block>
+  <block id="31b83c59ce1891325b52168eeb7bfad4" category="paragraph">마이그레이션 후까지 MPIO 재구성을 지연하면 필요한 경우 롤백 프로세스가 간소화됩니다.</block>
+  <block id="143c0fe5adf5779ad85956e27f8c6976" category="paragraph">계획 단계 작업은 다음 표에 나열되어 있습니다.</block>
+  <block id="25b6a21aca28345cb67164a451ab61e8" category="list-text">각 호스트에 대한 갭 분석을 수행합니다. NetApp IMT에서 선택한 타겟 구성과 일치하는 필요한 핫 픽스/패치, OS 업데이트, HBA 드라이버 및 펌웨어 업그레이드를 식별합니다. 또한 이 호스트에 설치할 다른 NetApp 소프트웨어(SnapDrive ®, SnapManager ®)의 요구사항을 고려해야 합니다.</block>
+  <block id="47a20386a95323b7da1d16d24f5e28eb" category="list-text">각 호스트(OS 구성, MPIO, HBA 세부 정보, 호스트 유틸리티 키트 버전)에 대한 타겟 구성(마이그레이션 후)을 결정합니다.</block>
+  <block id="d9b10c2e8b51b8f0209db412d09913ae" category="list-text">추가 NetApp 제품 요구사항(SnapDrive, SnapManager) 결정</block>
+  <block id="c1744442ef55c9ff65cf3426c67c5eca" category="summary">서비스 툴은 원격 데이터 수집, 구성 및 스토리지 관리 작업과 같은 유용한 기능을 수행하기 위한 표준화된 방법을 제공합니다.</block>
+  <block id="bfb6025fc2746984a9993cd7237a49f9" category="doc">데이터 마이그레이션을 위한 권장 툴</block>
+  <block id="b7cd36c5d52a8d12d57f9cc6a6df8d2b" category="paragraph">다음 서비스 도구는 데이터를 수집하고 구문 분석하는 데 사용됩니다.</block>
+  <block id="d5b1d34a64bc8430c8f7bb0eae4c9b1a" category="list-text">* OneCollect *</block>
+  <block id="810cb9f438afdb044ce76221234163ae" category="paragraph">웹 기반 UI 또는 CLI와 함께 제공되는 NetApp Active IQ OneCollect를 사용하면 SAN 및 NAS 환경 모두에서 스토리지, 호스트, 패브릭 및 스위치에서 데이터를 수집할 수 있습니다. 수집된 데이터는 문제 해결, 솔루션 검증, 데이터 마이그레이션 및 업그레이드 평가에 사용됩니다. 고객 환경과 관련된 진단 콘텐츠를 NetApp으로 전송하여 추가 분석을 수행하거나 사내로 분석할 수 있습니다.</block>
+  <block id="29f3ee77e5c443665a3fc71eafe7b37e" category="list-text">* NetApp 데이터 마이그레이션 Solaris 릴러 *</block>
+  <block id="406217eeb24435efe18388dd15ea5a4c" category="paragraph">Solaris Relabeler는 마이그레이션 후 VTOC(Volume Table of Contents) 디스크의 ASCII 레이블을 업데이트하는 기능을 제공하는 명령줄 유틸리티입니다.</block>
+  <block id="13ebdf331e696ec36ce21332b70ff56a" category="paragraph">초기 VTOC 디스크 초기화 루틴 동안 Solaris format 명령은 디스크에 대한 SCSI 조회를 수행하고 공급업체별 정보(제조업체, 제품 및 버전)를 디스크 레이블에 기록합니다. 모든 추가 문의는 실제 장치가 아닌 디스크 레이블로 전달됩니다. 블록 수준 마이그레이션은 이 디스크 레이블을 새 디스크에 복사하고, 이전 SCSI 조회 데이터는 시스템 도구 및 로그에 계속 표시됩니다. eler는 마이그레이션 후 디스크를 새로운 조회 데이터로 업데이트합니다.</block>
+  <block id="3a63df31c7c07052260a745267ccc673" category="paragraph">FLI 마이그레이션 프로젝트에는 다음과 같은 툴 및 유틸리티도 유용합니다.</block>
+  <block id="9169b858c9b6edfe9b59c84b47b04338" category="list-text">* 상호 운용성 매트릭스 *</block>
+  <block id="f2d4045460d1a1983c44cb974e219db3" category="paragraph">상호 운용성 매트릭스 툴(IMT)은 NetApp, FlexArray, 타사 소프트웨어 구성요소의 상호 운용성 확인을 위해 사용되는 NetApp 웹 기반 유틸리티입니다.</block>
+  <block id="a6a077b904bacb12d48c41c5c73204a8" category="list-text">* ONTAP 시스템 관리자 *</block>
+  <block id="a9d0aa8b103e4adf8ae15e7f25516585" category="paragraph">ONTAP System Manager는 그래픽 인터페이스를 사용하여 NetApp FAS 시스템의 원격 스토리지 관리를 제공합니다.</block>
+  <block id="63f145a157a4de507f52e0defe916b43" category="list-text">* OnCommand Workflow Automation *</block>
+  <block id="314466fdc9350ebf7ec10c814395d315" category="paragraph">WFA는 스토리지 워크플로우를 생성하고 스토리지 프로비저닝, 마이그레이션, 서비스 해제, 클론 복제 등의 스토리지 관리 작업을 자동화할 수 있는 소프트웨어 솔루션입니다.</block>
+  <block id="41906f366d54c43ed11596a26fede0c4" category="inline-link">NetApp 툴</block>
+  <block id="ecd381cf83e11898e675dbdba4cb2661" category="paragraph"><block ref="ecd381cf83e11898e675dbdba4cb2661" category="inline-link-rx"></block></block>
+  <block id="d1ed20623d06a5575b5bebe97eb3c03a" category="inline-link">NetApp 툴: 데이터 센터 플래너</block>
+  <block id="82330aa0d5032553b20acd353259792c" category="paragraph"><block ref="82330aa0d5032553b20acd353259792c" category="inline-link-rx"></block></block>
+  <block id="9ed4a475dd3705157a9fed8811f63ce2" category="inline-link">NetApp 상호 운용성 매트릭스 툴</block>
+  <block id="687d97208bee730c33801be1d460abf6" category="paragraph"><block ref="687d97208bee730c33801be1d460abf6" category="inline-link-rx"></block></block>
+  <block id="4313112e38e2034aae406f4730087905" category="inline-link">NetApp 설명서:OnCommand 시스템 관리자(최신 릴리즈)</block>
+  <block id="0fb89981f1f59ac6c2fc1a6cad5da0e0" category="paragraph"><block ref="0fb89981f1f59ac6c2fc1a6cad5da0e0" category="inline-link-rx"></block></block>
+  <block id="62580aa51e9dd22e6410288365e0cfae" category="inline-link">NetApp 설명서: OnCommand Workflow Automation(최신 릴리즈)</block>
+  <block id="385f2125f2c2eed2ad18d00d78cfc7d4" category="paragraph"><block ref="385f2125f2c2eed2ad18d00d78cfc7d4" category="inline-link-rx"></block></block>
+  <block id="ee3c3a8b2f3a842e463f69562d71d6e7" category="summary">FLI 마이그레이션 프로세스는 데이터 마이그레이션의 발견, 분석, 계획, 실행 및 검증과 같은 5단계 방법론입니다.</block>
+  <block id="295b519ef048bff2edb8931d30976e63" category="doc">마이그레이션 프로세스 개요</block>
+  <block id="862890f7840385152b7e001fc849d3ea" category="image-alt">5단계 마이그레이션 방법입니다</block>
+  <block id="ce4f0621e8f1bf1e49980aaf4a5f7334" category="paragraph">이러한 단계는 마이그레이션 프로세스 전반에 걸쳐 일반적인 작업이 수행되는 위치를 파악하는 데 도움이 되는 일반적인 프레임워크를 제공합니다. 이 섹션의 차트에는 호스트, 패브릭, 대상 스토리지 및 소스 스토리지의 4가지 주요 구성 요소 각각에서 병렬로 수행할 수 있는 작업이 표시됩니다.</block>
+  <block id="00c90fb59f1e33aa67f42b7b9099b00f" category="summary">궁극적으로 전환 중인 호스트 OS, HBA, 스위치 및 ONTAP 스토리지가 지원되는지 확인해야 합니다.</block>
+  <block id="2843856fe1aedc468540254858bf6c10" category="doc">7-Mode에서 ONTAP FLI로 지원되는 구성</block>
+  <block id="b5b71cee20299cfbb2af31994283f0bf" category="paragraph">FLI 7-Mode에서 ONTAP로의 전환 워크플로우를 사용하는 경우 FlexArray IMT에서 소스(7-Mode 컨트롤러)를 확인할 필요가 없습니다. 목록에 표시되지 않지만 이 전환 워크플로에서 명시적으로 지원됩니다. 모든 호스트가 지원되는 구성인지 확인해야 합니다.</block>
+  <block id="ae26af74c65eb30e105c96f274d4516a" category="paragraph">FLI 관련 플랫폼 요구사항은 없습니다. 버전은 파이버 채널 프로토콜(FCP)을 지원해야 하지만 7-Mode Data ONTAP의 최소 버전은 없습니다.</block>
+  <block id="6cdd3c73f6b04848b0836f249b29d749" category="paragraph">FLI에서 가져올 수 있는 최대 LUN 크기는 6TB입니다. 이는 현재 ONTAP에서 지원하는 최대 크기의 드라이브를 기준으로 한 제한 사항입니다. 더 큰 외부 LUN을 마운트하려고 하면 LUN이 파손된 것으로 표시되고 레이블을 LUN에 쓸 수 없게 됩니다.</block>
+  <block id="5e0c9df591e5df923a8325573e7ca5f7" category="summary">다음은 운영 패브릭 A에 있는 Brocade 패브릭의 예입니다</block>
+  <block id="d535235692fb253ef3bba1707bd4b8f7" category="doc">운영 패브릭의 예로 Brocade Fabric을 들 수 있습니다</block>
+  <block id="649af838f80334608d3f85b2c8bcf6c6" category="list-text">운영 패브릭 A에 영역을 생성합니다</block>
+  <block id="18f3717603a0469912a341c387795b1b" category="list-text">운영 패브릭 A의 영역을 활성화합니다</block>
+  <block id="0d1ab32d2e734165cc6fa60ad4e92f19" category="summary">FLI 온라인 마이그레이션을 다룬 4개의 FLI 워크플로우 예시 중 두 번째 예시입니다.</block>
+  <block id="d0d7a8d464c5eb9f10cf2c7f522fdff3" category="doc">FLI 온라인 워크플로우</block>
+  <block id="888a5ac5077bd0a2595ac8d4d57343b6" category="paragraph">이 예의 소스 스토리지는 EMC VNX5500입니다. 제공된 예는 FLI 온라인 프로세스에 대한 철저한 설명을 제공하고 본 가이드의 앞 부분에서 설명한 일반적인 정보와 프로세스를 사용하도록 설계되었습니다. 온라인 워크플로에는 다음과 같은 작업이 있습니다.</block>
+  <block id="207c99dbe101d7af2533d861e39077d9" category="list-text">LUN 경로 준비 중</block>
+  <block id="de95ff0b767f79557fe9a9b692d65ab1" category="list-text">운영 중단 컷오버 수행</block>
+  <block id="3892b30160c9653f481e358d32fbc22f" category="list-text">소스 LUN 데이터를 가져오는 중입니다</block>
+  <block id="ad8b1deda6773a7334e6ada18297afc4" category="list-text">마이그레이션 결과를 확인하는 중입니다</block>
+  <block id="531d6e8475a573cc2be090591d43baef" category="list-text">FLI 온라인 마이그레이션 정리</block>
+  <block id="e467310a29ce4a08b3fb35835aa67bea" category="paragraph">NetApp 컨트롤러 대상이 MetroCluster인 경우 온라인 워크플로우를 사용하지 마십시오. 활성 온라인 가져오기 중에 사이트 페일오버가 발생한 경우 소스 어레이에 대한 쓰기 패스스루가 실패할 수 있으며 이로 인해 검증 실패와 잠재적인 데이터 손실이 발생할 수 있습니다. 대상이 MetroCluster인 경우 FLI 오프라인 프로세스를 사용합니다.</block>
+  <block id="35b043ebc171de32d54be5dbeae52dd3" category="summary">실행 단계에서는 FLI 오프라인 또는 온라인 마이그레이션을 수행하기 위한 LUN 마이그레이션 작업에 중점을 둡니다.</block>
+  <block id="964a0546e66ef43fd51704954c30ee65" category="doc">단계 워크플로 실행</block>
+  <block id="0371a2b790b684d89139aa01a9d899dd" category="paragraph">문제를 찾아 해결하고 위험을 줄이기 위해 호스트 이벤트 로그를 검토합니다. 호스트는 재부팅되어 주요 재구성이 발생하기 전에 호스트에 기본적인 문제가 없는지 확인합니다.</block>
+  <block id="9a2d7036802624ba03c75b07ef21f584" category="paragraph">소스 LUN이 대상 스토리지에 표시된 후 마이그레이션 작업을 생성하고 실행할 수 있습니다. 마이그레이션 완료(FLI 오프라인) 또는 FLI LUN 관계가 FLI 온라인 상태로 전환되면 호스트가 대상 스토리지에 조닝(zoning)됩니다. 새 LUN이 매핑되며 드라이버, 다중 경로 소프트웨어 및 분석 단계에서 식별된 기타 모든 업데이트에 대해 호스트 개선을 시작할 수 있습니다.</block>
+  <block id="16abdd8ae3b60341fa19eb1be8305b9e" category="summary">이 절차는 Brocade 패브릭 zoneset에서 소스 스토리지 및 호스트 영역 제거를 보여 줍니다.</block>
+  <block id="d0ae902543b17dc39935b9f9ff10caf9" category="summary">AFF는 모든 ONTAP 소프트웨어 릴리즈에서 FlexArray를 지원하지 않습니다. 해당 릴리즈에서 AFF와 동일한 클러스터의 비 AFF 고가용성(HA) 쌍에 FLI(Foreign LUN Imports)를 스테이징해야 합니다.</block>
+  <block id="4d2c8e2d52b2d1e27a2032516bde2b24" category="doc">외부 LUN 가져오기를 사용하여 LUN을 AFF로 가져옵니다</block>
+  <block id="678b11ba8ef0148b72870cd8ab43c178" category="paragraph">ONTAP는 AFF 9.1부터 FLI를 지원합니다. FKU를 사용하여 다른 어레이에서 ONTAP 클러스터로 직접 LUN을 가져올 수 있습니다.</block>
+  <block id="1d1decf73b3514198e759fb813b2f31e" category="paragraph">ONTAP 8.3.2에서 AFF은 승인된 PVR(Process Variance Request)을 사용하여 FLI를 지원할 수 있습니다. 승인을 위해 제출된 PVR을 얻으려면 NetApp 세일즈 팀에 문의하십시오. 승인 시, 일반적으로 NetApp 시스템 엔지니어인 제출자는 FLI 기능 활성화에 대한 지침이 포함된 승인 편지를 받게 됩니다.</block>
+  <block id="03120ec505b2fc02252feb3c2947d24a" category="paragraph">8.3.2 이전의 ONTAP 소프트웨어 버전에서는 쓰기 최적화 중 일부가 수행되었기 때문에 AFF에서 현재 FlexArray를 지원하지 않습니다. AFF가 설치된 동일한 클러스터에서 비 AFF HA 쌍에 대한 FLI 가져오기를 스테이징해야 합니다. 마이그레이션이 완료된 후 볼륨 또는 LUN 이동과 같은 무중단 운영(NDO)을 사용하여 마이그레이션된 LUN을 AFF로 이동할 수 있습니다. AFF 클러스터에 비 AFF 노드가 없는 경우 이를 위해 스윙 기어를 차용할 가능성에 대해 고객 팀에 문의하십시오.</block>
+  <block id="22e769e6dfe56bc3b7fec8d36e575f71" category="summary">FLI 오프라인 실행 단계에서는 마이그레이션 호스트 준비를 포함합니다.</block>
+  <block id="540aa6d6b05b87237a5035773dc7ce09" category="doc">FLI 오프라인 마이그레이션을 위한 호스트 준비</block>
+  <block id="5f51d20e71b9fee9d17896df728cf25f" category="paragraph">대부분의 경우 이 단계를 수행하기 전에 이 개선 작업을 수행할 수 있습니다. 그렇지 않은 경우 호스트 연결 키트 또는 DSM 설치와 같은 호스트 조정을 수행합니다. 분석 단계에서는 각 호스트에서 수행해야 하는 항목의 간격 목록을 갖게 됩니다. 그러면 해당 호스트가 ONTAP를 사용하여 지원되는 구성에 있게 됩니다. 수행되는 마이그레이션 유형에 따라 호스트를 교정 및 재부팅하거나(온라인 FLI/7-Mode에서 ONTAP FLI로 FLI), 마이그레이션 프로세스가 완료될 때까지(오프라인 FLI) 문제를 해결하는 동시에 종료해야 합니다.</block>
+  <block id="b72d0a7e15603e92529db690eb6e6546" category="summary">소스 스토리지의 호스트 OS, HBA, 스위치 및 ONTAP 스토리지와 상호 운용성 매트릭스에 지원되는 최종 구성이 모두 나와 있는지 확인해야 합니다.</block>
+  <block id="81a3eb7ec0ef18fea182a1e6ec0ee426" category="doc">지원되지 않는 LUN에 대한 지원</block>
+  <block id="c1ebcdb183b1743929cb921388200c85" category="paragraph">다음 섹션에서는 이러한 사용 사례에 대한 정보를 제공합니다.</block>
+  <block id="2216ac365c3bdd99255956b013dc3086" category="list-text">iSCSI LUN을 FC LUN으로 가져옵니다</block>
+  <block id="8349303e4fef0ed2c9e1a14542704659" category="list-text">마이그레이션된 LUN을 AFF 플랫폼으로 이동</block>
+  <block id="5dd04a70c599dd3aba4af817ed8f940a" category="summary">사이트 조사 및 계획 워크시트의 일부로 SDS CLI 스크립트에 대한 정보가 포함된 탭이 있어야 합니다.</block>
+  <block id="fcbc52c1e9e3f483b5dd4306a9c74eb7" category="doc">사이트 조사 및 계획 워크시트 SDS CLI 스크립트 탭</block>
+  <block id="2c87f12de6046ab2b53a48c94446ddc6" category="paragraph">다음은 SDS CLI 스크립트 탭을 설정하는 방법의 예입니다.</block>
+  <block id="8d1fc7e767a7204d770eb56c7989e03b" category="cell">컨트롤러 1</block>
+  <block id="48ed192757d1bc6d4a36d16a10893f48" category="cell">컨트롤러 2</block>
+  <block id="2c24dd8520ba4ee9f85d15c117094435" category="paragraph">볼륨 크기 vol0 aggr0 108g</block>
+  <block id="54f031636e4e8de367e82438e357f16e" category="paragraph">스냅 예약 bootcampvol 0</block>
+  <block id="8d0b4f95a2fc0bb4aafee8c0e892995e" category="paragraph">스냅 예약 vol0 20</block>
+  <block id="69cdb67b977385d7128ce35f86ed6af8" category="paragraph">자동 삭제 부트캠프vol을 켭니다</block>
+  <block id="c7bfdaa544c122cccd5797ecd8859b64" category="paragraph">스냅 자동 삭제 부트캠프 볼륨 헌신을 시도해 보십시오</block>
+  <block id="7299c46e8f1df488d88afb3721775dde" category="paragraph">스냅 자동 삭제 bootcamvol 트리거 볼륨</block>
+  <block id="0e7ce58d782f7edfbe3198963f0e68cc" category="paragraph">스냅 자동 삭제 bootcampvol target_free_space 20</block>
+  <block id="de3544704cc06e98c85feda6079b4ffd" category="paragraph">스냅 자동 삭제 bootcampvol defer_delete user_created</block>
+  <block id="ad1467e693a1edef02e1d8bc2d789b5f" category="paragraph">스냅 자동 삭제 vol0을 설정합니다</block>
+  <block id="fca6b942a9946eae8145c4b0ceefada4" category="paragraph">스냅 자동 삭제 vol0 헌신을 시도하십시오</block>
+  <block id="470bc3c913fe0a7e37e4ec5468927fc5" category="paragraph">스냅 자동 삭제 vol0 트리거 볼륨</block>
+  <block id="9400cd2a1b1996ef34cf5f2ce7aa197d" category="paragraph">스냅 자동 삭제 vol0 target_free_space 20</block>
+  <block id="c49053bff1ed24ac6b7dcae31adfce83" category="paragraph">스냅 자동 삭제 vol0 defer_delete user_created</block>
+  <block id="b0db704ae4954f302897364d596258a0" category="paragraph">볼륨 자동 크기 조정 bootcampvol이 켜져 있습니다</block>
+  <block id="03bf145298ad7c56efc9bfb977d83743" category="paragraph">볼륨 자동 크기 조정 vol0이 켜져 있습니다</block>
+  <block id="741d544a7e3ce6129652d8e8013ef786" category="paragraph">볼륨 옵션 bootcampvol try_first volume_grow</block>
+  <block id="a9f2077fe15dcec0bbc3292da1dca27b" category="paragraph">볼륨 옵션 bootcampvol fractional_reserve 100</block>
+  <block id="2f64a0b8475583dec37ce272a0dcc98e" category="paragraph">볼륨 옵션 vol0 try_first volume_grow</block>
+  <block id="19b438681b0e26a3e7b0340e28965cdb" category="paragraph">볼륨 옵션 vol0 fractional_reserve 100</block>
+  <block id="5ec5fbcceb4ba24f6baba1e611765951" category="paragraph">Qtree 보안/vol/bootcampvol UNIX</block>
+  <block id="b256e9f635830e47a3deb3e68246325d" category="paragraph">Qtree 보안/vol/vol0 NTFS</block>
+  <block id="967ff004634741b235418f084353f4f3" category="paragraph">스냅 sched bootcampvol 0 0 0</block>
+  <block id="75b5fe82311ea0f0717027a0d13fa502" category="paragraph">스냅 sched vol0 0 2 6 @ 8,12,16,20</block>
+  <block id="9bf5790a9df15432a60d8504ea14d215" category="paragraph">LUN이 IGroup에 매핑되지 않았으므로 /vol/qavol_Narayan/TestLUN에 대해 # LUN 매핑을 건너뛰었습니다.</block>
+  <block id="99748e4a1cd95f6fff503b57e286b5d2" category="paragraph">LUN이 iGroup에 매핑되지 않았으므로 /vol/bootcampvol/DM25_boot_LUN에 대해 # LUN 매핑을 건너뛰었습니다.</block>
+  <block id="b491e8567c6fd3321551664c1376a634" category="paragraph">LUN이 iGroup에 매핑되지 않았으므로 /vol/bootcampvol/DM25_data1_LUN에 대해 # LUN 매핑을 건너뛰었습니다.</block>
+  <block id="4fa5e094bfd5d434135669861ae04247" category="paragraph">LUN이 iGroup에 매핑되지 않았으므로 /vol/bootcampvol/DM25_data2_LUN에 대해 # LUN 매핑을 건너뛰었습니다.</block>
+  <block id="88f67b288cce40ced464d95edca6c03f" category="paragraph">LUN이 iGroup에 매핑되지 않았으므로 /vol/bootcampvol/dm26_boot_lun에 대해 # LUN 매핑을 건너뛰었습니다.</block>
+  <block id="9b5b20a6e61e5a6b361e33af282fe290" category="paragraph">LUN이 iGroup에 매핑되지 않았으므로 /vol/bootcampvol/dm26_data1_lun에 대해 # LUN 매핑을 건너뛰었습니다.</block>
+  <block id="ed81810d4252d14bcffb8c703c2a6eb3" category="paragraph">LUN이 iGroup에 매핑되지 않았으므로 /vol/bootcampvol/dm26_data2_LUN에 대해 # LUN 매핑을 건너뛰었습니다.</block>
+  <block id="47d7290459fef6cbde926c0c4eedb24a" category="paragraph">LUN이 iGroup에 매핑되지 않았으므로 /vol/bootcampvol/dm27_boot_lun에 대해 # LUN 매핑을 건너뛰었습니다.</block>
+  <block id="6c5395fbe7637c1c2d92859d967cb804" category="paragraph">LUN이 iGroup에 매핑되지 않았으므로 /vol/bootcampvol/dm27_data1_lun에 대해 # LUN 매핑을 건너뛰었습니다.</block>
+  <block id="a73c68c63356315bd4ea581710355d69" category="paragraph">LUN이 iGroup에 매핑되지 않았으므로 /vol/bootcampvol/dm27_data2_LUN에 대해 # LUN 매핑을 건너뛰었습니다.</block>
+  <block id="3c11a433910732d1d7e44f06f2ecf9d3" category="summary">마이그레이션 유형에 따라 호스트 개선이 마이그레이션(외부 LUN 임포트 온라인, 7-Mode에서 ONTAP로)에 인라인 방식으로 수행되거나 마이그레이션이 완료된 후(외부 LUN 임포트 오프라인) 발생할 수 있습니다.</block>
+  <block id="d349791b0d71ed5b5f5c14e0ca2c1683" category="doc">호스트 수정</block>
+  <block id="3da1cf3d2ea2651c6b3ddded5d539f0c" category="paragraph">다양한 호스트 OS에 대한 수정 단계를 위해 를 사용합니다. 차이 분석을 참조하고 계획 및 분석 단계 중에 통합하며, 마이그레이션 단계에 대한 적절한 NetApp 및 공급업체 문서를 참조하십시오.</block>
+  <block id="ab2575ccf7898f219a5ebaa9ee2f0f59" category="paragraph">FLI는 7MTT와 동일한 개선 절차를 사용합니다. 따라서 서로 다른 장소에 해당 절차를 여러 번 문서화하지 않고 동일한 개선 문서를 활용하는 것이 좋습니다.</block>
+  <block id="b03c8fb128c3a9f9ba53163b9e459c95" category="paragraph">caw 문제 해결은 ESXi caw/ATS 개선 프로세스를 사용합니다.</block>
+  <block id="18378bd55b78e6b6cce77b6e42011717" category="inline-link">SAN 호스트 전환 및 수정</block>
+  <block id="b10b437ec347d2a05cc10850bd886129" category="paragraph"><block ref="b10b437ec347d2a05cc10850bd886129" category="inline-link-rx"></block></block>
+  <block id="c632a2963796cd48a9b8a626c8123e1c" category="summary">FLI(Foreign LUN Imports)를 사전 마이그레이션하는 동안 호스트 및 소스 LUN 경로를 확인하고 확인합니다. 호스트가 재부팅되면 마이그레이션이 준비될 때까지 종료됩니다.</block>
+  <block id="e0392900ac00a70004ae9fcb4493a9f8" category="doc">FLI 오프라인: 전환 준비</block>
+  <block id="a95f1872da1f9f11940ae232dedf1d12" category="paragraph">마이그레이션 및 수정 작업이 완료되면 호스트를 새 대상 스토리지에 연결하여 최종 사용자가 애플리케이션을 확인할 수 있습니다.</block>
+  <block id="f5462af8558e5af6c13d019a04719a8a" category="summary">FLI는 온라인, 오프라인, 전환 및 자동화의 4가지 주요 마이그레이션 워크플로 유형을 지원합니다. 사용할 워크플로는 구성 및 기타 요소에 따라 다릅니다.</block>
+  <block id="3474ed6ca7314741c6cb3f8b13513427" category="doc">외부 LUN 가져오기에서 지원되는 마이그레이션 유형입니다</block>
+  <block id="b768b2ec7c2e8900de4a9fffb717a780" category="list-text">온라인 마이그레이션에서 타사 어레이의 FLI를 사용하면 마이그레이션 중에 클라이언트 시스템이 온라인 상태로 유지됩니다(Windows, Linux 또는 ESXi 호스트 운영 체제 필요).</block>
+  <block id="bb127db0e6dffe1777a9bc3bbf1ecc82" category="list-text">오프라인 마이그레이션 시 타사 어레이에서 FLI는 클라이언트 시스템을 오프라인 상태로 전환하고 데이터를 새 LUN에 복사한 후 다시 온라인 상태로 만듭니다.</block>
+  <block id="b33a9293c8c067048b0e027cc7820941" category="list-text">전환 마이그레이션에서 FLI는 7-Mode에서 운영되는 ONTAP를 ONTAP로 전환합니다. 이 프로세스는 소스 배열이 ONTAP 인 경우를 제외하고 기능적으로 동일합니다. 전환 워크플로는 온라인 또는 오프라인 모드에서 사용할 수 있습니다.</block>
+  <block id="44023aa16885f326f40c8d26a3d792dc" category="list-text">자동 마이그레이션 시 FLI는 WFA(Workflow Automation) 소프트웨어를 사용하여 마이그레이션 프로세스의 일부를 자동화합니다. WFA를 사용하는 FLI는 온라인 또는 오프라인 모드에서 사용할 수 있습니다.</block>
+  <block id="ed84643b976a61e35dab90c06a1328ad" category="paragraph">구조적으로 세 가지 마이그레이션과 전환 워크플로우가 상당히 유사합니다. 이 4가지 요소는 모두 NetApp의 FlexArray 기술을 활용하여 ONTAP 컨트롤러가 소스 어레이 앞에서 이니시에이터 역할을 수행하고, 이 위치를 사용하여 소스에서 대상 ONTAP 어레이의 LUN으로 블록 LUN 블록을 복제할 수 있게 합니다.</block>
+  <block id="4d01f8ae44780dd783a9a1352d13eb15" category="paragraph">컷오버가 발생할 경우, 작업 중단 기간의 길이, 자동화를 사용할 때 또는 소스 어레이가 ONTAP 7-Mode 또는 타사 어레이를 실행하는 NetApp 스토리지인 경우 워크플로우와 그 차이점이 있습니다.</block>
+  <block id="ebe02209a860979dd6e9ae77de5b53da" category="paragraph">외부 LUN 임포트 온라인 워크플로우를 지원하는 호스트 운영 체제입니다</block>
+  <block id="ee08544761e8c3668ae2cf410df0176e" category="summary">ONTAP FLI 정보 라이브러리를 시작합니다. 여기에서 외부 어레이에서 ONTAP로 데이터를 마이그레이션하고 NetApp 7-Mode 어레이에서 ONTAP로 LUN을 전환하는 데 도움이 되는 정보를 찾을 수 있습니다.</block>
+  <block id="b4f00c3dc8ec2262f8447975755acf2d" category="doc">외부 LUN 가져오기를 사용한 SAN 마이그레이션</block>
+  <block id="53a51b7dcda82a62f1a85a24f43b7788" category="summary">검증 작업은 선택 사항이지만 권장됩니다. 소스 LUN과 대상 LUN의 블록별 비교입니다. 마이그레이션 시간보다 작업이 거의 비슷하거나 약간 더 오래 걸리는지 확인합니다.</block>
+  <block id="ce91b6039e58611f253af932de050269" category="doc">FLI 오프라인: 마이그레이션 결과 확인</block>
+  <block id="47d2204501856353838ee78e45555084" category="list-text">소스 LUN과 대상 LUN을 비교하려면 검증 작업을 시작합니다. 검증 과정을 모니터링합니다.</block>
+  <block id="046d51f7e741a0f96a8de41d5947020b" category="list-text">작업 상태 확인 을 모니터링합니다.</block>
+  <block id="69514061677672d46f94e4140574dd55" category="list-text">확인 작업이 완료되었는지 확인합니다.</block>
+  <block id="4094df43285495c7722dddff7afa8de1" category="list-text">확인이 완료된 후 확인 작업을 중지합니다.</block>
+  <block id="1c855787e352fecbe853364612560c5a" category="list-text">가져오기 관계를 삭제하여 마이그레이션 작업을 제거합니다.</block>
+  <block id="1f7d9093a87f1223652de0690e80f57c" category="list-text">가져오기 작업이 삭제되었는지 확인합니다.</block>
+  <block id="e57e82538b681c873e1cfb334a6f3601" category="list-text">외부 LUN 속성을 false로 표시합니다.</block>
+  <block id="d9d9448417571874dd3a7adfce11eee6" category="list-text">가져온 후 외부 LUN이 false로 표시되는지 확인합니다.</block>
+  <block id="8e7d752a0fa07e965902dd236a3c89b4" category="list-text">lun online 명령을 사용하여 대상 LUN을 온라인 상태로 전환합니다.</block>
+  <block id="63e1b9537e12694060f7e57218806fa8" category="list-text">LUN이 온라인 상태인지 확인합니다.</block>
+  <block id="b76188f3e00e84a81eb898fcfa30419f" category="paragraph">가져오기 로그는 클러스터 이벤트 로그 파일에 저장됩니다.</block>
+  <block id="86fa04f5a596e6f9f13f9033ee5fc85e" category="summary">FLI를 사용하는 표준 마이그레이션 시나리오에서는 네 개의 별도 영역이 필요합니다. 각 존에 특정 포트를 포함해야 합니다.</block>
+  <block id="1c277dacf0a919a6930125acd1208bce" category="doc">FLI 조닝 요구 사항</block>
+  <block id="90b71c66184e127a11eaca1e2a141dac" category="list-text">영역 1: 소스 스토리지와 대상 스토리지(운영 패브릭 A)</block>
+  <block id="29f1f61f2d914a97b194e33d1c2ff993" category="paragraph">영역 1에는 모든 노드의 모든 대상 스토리지 이니시에이터와 Fabric A의 모든 소스 스토리지 타겟 포트가 포함되어야 합니다 영역 구성원은 다음과 같습니다.</block>
+  <block id="9bf4b910f4f253458069b57912f24a35" category="list-text">ONTAP -- Node1 -- 0a</block>
+  <block id="387ba8367f6e416fe34b8a3f5d78d3f2" category="list-text">ONTAP -- Node2 -- 0a</block>
+  <block id="437c2b32b9333d481369ae78dc508fd2" category="list-text">AMS2100--Ctrl0--0a</block>
+  <block id="49003bd132a25334a9d2dc05e9f48f26" category="list-text">AMS2100--Ctrl1--1a</block>
+  <block id="b6030be1f62325e351d4008a1193eaac" category="list-text">존 2: 소스 스토리지와 대상 스토리지(운영 패브릭 B)</block>
+  <block id="3937e6e9efcf848b295750285a00e138" category="paragraph">존 2는 모든 노드의 모든 대상 스토리지 이니시에이터 포트와 Fabric B의 모든 소스 스토리지 타겟 포트를 포함해야 합니다 존 2 구성원:</block>
+  <block id="8ea7121941ea9db447e0d701b9d59c1d" category="list-text">ONTAP -- Node1 -- 0b</block>
+  <block id="0be431a5667b7c4af27ab67f3361e73d" category="list-text">ONTAP -- Node2 -- 0b</block>
+  <block id="502f0eac5a9e2c1e5a66769cab6af3f6" category="list-text">AMS2100--Ctrl0--0e</block>
+  <block id="cef6a8e1dda9e8d924f8c52b0fef0904" category="list-text">AMS2100--Ctrl1--1e</block>
+  <block id="c1f55c7f19961f8ad3c3d0746aa3869e" category="list-text">영역 3: 호스트와 대상 스토리지(운영 패브릭 A)</block>
+  <block id="b2e53b193a576511a7908fa15e95510d" category="paragraph">존 3에는 호스트 버스 어댑터(HBA) 포트 1과 운영 패브릭 A의 대상 컨트롤러 포트가 포함되어야 합니다 존 3 구성원:</block>
+  <block id="34df502205cb3b64b1dd503847376e3f" category="list-text">ONTAP -- 리프1</block>
+  <block id="49dafa1618818febd6eaed5310784ebc" category="list-text">ONTAP -- 리프3</block>
+  <block id="9e07ac2530b2c6662f227b5cc640d14d" category="list-text">호스트 -- HBA0</block>
+  <block id="38efe369f6e22dbb3571834642ba9fd1" category="list-text">구역 4: 호스트와 대상 스토리지(운영 패브릭 B)</block>
+  <block id="76425fc1ef5dd7aefe87c845548575c1" category="paragraph">구역 4에는 HBA 포트 2와 운영 패브릭 B의 대상 컨트롤러 포트가 포함되어야 합니다 구역 4에는 다음이 포함됩니다.</block>
+  <block id="4e1ed3227dfcee53d459b792bd2b20f2" category="list-text">ONTAP -- 리프2</block>
+  <block id="eb7f37cab69cb683edf87546f5deda9a" category="list-text">ONTAP -- 리프4</block>
+  <block id="afea8a996a083d63c7d2d2dd0966b15f" category="list-text">호스트 -- HBA1</block>
+  <block id="0e307f6ea434bd4d2171f6accce0a9ba" category="summary">사이트 조사 및 계획 워크시트의 일부로, 초기 마이그레이션 설문지의 마이그레이션 프로젝트 정보가 포함된 탭이 있어야 합니다.</block>
+  <block id="a9045dbda21a2daa2214c339015b971e" category="doc">사이트 조사 및 계획 워크시트 질의 응답서 탭</block>
+  <block id="10bb602bb2e1131312be193830955c41" category="paragraph">다음은 질의 응답서 탭을 설정하는 방법의 예입니다.</block>
+  <block id="56693cf67971d000c20732a5b7bdbb95" category="cell">마이그레이션 프로젝트 정보</block>
+  <block id="245fe794333c2b0d5c513129b346b93f" category="paragraph">프로젝트 유형</block>
+  <block id="0f9a2a86022225e39b6433376654f29d" category="paragraph">☐ 데이터 마이그레이션</block>
+  <block id="0e438e8542600a5a337438e09b4fdd62" category="paragraph">☐ 기타</block>
+  <block id="7f619d79963b1a2829552c352e453c28" category="paragraph">데이터 마이그레이션 목표</block>
+  <block id="db07aa95ec6e92553942c3c3a421c707" category="paragraph">&amp;#91;목표 및 #93;</block>
+  <block id="9e6812fa0cb16a274ae8a426b9ee15b3" category="paragraph">소스 디바이스</block>
+  <block id="214a758db5e2eec3993db937270e4f24" category="paragraph">스토리지: [스토리지 유형]</block>
+  <block id="acaaabeb7367ead121ad26f977833b69" category="paragraph">아니요 장치 수: [아니오. 어레이 수]</block>
+  <block id="ddb70a042f590778629e545f69fbb200" category="paragraph">씬 프로비저닝: ☐ 예 ☐ 아니요</block>
+  <block id="d26db839a8b505484ea05b45ef376235" category="paragraph">모든 장치를 열거합니다</block>
+  <block id="e44b4e495633f39d51f952585186f3eb" category="paragraph">클라이언트 장치</block>
+  <block id="261b5445fd33a0b7465bb1b441121b0d" category="paragraph">운영 체제: [OS 버전]</block>
+  <block id="c9e41c953d8e18402f192e6a6dbf388a" category="paragraph">SAN 부트: ☐ 예 ☐ 아니요</block>
+  <block id="65ee9b0d253cfcd7771c49219da0319c" category="paragraph">MPIO: [MPIO 버전]</block>
+  <block id="de09cca27f135e2320f3de663d6465b8" category="paragraph">HBA: [HBA 공급업체, 모델, 펌웨어]</block>
+  <block id="8ad3d0b4eaf844117889e902c8b144c2" category="paragraph">패브릭 스위치</block>
+  <block id="6e848e0444ce3aae21a37e95d2906af7" category="paragraph">공급업체:</block>
+  <block id="284d5cd0dd92c1b4ee0712a15b60ae49" category="paragraph">모델:</block>
+  <block id="fc7d4a6023cb109492291b754c6160c6" category="paragraph">펌웨어:</block>
+  <block id="a9adf5804d2b0752af4016534bf26618" category="paragraph">아니요 포트 수:</block>
+  <block id="7bca39f9e67c6eb9ba85056cc1290a47" category="paragraph">현재 프로토콜</block>
+  <block id="0d8e82473ffcad1d4bdc0f54e2179551" category="paragraph">☐ FCP</block>
+  <block id="0c42613b122ef1dac6eb3c3d0ba7bc50" category="paragraph">☐ iSCSI</block>
+  <block id="877d42f95f09aa8782a453c6158d29d3" category="paragraph">볼륨 관리자</block>
+  <block id="465d60b936c982d7b57674f30ba022d0" category="paragraph">제품:</block>
+  <block id="9d290d3434589e33be3d2cad4f8323ec" category="paragraph">버전:</block>
+  <block id="cab2d68c359922b6642e8fa6641e716b" category="paragraph">대상 장치(스토리지)</block>
+  <block id="9cf8d76297ba295aa370dc0ae13838c2" category="paragraph">스토리지: [스토리지]</block>
+  <block id="63197fbaa1499e4f7f90e10d07d5cdc8" category="paragraph">아니요 [번호]</block>
+  <block id="9d802703117705345fc829605fe4a59d" category="paragraph">이 서비스의 경우 NetApp 파일러만 해당됩니다</block>
+  <block id="11e8d9604700f0f7f034155d500e8883" category="paragraph">마이그레이션할 데이터 양의 크기(TB)</block>
+  <block id="d7e72382817dc41f2a77e0a6afb28c5d" category="paragraph">&amp;#91; 데이터 양 &amp;#93;</block>
+  <block id="f3f61a75c49be21f706b27e939278fe2" category="paragraph">요약 및 세부 정보(각 소스 디바이스)</block>
+  <block id="0af38a14209cc9bc1b292891a3e005da" category="paragraph">LUN 수입니다</block>
+  <block id="eb5fbf222b483c587fea76fe16f56ccc" category="paragraph">&amp;#91; LUN 수 &amp;#93;</block>
+  <block id="a95ad1971f6f1542026f5f96ef238f12" category="paragraph">데이터 재구성</block>
+  <block id="c5820346575284659d44eba1bb3ca694" category="paragraph">☐ 예 ☐ 아니오</block>
+  <block id="2dd34797614f890cd525ba39985e1461" category="paragraph">고객이 마이그레이션의 일부로 볼륨/디렉토리/폴더/파일을 다른 데이터 구조로 이동하기를 원합니까?</block>
+  <block id="9e5d61b05fc133d62f2ebaa7ba3cfce6" category="paragraph">운전 정지 기대</block>
+  <block id="bdfd70dc773fda85c0bc91a9398ed71d" category="paragraph">운영 중단 윈도우</block>
+  <block id="ec9053f033853a9421af3f855d7416de" category="paragraph">☐ 사전 정의 ☐ 유연함</block>
+  <block id="054dfd9d4745470f56afcacc341de153" category="paragraph">표준 유지 보수 윈도우 정책: [INFO]</block>
+  <block id="d8fffa3019db6e0115458db64ad81d13" category="paragraph">사용 가능한 중단 횟수 및 기간입니다. 유지 보수 기간이 있는 경우 나열하십시오.</block>
+  <block id="b5c2d65e6a621e7830790240aedbf2b1" category="paragraph">원하는 완료 시간 프레임</block>
+  <block id="345406f7c4e8fe7b7820c9b1da2e3e52" category="paragraph">&amp;#91; 원하는 완료 시간 프레임 &amp;#93;&amp;#91; 시간 민감도 &amp;#93;</block>
+  <block id="06d7482e001df736fcdb69299d2c2938" category="paragraph">기타 관련 정보</block>
+  <block id="63a1e1b7612a2397b4ff57c141a827e7" category="paragraph">&amp;#91; 기타 관련 정보 &amp;#93;</block>
+  <block id="22b9ca50d26528cdb88e0eafc47518f8" category="paragraph">고객 조직 이름 및 위치(시/도)</block>
+  <block id="7bfb20a5608131c667ff17d3d2437e06" category="summary">데이터 마이그레이션 옵션을 선택할 때 고려해야 할 사항은 데이터 전송 어플라이언스 또는 애플리케이션 기반 마이그레이션의 사용입니다.</block>
+  <block id="f850d5f072b99065b8b14f209d28b6f2" category="doc">데이터 마이그레이션 옵션</block>
+  <block id="2d8d3a311af001eea82b4a3e0dd98983" category="paragraph">FLI는 대부분의 마이그레이션에 가장 적합한 선택일 수 있지만 다른 옵션은 무중단으로 수행할 수 있으므로 FLI를 사용하여 마이그레이션을 수행하는 것이 더 나을 수 있습니다. 옵션을 고려하고 각 마이그레이션에 적합한 툴을 선택해야 합니다. 이러한 모든 툴은 마이그레이션 중 가장 적합한 부분에 사용할 수 있습니다.</block>
+  <block id="e39a0d96f37ea57f939fc2ae5fb8be1e" category="list-text">DTA(Data Transfer Appliance) 사용</block>
+  <block id="c006b7eb74ed38d8c69ba790215c384f" category="paragraph">DTA는 SAN 패브릭에 연결되어 있고, 마이그레이션된 TB당 데이터에 대해 라이센스가 부여되며, 오프라인 및 온라인 마이그레이션을 모두 지원하는 NetApp 브랜드 어플라이언스입니다.</block>
+  <block id="610a1a28b24096c631488b707572b519" category="list-text">호스트 운영 체제 또는 애플리케이션 기반 마이그레이션</block>
+  <block id="9162f92284cb6b109036b74027ef9601" category="paragraph">다음과 같은 다양한 호스트 운영 체제 또는 애플리케이션 기반 데이터 마이그레이션 옵션이 있습니다.</block>
+  <block id="086f57c37727d9bc487647a8d43a1be4" category="list-text">VMware Storage vMotion을 참조하십시오</block>
+  <block id="b4abe4db6e39565bdc600774360fa710" category="list-text">LVM(Logical Volume Manager) 기반 솔루션</block>
+  <block id="59cf240a8ee41bc6f1f96607d821c6f7" category="list-text">DD(Linux) 및 Robocopy(Windows) 등의 유틸리티</block>
+  <block id="4af7c0342e04d5cb5d82c864c44468ed" category="paragraph">선택한 절차와 툴에 관계없이 데이터 마이그레이션 방법을 사용하여 마이그레이션 선택 사항 및 작업의 범위 지정, 계획 및 문서화 작업을 수행할 수 있으며, 수행해야 합니다.</block>
+  <block id="9959b7832841b74a075ba035a3d2d4f5" category="summary">FLI 온라인 실행 단계에서는 지원되는 구성에 따라 마이그레이션 호스트를 준비합니다.</block>
+  <block id="b23f141a2493517a43f026db60403405" category="doc">FLI 온라인 마이그레이션을 위한 호스트 준비</block>
+  <block id="608137ad1506580d67490886c0ab3b18" category="paragraph">대부분의 경우 이 단계를 수행하기 전에 이 개선 작업을 수행할 수 있습니다. 그렇지 않은 경우 호스트 연결 키트 또는 DSM 설치와 같은 호스트 조정을 수행합니다. 분석 단계에서는 각 호스트에서 수행해야 하는 항목의 간격 목록을 갖게 됩니다. 그러면 해당 호스트가 ONTAP를 사용하여 지원되는 구성에 있게 됩니다. 수행되는 마이그레이션 유형에 따라 호스트를 다시 시작한 다음 재부팅하거나 간단히 해결할 수 있습니다.</block>
+  <block id="e8d9224f46ea9ddfc29b86f017fd618a" category="summary">마이그레이션을 시작하기 전에 다중 경로가 올바르게 구성되고 제대로 작동하는지 확인해야 합니다. LUN에 대해 사용 가능한 모든 경로가 활성 상태여야 합니다.</block>
+  <block id="4b3a31820f1efe6964508f63bfca25e1" category="doc">호스트 LUN 경로 및 다중 경로 구성을 확인합니다</block>
+  <block id="58d6f301f492ea338b888197932ef40c" category="summary">실행 단계에는 마이그레이션 호스트 준비가 포함됩니다.</block>
+  <block id="ad48e2c5dc81cbc51b593a2e78c80e19" category="doc">전환을 위한 호스트 준비</block>
+  <block id="f2df862db0c505a4d6c576b178631ce0" category="paragraph">대부분의 경우 이 단계 전에 교정을 수행할 수 있습니다. 그렇지 않은 경우 호스트 연결 키트 또는 DSM 설치와 같은 호스트 조정을 수행합니다. 분석 단계에서는 각 호스트에서 NetApp ONTAP를 사용하여 지원되는 구성을 수행할 수 있도록 수행해야 하는 항목의 차이 목록을 갖게 됩니다. 수행되는 마이그레이션 유형에 따라 호스트를 교정 및 재부팅하거나(FLI 7-Mode에서 ONTAP Online으로) 호스트를 재부팅, 교정 및 종료(FLI 7-Mode에서 ONTAP offline으로)합니다.</block>
+  <block id="1c1b0e617e80d3e2dbae61aacaedca3e" category="summary">ONTAP 9.9.1부터 SAN LUN 마이그레이션 앱을 사용하여 FLI에 대한 외부 소스 어레이를 검증할 수 있습니다. 원하는 외부 어레이가 FLI IMT에 나열되지 않은 경우 SAN LUN 마이그레이션 앱을 사용할 수 있습니다.</block>
+  <block id="af164dd8145e1764ed12737fe49cab35" category="doc">SAN LUN 마이그레이션 앱을 사용하여 FLI에 대해 지원되는 구성 확인</block>
+  <block id="a1a90dff83c0faf191818ad546b59252" category="list-text">NetApp Support 사이트 로 이동합니다.</block>
+  <block id="b73cbaaa9320f00644c84f4f03a236a9" category="list-text">필터 기준 범주에서 마이그레이션을 선택합니다.</block>
+  <block id="a5d139676dbba59a8e909de2e942741e" category="list-text">SAN LUN 마이그레이션에서 앱 다운로드를 클릭합니다</block>
+  <block id="159d7130f3d54d274afe13039b4ede40" category="list-text">소스 어레이에 대한 블록 액세스가 있는 FC 또는 iSCSI Linux 호스트에서 앱을 실행합니다.</block>
+  <block id="26e7b511886f2cfa073850c2af28b79e" category="paragraph">외부 소스 스토리지를 확인할 수 있는 경우 녹색 확인 표시가 표시됩니다. 외부 소스 배열을 확인할 수 없는 경우 빨간색 X가 표시됩니다. 해당 어레이의 자격이 없는 경우 NetApp Support에 문의하여 추가 지원을 받을 수 있습니다.</block>
+  <block id="0494482584ffb3a3845ebc27d94cf2c6" category="summary">오프라인 마이그레이션 워크플로는 마이그레이션 프로세스의 실행 단계에서 수행됩니다. 오프라인 워크플로우 다이어그램에서는 호스트, 패브릭, 대상 스토리지 및 소스 스토리지에서 수행되는 작업을 보여 줍니다.</block>
+  <block id="6696f8ecf38c4df0054e0dc95a616d3d" category="doc">오프라인 마이그레이션 워크플로</block>
+  <block id="9295fcebcba793fecd195c670dd2da3b" category="image-alt">오프라인 마이그레이션 1</block>
+  <block id="3aa626aa3e52fc795314efbdb381efd0" category="paragraph">오프라인 워크플로 작업이 다음 표에 나열되어 있습니다.</block>
+  <block id="df0069e14eb07d2a819349dd58bd76d3" category="list-text">호스트를 재부팅하고 모든 파일 시스템이 마운트되고, 모든 LUN 경로를 사용할 수 있으며, 서비스가 시작되는지 확인합니다.</block>
+  <block id="39da6748c115a968eefbc1de1e2b9541" category="list-text">호스트를 준비하고 종료합니다.</block>
+  <block id="7ffed12e17b32e17f8a38483f2198be6" category="list-text">마이그레이션이 완료된 후 호스트의 전원을 켭니다.</block>
+  <block id="c72e6804056053c287f81890c0afc323" category="list-text">호스트 이니시에이터 igroup을 생성하고 대상 LUN을 igroup에 매핑합니다.마이그레이션 스냅샷 복사본</block>
+  <block id="92d04913d95e567db0eade77a2f62268" category="list-text">오프라인 대상 LUN</block>
+  <block id="ebb66c8c0fcbb645571f0570953e6511" category="list-text">검증 작업 생성(선택 사항)</block>
+  <block id="4939d1526ca79dca71526ac7f1e673a7" category="list-text">대상 LUN의 롤백을 사용하도록 스냅샷 ® 복사본을 생성합니다.</block>
+  <block id="ca4cc554a8366b8748dda87d750afb7d" category="list-text">모든 호스트 포트가 로그인되어 있는지 확인합니다.</block>
+  <block id="cf402b2796a184dcb647b18c5de9cb99" category="list-text">데이터 LUN을 호스트에 할당합니다.</block>
+  <block id="098bf1f091c0f909ac0d0455e4f33c73" category="list-text">최종 스냅샷 복사본을 생성합니다.</block>
+  <block id="b120b560a2fc94a9e5e45c4bda99e3ff" category="summary">올바른 작동을 위해서는 올바른 LUN 마스킹 구성이 중요합니다. ONTAP 스토리지의 모든 이니시에이터 포트(두 노드 모두)가 동일한 igroup에 상주해야 합니다.</block>
+  <block id="dce719a9aac895b223304c1967dcde5c" category="doc">이니시에이터 그룹 구성</block>
+  <block id="383c1da8f04fd86a0902b7f31225d32c" category="paragraph">FLI 마이그레이션에서는 NetApp 스토리지에서 소스 스토리지 LUN을 액세스해야 합니다. 조닝(zoning)을 제외하고 액세스를 활성화하려면 대상 스토리지의 이니시에이터 포트에서 WWPN(Worldwide Port Name)을 사용하여 소스 스토리지에 이니시에이터 그룹을 생성해야 합니다.</block>
+  <block id="6c375c86cc2d8da87fe6c53b02d86f3a" category="paragraph">NetApp 어레이의 이니시에이터 그룹에 항상 ALUA(Asymmetric Logical Unit Access)를 사용하도록 설정하십시오.</block>
+  <block id="ecafb7bbe8ac6138b3bcaa4dbb87cdf4" category="paragraph">이니시에이터 그룹은 공급업체 및 제품에 따라 다른 이름으로 이동합니다. 예를 들면 다음과 같습니다.</block>
+  <block id="68277581787c51534c39da3272275a4c" category="list-text">Hitachi Data Systems(HDS)는 ""호스트 그룹""을 사용합니다.</block>
+  <block id="217090161a01082dfc5d14e0fb182f04" category="list-text">NetApp E-Series는 "'호스트 항목''을 사용합니다.</block>
+  <block id="a240b24dd20a7186ef47310e58829086" category="list-text">EMC는 "이니시에이터 레코드" 또는 "스토리지 그룹"을 사용합니다.</block>
+  <block id="62cc656c82973e8ebe8c1a1926a6d435" category="list-text">NetApp은 ""igroup.""을 사용합니다.</block>
+  <block id="425d84ebe29c9da22fd1d2621c3dc21e" category="paragraph">명명법에 관계없이 이니시에이터 그룹은 동일한 LUN 매핑을 공유하는 WWPN을 통해 이니시에이터를 식별하는 데 사용됩니다.</block>
+  <block id="de3f6d89ed583f1dd9cf88e665b994b9" category="paragraph">이니시에이터 그룹을 정의하려면 스토리지 설명서에서 LUN 마스킹(igroup/호스트 그룹/스토리지 그룹 등)을 설정하는 방법을 검토합니다. 타사 스토리지 구성에 대한 _FlexArray 가상화 구현 가이드 를 검토하여 타사 스토리지 구성 요구 사항을 확인할 수도 있습니다.</block>
+  <block id="2e97596bf006ab4a63eb1ab1532e9166" category="inline-link">타사 스토리지를 위한 FlexArray 가상화 구축</block>
+  <block id="cac75528257d480d7397192a839ba0d5" category="paragraph"><block ref="cac75528257d480d7397192a839ba0d5" category="inline-link-rx"></block></block>
+  <block id="812fbde33504c45051c067a08f4f1901" category="summary">FLI 마이그레이션을 위한 ONTAP 스토리지를 구성하려면 계획 정보와 권장 모범 사례에 따라 소스 스토리지를 패브릭에 배선해야 합니다.</block>
+  <block id="84a737f44c8713a3904d04f2744e05c1" category="doc">FLI 마이그레이션에 대한 배선 모범 사례</block>
+  <block id="2fe64cf0bee4b9242f1610457f3a8f7b" category="paragraph">FLI 마이그레이션을 위한 ONTAP 스토리지를 구성할 때는 다음과 같은 배선 모범 사례를 따르는 것이 좋습니다.</block>
+  <block id="a3657ccc6f7b25ff55686936a35a931e" category="list-text">이중화를 위해 이중 패브릭을 사용합니다.</block>
+  <block id="efa0799fdc3f808c7096ea68ee54281c" category="list-text">FLI 마이그레이션을 위해 각 대상 스토리지에서 최소 2개의 이니시에이터와 2개의 타겟 포트를 사용하십시오.</block>
+  <block id="0430522243e9082d45951a9bcc240e1b" category="list-text">대상 스토리지 이니시에이터 포트를 호스트에 조닝(Zoning)하지 마십시오. ONTAP의 이니시에이터 포트는 소스 스토리지의 타겟 포트와 조닝(Zoning)하는 데 사용됩니다.</block>
+  <block id="7b34bb3d8f1a19645dd2d939a4b96eae" category="paragraph">다음은 운영 패브릭에서 소스 스토리지 및 대상 스토리지에 대한 배선의 예입니다.</block>
+  <block id="60bcf16ad809a3a8205871e9029cb7af" category="image-alt">운영 환경의 소스 및 대상 스토리지에 대한 배선</block>
+  <block id="3af7c882186e7b6e88a25fffb5dd9818" category="summary">마이그레이션 호스트는 구성을 변경하기 전에 재부팅됩니다. 마이그레이션을 진행하기 전에 시스템이 정상 작동이 확인된 상태인지 확인합니다.</block>
+  <block id="33fb4ef8a744c8d6e933e969f9a3fb0a" category="doc">호스트를 재부팅하여 시스템 상태를 확인합니다</block>
+  <block id="e24fd87f9c084df1281d7d25f583fd7c" category="paragraph">재부팅 후에도 서버 구성이 영구적이고 원시적인 상태인지 확인하려면 다음 단계를 수행하십시오.</block>
+  <block id="51d9a4ff5ba3cfd9cbe0a057f4ee759b" category="summary">다음 단계에서는 FLI를 사용하여 7-Mode 소스 LUN에서 ONTAP 대상 LUN으로 데이터를 가져오는 방법을 설명합니다.</block>
+  <block id="60489537f9456d275a656a15f04ab6b6" category="doc">FLI 7-Mode에서 ONTAP로 데이터 가져오기</block>
+  <block id="69d5fb90d879eedbd056bed44c415cef" category="paragraph">마이그레이션이 완료된 후 소스 LUN의 정합성이 보장되도록 하려면 다음을 수행해야 합니다.</block>
+  <block id="68daec5bbecbb87d7b81d065f0ec6b4a" category="list-text">import show에 완료되었다는 메시지가 표시되면 호스트를 종료합니다.</block>
+  <block id="52f0a5281586bf31051c6d1ea5e05290" category="list-text">LUN 관계 'lun import delete -vserver fli_72C -path /vol/fllivol/72Clun1'을 삭제합니다.</block>
+  <block id="aaa7adc716c48a8aa682b90c344d1ba8" category="paragraph">LUN 관계가 끊어진 후에는 새 LUN에만 변경 사항이 적용되기 때문에 LUN이 빠르게 동기화되지 않습니다. 따라서 원래 상태를 복구하려는 경우 정합성 보장 상태를 유지하는 것이 도움이 될 수 있지만 새 LUN의 변경 내용이 소스 LUN에 반영되지 않을 수 있습니다.</block>
+  <block id="4b1add994933944f0dad2a099242949a" category="paragraph">가져오기가 중지된 후에는 가져오기를 확인할 의도가 없는 한 가져오기 관계를 제거할 수 있습니다.</block>
+  <block id="85dcd53bfc5f07c4a98d73313b4f570e" category="summary">FLI 마이그레이션에서는 NetApp 스토리지에서 소스 스토리지 LUN을 액세스해야 합니다. 대상 스토리지의 이니시에이터 포트를 사용하여 소스 스토리지의 타겟 포트를 조닝하면 됩니다.</block>
+  <block id="2d7aac8e15b885459bdb591f875227ce" category="doc">타겟 및 이니시에이터 포트 조닝</block>
+  <block id="0563060901338899c028f626f4134563" category="paragraph">기존 소스 스토리지와 호스트 간 존은 수정되지 않으며 마이그레이션 후 비활성화됩니다. 호스트에서 대상 스토리지로 마이그레이션된 LUN에 액세스할 수 있도록 호스트와 대상 스토리지 간에 스토리지 영역이 생성됩니다.</block>
+  <block id="0d746ac95713ef6642cc8474a8d4baf1" category="paragraph">FLI를 사용하는 표준 마이그레이션 시나리오에서는 다음과 같은 네 가지 고유한 영역이 필요합니다.</block>
+  <block id="2523d9153706772df49042f8b87bd471" category="paragraph">다음 조닝 모범 사례를 따르십시오.</block>
+  <block id="7036856ae6a95de9965acbb4e798ff83" category="list-text">동일한 존에서 소스 스토리지 타겟 포트와 대상 스토리지 타겟 포트를 혼합하지 마십시오.</block>
+  <block id="83e7878713ac249fdaf1405ee579f682" category="list-text">대상 스토리지 이니시에이터 포트와 호스트 포트를 같은 존에 혼합하지 마십시오.</block>
+  <block id="cd9a88973af1109a8a9828173f659fbe" category="list-text">대상 스토리지 타겟과 이니시에이터 포트를 같은 존에 혼합하지 마십시오.</block>
+  <block id="a60871b937694e238a7fb4df8dd845dc" category="list-text">이중화를 위해 각 컨트롤러에서 최소 2개의 포트로 존을 설정합니다.</block>
+  <block id="82bd7f7b91a82be864fdc288e4d2942a" category="list-text">NetApp에서는 단일 이니시에이터 및 단일 타겟 조닝을 사용할 것을 권장합니다.</block>
+  <block id="f2aa598dc9b960de0d61fb97a0f29e59" category="paragraph">대상 스토리지 이니시에이터 포트를 사용하여 소스 스토리지 타겟 포트를 조닝한 후에는 storage array show 명령을 사용하여 대상 스토리지에 소스 스토리지가 표시됩니다. 스토리지 어레이가 처음 검색되면 NetApp 컨트롤러에 어레이가 자동으로 표시되지 않을 수 있습니다. ONTAP 이니시에이터 포트가 연결된 스위치 포트를 재설정하여 이 문제를 해결합니다.</block>
+  <block id="f9e0cb9ba50f068a2ac223e1fb2428e7" category="summary">FLI 솔루션은 NetApp 고객에게 이러한 이점을 통해 특별한 가치를 제공하도록 설계되었습니다.</block>
+  <block id="ebe284b6317268b9506fdcdb41331f0b" category="doc">FLI 기반 솔루션의 이점</block>
+  <block id="53d134f02bc4e40dc1a38a13c2b5f025" category="list-text">FLI는 ONTAP에 내장되어 있으며 추가 라이센싱이 필요하지 않습니다.</block>
+  <block id="ce3b5246051a674a15f5382caab2cc12" category="list-text">FLI는 FlexArray 기술을 활용하지만 FlexArray 라이센스는 필요하지 않습니다.</block>
+  <block id="a6af658145c481e571f55cb606f4e3e3" category="list-text">FLI는 데이터 마이그레이션을 위해 추가 하드웨어 어플라이언스가 필요하지 않습니다.</block>
+  <block id="601633186bcdcca37af13ab5aeaa6b02" category="list-text">FLI 기반 솔루션은 다양한 마이그레이션 유형과 타사 스토리지 플랫폼의 구성을 지원합니다.</block>
+  <block id="ff8176da561485db908ffcc196a65b8c" category="list-text">FLI는 LUN을 자동으로 정렬하며 32비트 애그리게이트에서 호스팅되는 LUN을 ONTAP 어레이에 호스팅된 64비트 Aggregate로 마이그레이션할 수 있습니다. 따라서 7-Mode에서 ONTAP로 FLI를 전환하기에 적합한 것으로, 32비트 애그리게이트에서 호스팅되거나 잘못 정렬된 7-Mode 호스팅 LUN을 전환하기에 적합합니다.</block>
+  <block id="a0be2a233ae83ba1c2dbb817ea6ca098" category="summary">다음은 Hitachi AMS2100을 외부 스토리지로 사용하는 테스트 마이그레이션의 예입니다. 관련 스토리지, 호스트 운영 체제 및 기타 변수에 따라 단계가 다를 수 있습니다.</block>
+  <block id="de509c5b6ccb0bac989479f5c7644a80" category="doc">Hitachi AMS2100을 사용하여 마이그레이션 예 테스트</block>
+  <block id="15edcb137f739f2ee1eac73679352926" category="paragraph">다음 예제를 테스트 마이그레이션을 수행하는 데 필요한 단계에 대한 일반적인 지침으로 사용할 수 있습니다. 테스트를 통해 이슈가 발생하는 경우 최대한 빨리 문제를 찾아 해결할 수 있도록 테스트 마이그레이션을 최대한 빨리 수행하는 것이 좋습니다. 테스트 마이그레이션은 운영 마이그레이션을 진행하기 전에 모든 소스 및 대상 스토리지 조합에서 수행해야 합니다.</block>
+  <block id="d63089314a1c0aeae54d33824e70c71e" category="paragraph">테스트 마이그레이션을 수행하려면 다음 단계를 수행하십시오.</block>
+  <block id="27ff325c01dd2aee12b7c0acad32afd4" category="list-text">소스 스토리지에 2GB 테스트 LUN을 생성합니다.</block>
+  <block id="7e2a0dace410fa2f8abb742966b5dcb7" category="list-text">Hitachi Storage Navigator Modular as system에 로그인합니다.</block>
+  <block id="574195042e680b0a7679c90039740470" category="list-text">AMS 2100 배열을 선택합니다.</block>
+  <block id="db725be4aa636e6f21ed3207a5732ba8" category="list-text">Show and Configure Array * 를 클릭합니다.</block>
+  <block id="395780304ce9f6e58aedbeec49d544c7" category="list-text">root를 사용하여 로그인합니다.</block>
+  <block id="272a9bb5ece823fc43b8a85eff0aec26" category="list-text">그룹 * 을 확장하고 * 논리 단위 * 를 선택합니다.</block>
+  <block id="de72ef821b68971ad9e7f8251927ae8b" category="list-text">테스트 LUN을 생성하려면 * LU * 생성 을 선택하십시오.</block>
+  <block id="af814c8e78d63d25575d5a76ce2169a1" category="list-text">2GB의 테스트 LUN을 생성합니다.</block>
+  <block id="a72cc47fad7d1846d19b085d2e77e5ba" category="list-text">확인 * 을 클릭합니다.</block>
+  <block id="2d9672ac6c70d06a8af316119bf3ea2a" category="list-text">여기에서 LUN 할당을 건너뛰고 * Close * 를 클릭하여 계속 진행합니다.</block>
+  <block id="549123e5d99f5ddbf4e831ebfe3d8513" category="list-text">LUN 0026이 생성되었는지 확인합니다.</block>
+  <block id="a63e3289e0740a20a343922b51daab76" category="list-text">그룹** 을 확장하고 * 논리 단위 * 를 선택합니다.</block>
+  <block id="92e25f28d799839ce285b77b9428695d" category="list-text">테스트 LUN을 cDOT_FLI 호스트 그룹에 매핑하려면 * 호스트 그룹 * 을 선택합니다.</block>
+  <block id="10e6a1d7fc4488dca4aca046c7b3e183" category="list-text">이전 단계에서 생성한 호스트 그룹 cDOT_FLI를 선택하고 * 호스트 그룹 편집 * 을 클릭합니다.</block>
+  <block id="689ebb64224530bae0bf1ff35a07708e" category="list-text">호스트 그룹의 포트를 선택합니다. 이 예에서는 0a, 0e, 1a, 1e 를 선택합니다. 선택한 모든 포트로 강제 설정 옵션을 선택합니다.</block>
+  <block id="184a37712428d62b6ee19930de4054df" category="image-alt">HDS Storage Navigator 호스트 그룹을 편집합니다</block>
+  <block id="55fd3088467dac061c04be20afd4acc0" category="list-text">Logical Units * 를 클릭하고 테스트 LUN LUN0026을 추가합니다.</block>
+  <block id="0a3ed2ce8bbdb3db0db2c6c8d460c9c0" category="list-text">LUN을 매핑하려면 * OK * 를 클릭합니다.</block>
+  <block id="3de16e94aedfa52f05f7363743d6ba21" category="list-text">예, 위의 경고를 읽었습니다를 선택하고 호스트 그룹 편집 * 을 선택한 다음 * 확인 * 을 클릭합니다.</block>
+  <block id="490f4752212d8b1419e8bdf52f004d56" category="list-text">호스트 그룹 생성을 확인하고 * Close * 를 클릭합니다.</block>
+  <block id="a2ca9ac2fbb0d63ca72995a1428f30cd" category="list-text">소스 스토리지에서 대상 스토리지로 테스트 LUN 및 매핑을 확인하고 FLI(Foreign LUN Import) 가져오기를 수행합니다.</block>
+  <block id="caffab80dc21f2445acd19f6551110ea" category="list-text">admin 사용자를 사용하여 SSH를 통해 ONTAP 스토리지에 로그인합니다.</block>
+  <block id="8924c263cbae5144eecea1b265da3597" category="list-text">모드를 고급으로 변경합니다. "다타미크-cmode:::&gt; set-Privilege advanced"를 선택합니다</block>
+  <block id="8fbce27b40f39a5596e622332a0f1209" category="list-text">고급 명령을 계속 실행할지 묻는 메시지가 나타나면 y 를 입력합니다.</block>
+  <block id="41341e46c0b8cb0282faa3cc39e78e27" category="list-text">ONTAP에서 소스 스토리지를 검색합니다. 몇 분 정도 기다린 후 소스 어레이를 다시 검색합니다. '스토리지 배열 표시'입니다</block>
+  <block id="883000da1c165b2e9103461f4f129399" category="list-text">스토리지 배열이 처음 검색되면 ONTAP가 자동으로 검색하여 배열을 표시하지 않을 수 있습니다. 다음 지침에 따라 ONTAP 이니시에이터 포트가 연결된 스위치 포트를 재설정합니다.</block>
+  <block id="5b0ddf4ae01d1daea729b662480b1fea" category="paragraph">예를 들어, ONTAP의 DataMig-cmode 클러스터 이니시에이터 포트 0a 및 0b는 Cisco 포트 4/9 및 4/11에 연결됩니다. Cisco 스위치에서 4/9번 포트를 재설정하려면 다음을 수행하십시오.</block>
+  <block id="8db316a8067debec0c475a383cddee71" category="paragraph">한 포트를 재설정하면 보통 충분합니다. 포트 하나를 재설정한 후 스토리지 목록과 LUN 경로를 확인합니다.</block>
+  <block id="ebdc343c91a6406e60156bf8f9d7d2f1" category="list-text">'Storage array config show -array-name Hitachi_DF600F_1' 이니시에이터 포트를 통해 소스 스토리지가 검색되는지 확인합니다</block>
+  <block id="46442c57a2472026bb9adadc21dc34c0" category="list-text">Hitachi 스토리지에서 매핑된 테스트 LUN을 나열하고 'storage disk show-array-name Hitachi_DF600F_1-instance'라는 디스크 속성과 경로를 확인합니다</block>
+  <block id="449ad7df52782cb57576455a554e4dbd" category="list-text">일련 번호를 사용하여 소스 LUN을 외부 LUN으로 표시합니다. '스토리지 디스크 세트 - 외부 LUN{-직렬-번호 83017542001A} - 외부 TRUE'입니다</block>
+  <block id="009a7e3ea13720e4920381784a9b49ed" category="list-text">소스 LUN이 'storage disk show-array-name Hitachi_DF600F_1'으로 표시되어 있는지 확인합니다</block>
+  <block id="bc0e0aeaedbb696e693af8b30af84156" category="list-text">모든 외부 어레이와 일련 번호를 나열하십시오. 스토리지 디스크 표시 컨테이너 유형의 외부 필드 일련 번호</block>
+  <block id="49a28f3bdede98a676e221ebc5974476" category="paragraph">lun create 명령은 파티션 오프셋을 기반으로 크기와 정렬을 감지하고 그에 따라 외래 디스크 인수를 사용하여 LUN을 생성합니다.</block>
+  <block id="7ec2008fd623ec3e270b56abec09d6bb" category="list-text">'vol create-vserver datamig flivol aggr1-size 10g' 대상 볼륨을 생성합니다</block>
+  <block id="4932d52c7d50a533a4612faf2017826b" category="list-text">'lun create -vserver datamig -path /vol/fllivol/testlun1 -OSType linux-Foreign-disk 83017542001A'라는 외부 LUN을 사용하여 테스트 LUN을 생성합니다</block>
+  <block id="67b9f0cb04fa79d0b2e9900424834a63" category="list-text">테스트 LUN을 나열하고 소스 LUN이 있는 LUN의 크기를 'lun show'로 확인하십시오</block>
+  <block id="b0a45c392f4e29ccaaee09e28424dde3" category="paragraph">FLI 오프라인 마이그레이션의 경우 LUN을 igroup에 매핑하기 위해 온라인 상태여야 하고 LUN 임포트 관계를 생성하기 전에 오프라인 상태여야 합니다.</block>
+  <block id="3890f016a6a79d1b0d919602955c854e" category="list-text">이니시에이터를 추가하지 않고 프로토콜 FCP의 테스트 igroup 작성: 'lun igroup create -vserver datamig-igroup test1-protocol fcp-OSType Linux'</block>
+  <block id="8435459e5e7f0e70e74b83463d9ef1d6" category="list-text">테스트 LUN을 테스트 igroup인 'lun map -vserver datamig -path /vol/fllivol/testlun1-igroup torg1'에 매핑합니다</block>
+  <block id="6119a40cd903d4850fcac2732197af99" category="list-text">테스트 LUN을 오프라인 상태로 전환합니다. 'lun offline-vserver datamig-path/vol/fllivol/testlun1</block>
+  <block id="cc178e9bba3cc16c04d7df3a01fef53a" category="list-text">테스트 LUN 및 외부 LUN을 사용하여 가져오기 관계를 생성합니다. 'lun import create-vserver datamig-path /vol/fllivol/testlun1-Foreign-disk 83017542001A'</block>
+  <block id="69336ecf2fa1d5a11864f1dad5ee9963" category="list-text">마이그레이션 시작(가져오기): 'lun import start -vserver datamig -path /vol/fllivol/testlun1'을 시작합니다</block>
+  <block id="af3b82f2ef95efb7af17a3b2c5af24b9" category="list-text">가져오기 진행률: 'lun import show -vserver datamig -path /vol/fllivol/luntest1'을 모니터링합니다</block>
+  <block id="66130179f0dc260a93d631e56fccf45c" category="list-text">가져오기 작업이 성공적으로 완료되었는지 확인합니다. 'lun import show -vserver datamig -path /vol/fllivol/testlun1'</block>
+  <block id="a8972569695393b1b3e2827a6d6bf9ae" category="list-text">소스 LUN과 대상 LUN을 비교하려면 검증 작업을 시작합니다. 확인 진행 상황을 모니터링합니다. 'LUN import verify start-vserver datamig-path /vol/fllivol/testlun1'</block>
+  <block id="8dd10a19a03dac987fef83865f9ddbed" category="list-text">'lun import show -vserver datamig -path /vol/fllivol/testlun1' 오류 없이 검증 작업이 완료되었는지 확인하십시오</block>
+  <block id="5b7be92493124ebd5245ed519a9aec83" category="list-text">가져오기 관계를 삭제하여 마이그레이션 작업을 제거합니다. 'lun import delete -vserver datamig -path /vol/fllivol/testlun1''lun import show -vserver datamig-path /vol/fllivol/testlun1'</block>
+  <block id="1150683f2da65725a5871c4f25881ccb" category="list-text">테스트 igroup에서 테스트 LUN 매핑을 해제합니다. 'lun unmap -vserver datamig -path /vol/fllivol/testlun1 -igroup torg1'</block>
+  <block id="e685279300221f977485f48b3c34e6d1" category="list-text">테스트 LUN을 온라인으로 'lun online - vserver datamig-path /vol/fllivol/testlun1'으로 설정합니다</block>
+  <block id="448453915912c53d8f4c6adfcf753e38" category="list-text">외부 LUN 속성을 false로 표시합니다. '스토리지 디스크 수정{-serial-number 83017542001A}-is-Foreign false'</block>
+  <block id="eac4098a0af2abe7bfca1bc18b8f57e4" category="paragraph">ONTAP 이니시에이터 포트를 사용하여 소스 스토리지에 생성된 호스트 그룹을 제거하지 마십시오. 동일한 호스트 그룹이 해당 소스 스토리지에서 마이그레이션하는 동안 재사용됩니다.</block>
+  <block id="a2004ba1e4ebb9008f77e0928287c175" category="list-text">소스 스토리지에서 테스트 LUN을 제거합니다.</block>
+  <block id="86cfbe8bc741ab9b41aff7310d3adc9e" category="list-text">Hitachi Storage Navigator Modular에 시스템으로 로그인합니다.</block>
+  <block id="12d51f0d0be473e79e59c83fa299c84a" category="list-text">AMS 2100 배열을 선택하고 * 배열 표시 및 구성 * 을 클릭합니다.</block>
+  <block id="dd1756f111b1bbeab7f11d4f29b44065" category="list-text">그룹 * 을 선택한 다음 * 호스트 그룹 * 을 선택합니다.</block>
+  <block id="423fa3edfa40593a696506ec9b87fb7a" category="list-text">CDOT_FLI_Igroup_을 선택하고 * 호스트 그룹 편집 * 을 클릭합니다.</block>
+  <block id="86a3dad40c70e95d7983fcbf18aea7d1" category="list-text">Edit Host Group 창에서 테스트 LUN을 매핑하기 위해 선택한 모든 타겟 포트를 선택하고 * Forced Set to all Selected Ports * 를 선택합니다.</block>
+  <block id="6faa9428b17f6337269c355ad7611403" category="list-text">Logical Units * 탭을 선택합니다.</block>
+  <block id="5542bb8f92dc6fbcf06ec00600f7157c" category="list-text">Assigned Logical Units 창에서 테스트 LUN을 선택합니다.</block>
+  <block id="4a47689d7570ed61cf2648819fdfbefe" category="list-text">LUN 매핑을 제거하려면 * 제거 * 를 선택합니다.</block>
+  <block id="18d0ad44a1e563aaf9f5871e32535a6c" category="list-text">확인 을 클릭합니다.</block>
+  <block id="06cd0fe07d89be63e096ae9b935a9747" category="list-text">호스트 그룹을 제거하지 말고 테스트 LUN을 계속 삭제하십시오.</block>
+  <block id="aceda4ab3dcab1a8e47e9f818bfcdd45" category="list-text">논리 단위를 선택합니다.</block>
+  <block id="f2b4a7660190bbb51f1dbcae8af5c349" category="list-text">이전 단계에서 생성한 테스트 LUN(lun0026)을 선택합니다.</block>
+  <block id="af2e9dc0f2bff837706a0372fbf487b9" category="list-text">LUN 삭제 * 를 클릭합니다.</block>
+  <block id="42edba759cc4a38b9615e9735bd7d9f4" category="list-text">테스트 LUN을 삭제하려면 * Confirm * (확인 *)을 클릭합니다.</block>
+  <block id="eda2c5ecf22611ccb137045fed3f3eb2" category="list-text">대상 스토리지에서 테스트 LUN을 삭제합니다.</block>
+  <block id="c91d9cf858174fa99f7a5cd399ab8e82" category="list-text">NetApp 스토리지 시스템에서 테스트 LUN을 오프라인 상태로 설정합니다. 'lun offline -vserver datamig -path /vol/fllivol/testlun1'</block>
+  <block id="ee32bef56e30ab9e874b38d1cd3c3d6c" category="paragraph">다른 호스트 LUN을 선택하지 않아야 합니다.</block>
+  <block id="7053863eb65e003d35fdb411b5a5f393" category="list-text">NetApp 스토리지 시스템에서 테스트 LUN을 제거합니다. 'lun destroy - vserver datamig-path /vol/fllivol/testlun1'</block>
+  <block id="2e552707691d02a580fe916edffec56e" category="list-text">NetApp 스토리지 시스템의 테스트 볼륨을 오프라인으로 설정합니다. 'vol offline-vserver datamig-volume flivol'</block>
+  <block id="264ec639ceb86d02fcb3398746a827ae" category="list-text">NetApp 스토리지 시스템의 테스트 볼륨을 'vol destroy-vserver datamig-volume flivol'으로 제거합니다</block>
+  <block id="5adfe538d2e4bb2201ca3cd266686c4c" category="summary">사이트 조사 및 계획 워크시트의 일부로 LUN 세부 정보에 대한 정보가 포함된 탭이 있어야 합니다.</block>
+  <block id="e74172a70ff5d3d9f3c490416dc3bd83" category="doc">사이트 조사 및 계획 워크시트 LUN 세부 정보 탭</block>
+  <block id="0c9aa58f5194cebe062fd903e101ba7f" category="paragraph">다음은 LUN 세부 정보 탭을 설정하는 방법의 예입니다.</block>
+  <block id="72db9d9344319d56fe15f5a344ca2954" category="cell">LUN 세부 정보입니다</block>
+  <block id="64d354dc5879cf570ce7b4ef676e75bd" category="paragraph">운영 체제</block>
+  <block id="20a939f31d346b170d30a282bb3b142f" category="paragraph">클러스터형</block>
+  <block id="ef2b61b23e1bf2d08495a3a1255cd612" category="paragraph">스토리지 컨트롤러</block>
+  <block id="05f64430fcbd6d142bf1d1c858c192fa" category="paragraph">Microsoft Windows Server 2012 R2 Datacenter</block>
+  <block id="bafd7322c6e97d25b6299b5d6fe8920b" category="paragraph">아니요</block>
+  <block id="65d4b9260c15c03deff4c5b65450e100" category="paragraph">Red Hat Enterprise Linux Server 릴리스 5.10</block>
+  <block id="34b1f4b0a97ccfd21639c3466e784e96" category="paragraph">ESXi 5.5.0 빌드 - 1331820</block>
+  <block id="a0214274e2227e5ffa899e693bdfb268" category="paragraph">마운트 지점</block>
+  <block id="cf10b000010aff763b1dd551c4e6aced" category="paragraph">물리적 드라이브 번호입니다</block>
+  <block id="60aaf44d4b562252c04db7f98497e9aa" category="paragraph">포트</block>
+  <block id="6e4b38bfd57741ac1597c440a1c98074" category="paragraph">버스</block>
+  <block id="d7aa32b0c582222819b91c8e0ccca765" category="paragraph">C:</block>
+  <block id="6936222138b498da172a54df08038cd0" category="paragraph">PHYSICALDRIVE0</block>
+  <block id="c81e728d9d4c2f636f067f89cc14862c" category="paragraph">2</block>
+  <block id="cfcd208495d565ef66e7dff9f98764da" category="paragraph">0</block>
+  <block id="6666cd76f96956469e7be39d750cc7d9" category="paragraph">/</block>
+  <block id="59b466fd93164953e56bdd1358dc0044" category="paragraph">SDA</block>
+  <block id="2106c460eb7e1b65b8e766cdf5139cbb" category="paragraph">BootLUN _ 데이터 저장소</block>
+  <block id="c631d49fdbc217f7ccc84e6586b01307" category="paragraph">NAA.60060e801046b96004f2bf4600000014</block>
+  <block id="2ba0600127de5002d98d3bb3a6a76ae0" category="paragraph">VM_데이터 저장소</block>
+  <block id="dcc3154f8e360ea923816388a11b53d1" category="paragraph">NAA.60060e801046b96004f2bf4600000015</block>
+  <block id="b26e74ed6e2892c7e2bb95e414d460c6" category="paragraph">LUN을 클릭합니다</block>
+  <block id="f6134b3fc4b756de88586c6461173e37" category="paragraph">PG80 SN</block>
+  <block id="46cc49178db361dc6922f40d38a52d0f" category="paragraph">PG83 SN/UID입니다</block>
+  <block id="f6db2abd7e306c077c8ef8ae2b904dc8" category="paragraph">LUN 크기(GB)</block>
+  <block id="d8dc2e67820de4c8d742ecca8764e864" category="paragraph">오프셋 시작</block>
+  <block id="93b3ae8c057d357bb1c18b2d86e2f15d" category="paragraph">60060e801046b96004f2bf460000001e</block>
+  <block id="d645920e395fedad7bbbed0eca3fe2e0" category="paragraph">40</block>
+  <block id="58240c2f24b18a1fb53c73b8b2da60a0" category="paragraph">60060e801046b96004f2bf4600000010 을 참조하십시오</block>
+  <block id="98f13708210194c475687be6106a3b84" category="paragraph">20</block>
+  <block id="39f1a729457cc4320372d15f22f9e805" category="paragraph">60060e801046b96004f2bf4600000014</block>
+  <block id="c4ca4238a0b923820dcc509a6f75849b" category="paragraph">1</block>
+  <block id="ca12fc22f4ecdfddf950742f13d53518" category="paragraph">60060e801046b96004f2bf4600000015 를 참조하십시오</block>
+  <block id="2055e1eccb3f5073c9f3a88e48d1b8bf" category="paragraph">LUN 유형입니다</block>
+  <block id="1d5b772bea21e5e949413e09eedf17de" category="paragraph">정렬</block>
+  <block id="524953590652c1115c5e048af08abf89" category="paragraph">사용자 정의 접두사(블록)</block>
+  <block id="5a69808aa871c7a433e223fcfbfd17f7" category="paragraph">사용자 지정 접두사(바이트)</block>
+  <block id="0f4137ed1502b5045d6083aa258b5c42" category="paragraph">Windows</block>
+  <block id="e206a54e97690cce50cc872dd70ee896" category="paragraph">리눅스</block>
+  <block id="92963abd36c896b93a36b8e296ff3387" category="paragraph">VMware</block>
+  <block id="51f2e41bb63f7f5322285ec16e482fc4" category="summary">소스 스토리지를 대상 스토리지에 연결하기 위해 SAN 스위치에 필요한 영역을 생성해야 합니다.</block>
+  <block id="2db659b3a2e07ad5c7de559b02fa99f7" category="doc">스위치 영역 구성</block>
+  <block id="958e4f48302b02f7c537ff8fd451cc1e" category="list-text">프로덕션 및 마이그레이션 패브릭의 각 스위치에 있는 기존 zoneset를 백업합니다.</block>
+  <block id="6a4f77f6f9a27b89b9301edbb98a259b" category="list-text">아래 그림과 같이 소스 스토리지 및 대상 스토리지를 조닝(Zoning)합니다.</block>
+  <block id="4a618c5c2602d5ddfad401068e45ed05" category="image-alt">소스 및 대상 스토리지 조닝</block>
+  <block id="22ab174b3f01f885d9278e65099951a5" category="list-text">영역을 생성하여 프로덕션 패브릭 A의 zoneset에 추가합니다</block>
+  <block id="4c14e412c6c919c8b9cc1320ec6e0797" category="paragraph">다음은 ZONE ZONE_AMS2100_cDOT_Initiator_fabA에 대한 운영 패브릭 A의 예입니다.</block>
+  <block id="4e7836bfd254f423a3ba0d14d99cd248" category="cell">영역 구성원</block>
+  <block id="2e70399d78d82a699896a3d03d23e9ac" category="list-text">영역을 생성하여 프로덕션 패브릭 B의 zoneset에 추가합니다</block>
+  <block id="edaef3673bb57ee478c3f9610dcf56c8" category="paragraph">다음은 zone_AMS2100_cDOT_Initiator_fabB의 운영 패브릭 A 운영 영역의 예입니다.</block>
+  <block id="424264e863b1a9b6542d03ccb78dc2eb" category="list-text">운영 패브릭 B에서 zoneset을 활성화합니다</block>
+  <block id="ed8da47fbc7988ca0a06eddd16d8037e" category="paragraph">호스트를 재부팅하기 전에 나중에 필요할 경우 쉽게 되돌릴 수 있도록 스냅샷 복사본을 꼭 가지고 가는 것이 좋습니다. 재부팅 후에도 서버 구성이 영구적이고 원시적인 상태인지 확인하려면 다음 단계를 수행하십시오.</block>
+  <block id="d5fe299d7d92cd0254874c8e18bd6667" category="summary">사이트 조사 및 계획 워크시트의 일부로 마이그레이션 일정에 대한 정보가 포함된 탭이 있어야 합니다.</block>
+  <block id="9ae6059c986f115d805804d9750f95c8" category="doc">사이트 조사 및 계획 워크시트 마이그레이션 일정 탭</block>
+  <block id="d658998d22d4a15ffcb56abb26b97f6c" category="paragraph">다음은 Migration Schedule 탭을 설정하는 방법의 예입니다.</block>
+  <block id="fe04e35b1feab9596669e8b60e5143b8" category="cell">마이그레이션 일정</block>
+  <block id="db5249c8de64163f6987af1bf7d7b50f" category="paragraph">마이그레이션 날짜</block>
+  <block id="17bc10091293fdc562a6db69940ee924" category="paragraph">OS</block>
+  <block id="e498749f3c42246d50b15c81c101d988" category="paragraph">응용 프로그램</block>
+  <block id="dca32f658f14cf473c85b33f111fb660" category="paragraph">LUN UID입니다</block>
+  <block id="43435c05e45d87cb6fa23f7523ba2959" category="paragraph">LUN 크기입니다</block>
+  <block id="ec53a8c4f07baed5d8825072c89799be" category="paragraph">상태</block>
+  <block id="9299ae51d5e390720987a49406f73c6c" category="summary">NetApp은 프로페셔널 서비스 또는 파트너 프로페셔널 서비스, 마이그레이션 범위 지정 및 계획, FLI(Foreign LUN Import) 7-Mode를 사용하여 ONTAP로 데이터 마이그레이션을 수행하는 방법에 대한 고객 인력을 교육하는 것을 적극 권장합니다.</block>
+  <block id="f753541c5d892f8a9d6e619e1f12a453" category="doc">외부 LUN 임포트 마이그레이션에 대한 모범 사례</block>
+  <block id="abd3135fb8cc34861bf159eb9d6f9e1c" category="list-text">마이그레이션 프로젝트를 시작하기 최소 1주 전에 테스트 마이그레이션을 수행하여 구성, 연결 및 처리량을 확인하고, 다른 문제를 발견하고, 방법론을 검증합니다.</block>
+  <block id="d1c7f10a927287be4073a34e717a5457" category="list-text">처리량을 극대화하기 위해 노드당 16개 이상의 마이그레이션을 동시에 실행하지 마십시오.</block>
+  <block id="997bde6f8aeb06462396e64a48376619" category="list-text">검증이 필요하지 않지만 가져오기 프로세스를 검증하기 위해 임포트/마이그레이션된 LUN의 하위 세트를 확인하는 것이 좋습니다.</block>
+  <block id="6ebdcce65dc30ad6215f899723a270d0" category="list-text">테스트 마이그레이션에 관찰된 처리량을 사용하여 운영 마이그레이션 기간을 계획합니다.</block>
+  <block id="928e8e4816fd7cf3aebdd8ef9da4d8ac" category="list-text">최상의 성능을 위해 사용량이 많지 않은 기간 동안 LUN을 마이그레이션합니다.</block>
+  <block id="bc459bf79d66c5b179790918378f3182" category="summary">FLI(Foreign LUN Import) 프로세스의 일환으로 다중 경로가 호스트에서 올바르게 구성되고 작동하는지 확인해야 합니다.</block>
+  <block id="b12a5b7eee8ff7bd1c62aa880f664e33" category="doc">Linux 호스트에 대한 다중 경로 검증</block>
+  <block id="aff363cb3b8ffb0d5a7f74faf9bf2325" category="paragraph">Linux 호스트에 대해 다음 단계를 완료합니다.</block>
+  <block id="48c7c41b72e1d678923ce3571aa65b2d" category="list-title">단계</block>
+  <block id="fc4bfef573d1b61d7320da239869e523" category="list-text">Linux 호스트에서 DM-MP 다중 경로가 올바르게 구성되고 작동하는지 확인하려면 ''다중 경로-ll' 명령을 실행합니다</block>
+  <block id="4251cbb4169325c910ea3970e80f708e" category="summary">마이그레이션을 수행하기 전에 다중 경로가 올바르게 구성되고 제대로 작동하는지 확인하십시오.</block>
+  <block id="f1d14496ccd3e97f4f2add791ca0ea38" category="paragraph">LUN에 대해 사용 가능한 모든 경로가 활성 상태여야 합니다. Windows, Linux 및 ESXi 호스트에서 다중 경로를 확인하는 방법의 예는 SAN 호스트 다중 경로 검증 항목을 참조하십시오.</block>
+  <block id="e75c7cc6ff41cba5786c866d7f69d05a" category="summary">다음은 운영 패브릭 B에 있는 Brocade 패브릭의 예입니다</block>
+  <block id="0505e7f794974cbeee07456e18a040f2" category="doc">운영 패브릭 B의 Brocade 패브릭 예</block>
+  <block id="8697c0c725de1e904a42295b75507814" category="paragraph">다음은 운영 패브릭 B에 있는 Brocade 패브릭의 예입니다</block>
+  <block id="045bb7f394081f70ce3add288d7e644b" category="summary">지정된 마이그레이션의 완료 속도에 영향을 주는 여러 변수가 있습니다.</block>
+  <block id="505cf96304054bdc1c6da4b5668b14ff" category="doc">외부 LUN 가져오기 마이그레이션 성능에 영향을 주는 변수</block>
+  <block id="fd39293f93d0491f286d43a27cdaac04" category="paragraph">이러한 변수에는 다음이 포함됩니다.</block>
+  <block id="3e57586f79515947b480528238ec8e5c" category="list-text">특정 소스와 대상 간에 실행 중인 동시 마이그레이션 수</block>
+  <block id="edb5d75a567465059d799e4d6c77b513" category="list-text">소스 스토리지 기능</block>
+  <block id="399af2247fd62e4e9b9f5a62d4fb3caf" category="list-text">소스 스토리지 로드</block>
+  <block id="afb83782c946ec77f359d898a09f9265" category="list-text">타겟 스토리지 기능</block>
+  <block id="bf0fae36f8059147b7c68ea63bfc081a" category="list-text">대상 스토리지 로드</block>
+  <block id="e883d9d4c5e2b39bedda415fc7fbcadc" category="list-text">마이그레이션 중에 LUN에 생성되는 입출력입니다</block>
+  <block id="b870d2cb22e176000a29b6b235963311" category="list-text">프런트엔드 패브릭의 유형, 대역폭 및 팬인/팬아웃</block>
+  <block id="58fac9965070c2993e0dc99716fe7471" category="paragraph">최상의 성능을 얻으려면 노드당 FLI 마이그레이션을 16회 이상 사용하지 않습니다.</block>
+  <block id="97c38c351fb7d370354c3c32a08f8a79" category="paragraph">마이그레이션 성능에 영향을 주는 변수의 수를 고려할 때 테스트 마이그레이션을 여러 번 수행하는 것이 좋습니다. 일반적으로 테스트 표본이 클수록 특성 분석이 더 좋아집니다. 따라서 정확한 처리량 성능 샘플을 얻기 위해 다양한 크기의 테스트 마이그레이션을 수행하는 것이 좋습니다. 그런 다음 이러한 테스트의 성능 데이터를 사용하여 계획된 운영 마이그레이션의 시간과 기간을 추정할 수 있습니다.</block>
+  <block id="56974059d9ee790239eb1cc88f741d04" category="summary">오프라인 FLI 프로세스의 일환으로 소스 LUN을 ONTAP 스토리지에 제공해야 합니다.</block>
+  <block id="ff23a41cd33e051678a0d0995e9c8dae" category="doc">FLI 중에 소스 LUN을 ONTAP 스토리지에 제공</block>
+  <block id="0f9adcd13bdf5b9f6f1d3db9db15f56f" category="list-text">소스 스토리지에 로그인합니다.</block>
+  <block id="a277df2255d894e78843388d4e90d2e1" category="list-text">계획 단계에서 생성한 호스트 그룹에 NetApp 이니시에이터를 추가합니다.</block>
+  <block id="4222b76d4a25bcc92a87948edbca2f97" category="list-text">사용 가능한 논리 LUN에서 마이그레이션해야 하는 호스트 LUN을 선택합니다. 사이트 조사 및 계획 워크시트의 소스 LUN 섹션에 나와 있는 각 호스트에 대해 LUN 이름을 사용합니다.</block>
+  <block id="79b081d55e98281705f8677fb6465c45" category="summary">운영 데이터를 마이그레이션하기 전에 모든 구성을 고객 테스트 환경에서 테스트하는 것이 좋습니다.</block>
+  <block id="f8c08b09572160353cea85f9ae28ae2b" category="doc">테스트 마이그레이션을 수행해야 하는 이유</block>
+  <block id="1585e4206a075d373f907f93054449ca" category="paragraph">운영 마이그레이션을 수행하기 전에 다양한 크기의 테스트 마이그레이션을 수행해야 합니다. 운영 마이그레이션 전에 테스트 마이그레이션을 수행하면 다음을 수행할 수 있습니다.</block>
+  <block id="fa13673bea0cb5ea356861d193432fdf" category="list-text">스토리지 및 Fabric 구성이 올바른지 확인합니다.</block>
+  <block id="84cab5537192c936629a0d5b18e695dc" category="list-text">마이그레이션의 기간과 성능을 예상합니다.</block>
+  <block id="b40a28cc609ab9c5e1d130e67f6752ea" category="paragraph">테스트 마이그레이션 결과를 사용하여 운영 마이그레이션에 소요되는 시간과 예상 처리량을 예측할 수 있습니다. 그렇지 않으면 마이그레이션의 시간을 계산할 수 있는 변수의 수가 정확히 계산되지 않습니다.</block>
+  <block id="3aaf598b1ad74fb245a34429e548468a" category="paragraph">테스트 마이그레이션은 운영 데이터 마이그레이션을 시작하기 전에 최소 1주일 이상 수행해야 합니다. 이렇게 하면 액세스, 스토리지 연결 및 라이센스와 같은 문제를 해결하는 데 충분한 시간이 확보됩니다.</block>
+  <block id="b84408b5a0a0c7cc2f546b003567651a" category="summary">사이트 조사 및 계획 워크시트의 일부로 HBA 및 영역 정보에 대한 정보가 포함된 탭을 설정해야 합니다.</block>
+  <block id="e73883227bd8b82a32f523f166de0ff8" category="doc">사이트 조사 및 계획 워크시트 HBA 및 영역 정보 탭</block>
+  <block id="b40869fd3c3553f482c858fa5ac4d4f6" category="paragraph">다음은 HBA 및 영역 정보 탭을 설정하는 방법의 예입니다.</block>
+  <block id="09eaea7cdd5eb7f40566ce88dd148114" category="cell">패브릭 세부 정보</block>
+  <block id="b5a7adde1af5c87d7fd797b6245c2a39" category="paragraph">설명</block>
+  <block id="ed26b50bfdb1bad24bf0f76a3843a1b3" category="paragraph">HBA0</block>
+  <block id="2edc3dd62d95f42450ddbf1e08da6de1" category="paragraph">21:00:00:24:ff:xx:xx:xx</block>
+  <block id="297f3049aa909c9901940e5720c5bca1" category="paragraph">HBA1</block>
+  <block id="b81dbdcd51802845e275c5bd54d84e17" category="paragraph">포트 번호</block>
+  <block id="7062fcace8121fbf5348403fec9b3488" category="paragraph">마이그레이션 전 구역 구성원 자격</block>
+  <block id="e1712e7a9b166a65ebaf4f58e3bec384" category="paragraph">마이그레이션 후 구역 구성원 자격</block>
+  <block id="1ee30c99361970780c683ad9bcc54178" category="paragraph">FC2/3</block>
+  <block id="5f3087cbd50e3ef143e7c737a425867a" category="paragraph">rx21_AMS2100</block>
+  <block id="ec194d0acc244f4d9246902066321e8e" category="paragraph">rx21_flickDOT</block>
+  <block id="cf9244452f3428aa889164231f97ad87" category="summary">FLI 온라인 마이그레이션이 완료된 후 LUN 임포트 관계를 제거합니다.</block>
+  <block id="7e2d0a1ec2dafe1d47ce316cb2b2f014" category="paragraph">준비가 완료되면 호스트가 새 ONTAP LUN에 대한 모든 I/O에 대해 새 NetApp 스토리지에 액세스하고 소스 LUN을 더 이상 사용하지 않기 때문에 LUN 임포트 관계를 안전하게 제거할 수 있습니다.</block>
+  <block id="8903f2ee86e6ea97515b72cd26294e10" category="list-text">LUN 임포트 관계를 삭제합니다.</block>
+  <block id="7e213ad16c9a59879f7a880ec25c8ff7" category="summary">FLI 온라인 워크플로는 다음 운영 체제 중 하나를 실행하는 호스트에 연결된 LUN에 사용할 수 있습니다.</block>
+  <block id="756160f9a9295d0e21e6988cef242402" category="doc">FLI 온라인 FLI에 대해 지원되는 호스트 운영 체제</block>
+  <block id="1e56b897e242c05a6e77f4537273968f" category="list-text">Microsoft(나열된 모든 서버 버전이 지원됨):</block>
+  <block id="b378e5b6db47fe787cbe646bc532a609" category="list-text">Windows Server 2008(Windows Server 장애 조치 클러스터 포함)</block>
+  <block id="1f1a25e978da1c016c63c585cbc52e10" category="list-text">Microsoft Hyper-V Server 2008을 참조하십시오</block>
+  <block id="d50eec67d4e661b4eb86bf373683aaf4" category="list-text">Windows Server 2012(Windows Server 2012 클러스터 포함)</block>
+  <block id="92a116390e39269df1b7c4595a775509" category="list-text">Microsoft Hyper-V Server 2012 를 참조하십시오</block>
+  <block id="606e3e56eb022ae65c21a710d0cbdd26" category="list-text">VMware:</block>
+  <block id="452277a14e52bd8c8634c1b09b21ba6f" category="list-text">모든 ESXi 5.x 릴리스</block>
+  <block id="82c6ab7bfe1f9fbf789b4f7f57b56c24" category="list-text">Linux:</block>
+  <block id="7b89b319ca7225ccbc9bb3fd9f5537ac" category="list-text">Red Hat Enterprise Linux(RHEL) 5.x/6.x</block>
+  <block id="28bbf286cd32c930a00eb1e625c5bff0" category="paragraph">이전 목록에 없는 호스트 운영 체제에 FLI 오프라인 워크플로를 사용하는 것을 고려해 보십시오.</block>
+  <block id="f928088b6e4c30670d8787a5fced1d76" category="paragraph">NetApp 컨트롤러 대상이 MetroCluster인 경우 온라인 워크플로우를 사용하지 마십시오. 활성 온라인 가져오기 중에 사이트 페일오버가 발생한 경우 소스 어레이에 대한 쓰기 패스스루가 실패할 수 있으며 이로 인해 검증 실패와 잠재적인 데이터 손실이 발생할 수 있습니다. 대상이 MetroCluster인 경우 호스트 OS에 관계없이 FLI 오프라인 프로세스를 사용합니다.</block>
+  <block id="1e9a8e71031d88390d2ab79f264cd54d" category="summary">다음 단계에서는 FLI 마이그레이션이 완료된 후 소스 어레이에서 대상 어레이 구성을 제거하는 방법을 보여줍니다.</block>
+  <block id="de451726fc2979608badc0c9c1b24b8c" category="doc">대상 배열 구성을 제거하는 중입니다</block>
+  <block id="d9c43eb41a966c4cd2f474b639c1448e" category="list-text">AMS 2100 * 배열을 선택하고 * Show * 및 * Configure Array * 를 클릭합니다.</block>
+  <block id="9ca93b79ed4c53368139920e666bfb9b" category="list-text">그룹 을 확장하고 * 호스트 그룹 * 을 선택합니다.</block>
+  <block id="7a09bce6ca5ac1274dc9d0706d56d250" category="list-text">cDOT_FLI * 호스트 그룹을 선택하고 * 호스트 그룹 삭제 * 를 클릭합니다.</block>
+  <block id="3f66bfc9699b3a9f210f8ace9839c3ec" category="image-alt">소스 스토리지 1에서 대상 스토리지 구성을 제거합니다</block>
+  <block id="37ae0e3bb3bfe5e18a101b7fabd0ddf8" category="list-text">호스트 그룹 삭제를 확인합니다.</block>
+  <block id="9ed256c05bdd47ac51dac0478f5b5ee8" category="image-alt">소스 스토리지 2에서 대상 스토리지 구성을 제거합니다</block>
+  <block id="86033efc4416bb3a4b039fe0b75a7246" category="summary">이 예는 FLI 온라인 마이그레이션 프로세스에서 무중단 컷오버를 수행하는 일반적인 단계를 보여줍니다.</block>
+  <block id="b2da880bb7635a9dcafebf8a42591f94" category="doc">FLI 온라인: 운영 중단 컷오버 수행</block>
+  <block id="cf4a2b53966e70213ad267a1c1279b4b" category="paragraph">Windows, Linux 및 ESXi에 대한 호스트 개선 연습은 이 가이드의 후속 섹션과 호스트 운영 체제 및 호스트 연결 키트 문서를 참조하십시오.</block>
+  <block id="9102d2bd767786e8cafc761c37a28e54" category="list-text">외부 스토리지에서 소스 LUN이 매핑되는 스토리지 그룹을 표시합니다.</block>
+  <block id="fddddd7a97fdb8107f56ba77d9476d32" category="paragraph">해당 명령에 대한 자세한 내용은 공급업체 설명서를 참조하십시오.</block>
+  <block id="9fb4f6256efe0b6b490a08f20929478c" category="list-text">가져오는 LUN이 ESXi 호스트용 LUN인 경우, _ESXi caw/ATS 개선_항목에 대한 지침을 검토하고 따르십시오.</block>
+  <block id="c8d2e983a9014f6573d14c7d2c50ff00" category="list-text">호스트에서 소스 LUN 매핑을 해제합니다.</block>
+  <block id="69130ab4bf9fdc83bd37c5a753c370d5" category="paragraph">여기서 중단 기간이 시작됩니다.</block>
+  <block id="45e5cead6f4c938fd5c9b6926b5c45bc" category="paragraph">매핑 해제 명령이 실행된 직후 중단이 시작됩니다. 일반적으로 중단 기간은 분 단위로 측정할 수 있습니다. 중단 기간은 새 NetApp 타겟의 호스트를 재가리키고 LUN을 검색하는 데 걸린 시간입니다.</block>
+  <block id="a5f565c20b87b887972f662bd1f8437b" category="paragraph">igroup에서 호스트(이니시에이터)를 제거하면 igroup에 매핑된 다른 LUN에 영향을 미치므로 이 LUN이 이 igroup에 매핑된 유일한 LUN인지 확인해야 합니다. 해당 명령에 대한 자세한 내용은 공급업체 설명서를 참조하십시오.</block>
+  <block id="37e04ee8948ba70cdf6dc961eba49885" category="list-text">ONTAP 클러스터에서 대상 LUN을 온라인 상태로 전환하고 매핑되었는지 확인합니다.</block>
+  <block id="9cf9f0264b885c9e40725b13ba4cd3ce" category="list-text">LUN이 온라인 상태인지 확인합니다.</block>
+  <block id="add603645f482a847ea6b7acbc0ae35e" category="list-text">호스트에서 디스크를 재검색하고 ONTAP 대상에서 LUN을 찾은 다음 DSM이 LUN을 확보했는지 확인합니다.</block>
+  <block id="62ddf93785f8cb7e456250037b47316e" category="list-text">모든 예상 경로를 볼 수 있는지 확인하고 이벤트 로그를 확인하여 오류가 없는지 확인합니다.</block>
+  <block id="89b29bd795314f0b4fc8e93a0a91e106" category="paragraph">이때 분석 및 계획 단계에서 운영 중단을 야기하는 매우 중요한 호스트 개선 작업이 없는 한 마이그레이션의 중단 부분이 완료됩니다.</block>
+  <block id="f5bfe3ff4b751a995339504356b6a691" category="paragraph">LUN이 온라인 상태로 매핑되고 호스트에서 새로운 ONTAP 호스팅 LUN을 마운트할 수 있습니다. 읽기는 ONTAP 어레이를 통해 소스 LUN으로 전달되고, 쓰기는 새로운 ONTAP 호스팅 LUN과 원본 소스 LUN 모두에 기록됩니다. 마이그레이션이 완료되고 LUN 관계가 끊어질 때까지 소스 LUN과 대상 LUN은 동기화된 상태를 유지합니다.</block>
+  <block id="0ac8eac04778079c6ad594b174769481" category="summary">정리 단계에서는 FLI 마이그레이션 로그를 수집하고, NetApp 스토리지에서 소스 스토리지 구성을 제거하고, 소스 스토리지에서 NetApp 스토리지 호스트 그룹을 제거합니다. 또한 소스를 대상 존으로 삭제합니다. 검증은 마이그레이션 계획 실행의 정확성을 결정하는 지점입니다.</block>
+  <block id="20bbdcfc038dff8f2037bcceb8fba684" category="doc">FLI 마이그레이션 정리 및 검증 단계</block>
+  <block id="867b7d1a29ec491bab311a19c0c1a0b8" category="paragraph">로그에서 오류를 검토하고 경로를 확인한 다음 애플리케이션 테스트를 수행하여 마이그레이션이 완전히 성공적으로 완료되었는지 확인합니다.</block>
+  <block id="f6aed14045ed9be6f48ebd1a21ccb8b1" category="summary">FLI(Foreign LUN Import) 구현에는 물리적 배선, 조닝 및 이니시에이터 레코드 작성 단계가 포함됩니다. NetApp 스토리지 이니시에이터 포트 및 소스 스토리지의 초기 구성을 통해 마이그레이션 환경을 준비합니다.</block>
+  <block id="6159603e3eb10040c1c6e15057a0b92d" category="doc">데이터 마이그레이션을 위한 구축 기본 사항</block>
+  <block id="9e1efd8e3cc0da27fe19ca79fe307b28" category="paragraph">이 섹션의 예에서는 HDS(Hitachi Data Systems) AMS 어레이를 사용하므로 외부 스토리지 명령은 마이그레이션할 타사 스토리지에 따라 다릅니다.</block>
+  <block id="2cdf4003854e7aedca8de892db64c782" category="summary">대상 존에 대한 호스트를 생성해야 합니다. 운영 Fabric에는 패브릭 A와 패브릭 B라는 두 가지 유형이 있습니다</block>
+  <block id="00ceb323c704978651e7e58e2e3c9ee6" category="doc">대상 영역에 호스트 생성</block>
+  <block id="5dbb553181e7911244cbe864bb53c2e5" category="paragraph">다음은 호스트 및 대상 스토리지 조닝의 그림입니다.</block>
+  <block id="4be14a7602ab757768f9066178cb8faa" category="image-alt">호스트 및 대상 스토리지 조닝</block>
+  <block id="c10e581c4f3d33179e4d54ee0982b27a" category="paragraph">생산 구역 A에서 사용 가능</block>
+  <block id="b3ff996fe5c77610359114835baf9b38" category="cell">Zone(영역)</block>
+  <block id="c793c19bb5bccfc269f55a3c853a6f5c" category="paragraph">영역: rx21_flickDOT</block>
+  <block id="9857d87217651a79bca3f70dce27e991" category="paragraph">21:00:00:24:ff:30:14:C5</block>
+  <block id="26afebbfe7902de665165fa247e0d47c" category="paragraph">20:01:00:a0:98:2f:94:d1</block>
+  <block id="5e7fe8a328e2a06a98543b699fb4f6cd" category="paragraph">20:03:00:a0:98:2f:94:d1</block>
+  <block id="6f5012d656c7ae39a61e70ba9951cfa0" category="paragraph">RX21 HBA 0</block>
+  <block id="f35088c4e9b060b01285108f48b5a32b" category="paragraph">FlifDOT liff 1(웨이브 리프트1</block>
+  <block id="4b0677b90f2d7baa5d3afa59f54f9339" category="paragraph">FlickDOT liff 3</block>
+  <block id="d9d3a203c33297eed5e70ca8cecc2e60" category="paragraph">영역: rx22_flickDOT</block>
+  <block id="9394f5c61ee99f7c10dece2b6249bc80" category="paragraph">21:00:00:24:ff:30:04:85</block>
+  <block id="85ad3824751b2f3cdba435f24d480b72" category="paragraph">RX22 HBA 0</block>
+  <block id="abf258e3167edd3f7e98f134e6ab49fc" category="paragraph">영역: rx20_flickDOT</block>
+  <block id="99289314a3e16e392355e34f3f5170c6" category="paragraph">21:00:00:24:ff:30:03:ea</block>
+  <block id="1df1704f85020c04d53fdd623dbe70eb" category="paragraph">RX20 HBA 0</block>
+  <block id="34e9f9ee99d135b877df38239cf0a036" category="paragraph">운영 패브릭 B에서 사용 가능한 운영 영역</block>
+  <block id="605f9481cf9b821b6aa0328833583070" category="paragraph">21:00:00:24:ff:30:14:C4</block>
+  <block id="9de0d6396f3a3492cdaa0c4c7892e973" category="paragraph">20:02:00:a0:98:2f:94:d1</block>
+  <block id="99bada45f26b783ef98e61febd708cf8" category="paragraph">20:04:00:a0:98:2f:94:d1</block>
+  <block id="e973b23fd3b1ded842b706716311319e" category="paragraph">RX21 HBA 1</block>
+  <block id="b672c2cc8450d4d11bdb3eeca43ba0cf" category="paragraph">FlifDOT liff 2(웨이브 생년월일2</block>
+  <block id="3bf95c9f2cf086fccf286218bb84ecbd" category="paragraph">FlickDOT liff 4</block>
+  <block id="6b7b89f3f8e4e9f42a9de77973fd4d99" category="paragraph">21:00:00:24:ff:30:04:84</block>
+  <block id="80bed77a3100d8fbce7bb07c5776e7c7" category="paragraph">RX22 HBA 1</block>
+  <block id="1b49478544d9c3663a265ca8d01095e8" category="paragraph">21:00:00:24:ff:30:03:eb</block>
+  <block id="1c4f91db3f29afa9c9ce704f1f48d84a" category="paragraph">RX20 HBA 1</block>
+  <block id="d7da563f3152abd7a93b06abdd4d95c6" category="summary">사이트 조사 및 계획 워크시트의 일부로 마이그레이션 프로젝트 호스트 정보가 포함된 탭을 설정해야 합니다.</block>
+  <block id="36231dd03efc078aabef212947a5b33e" category="doc">사이트 조사 및 계획 워크시트 호스트 탭</block>
+  <block id="396cb26dedacf281d09182445c92324a" category="paragraph">다음은 호스트 탭을 설정하는 방법의 예입니다.</block>
+  <block id="8124579383e90243e4b06323d2b37f8d" category="cell">호스트</block>
+  <block id="bc8586f2230ff2687e94e61c5bcb4855" category="paragraph">* 현재 *</block>
+  <block id="c5f59086da2596c74d6daf4ba11dfaef" category="paragraph">* NetApp 권장 *</block>
+  <block id="48cf24486d9a8e65a142b25682f19949" category="paragraph">드라이버</block>
+  <block id="eec263180861f9129fda7c5ad07c938b" category="paragraph">허크</block>
+  <block id="7e6c7f4878b6fa562299bd45be030c4d" category="paragraph">MPIO</block>
+  <block id="0413ef3305e44f2d6ba091a328985666" category="paragraph">SnapDrive</block>
+  <block id="c7e230d1422228fff3ce57e1b13d1d0c" category="paragraph">SnapManager</block>
+  <block id="0f413e47bf69d6dd85e783e2bfc60184" category="paragraph">핫픽스</block>
+  <block id="9f4d12c5edf6cc2529e6ad9c95d20d18" category="summary">마이그레이션을 수행하기 전에 다중 경로가 올바르게 구성되고 제대로 작동하는지 확인하십시오. LUN에 대해 사용 가능한 모든 경로가 활성 상태여야 합니다.</block>
+  <block id="f4ebdd2db6081517f5add79e163450fa" category="doc">호스트 LUN 경로 및 다중 경로 구성 검증 확인</block>
+  <block id="2bc364a426afaf286122a406602b2f3f" category="doc">FLI 온라인: 마이그레이션 결과 확인</block>
+  <block id="592acd1bddde2107e08b7fab9870ec8f" category="paragraph">소스 LUN과 대상 LUN을 비교하려면 검증 작업을 시작합니다. 검증 과정을 모니터링합니다. 검증 중인 LUN은 검증 세션 동안 오프라인 상태여야 합니다. 검증 세션은 소스 LUN과 대상 LUN 간의 블록별 비교이므로 시간이 오래 걸릴 수 있습니다. 검증이 필요하지 않더라도 가져오기 프로세스를 편안하게 하기 위해 가져오기/마이그레이션된 LUN의 하위 집합을 확인하는 것이 좋습니다. 이러한 검증은 테스트/파일럿 마이그레이션 중에 수행된 검증과 함께 수행됩니다.</block>
+  <block id="4e7b785e4493cbe0b79242ce203ac879" category="paragraph">이 프로세스는 중단을 야기합니다.</block>
+  <block id="372699135a2ba75e0a9de39820284f6a" category="paragraph">LUN을 다시 온라인 상태로 전환하기 전에 LUN 임포트 검증을 명시적으로 중지해야 합니다. 그렇지 않으면 LUN이 온라인 상태로 실패합니다. 다음 CLI 출력을 참조하십시오.</block>
+  <block id="e1fac940622e70910db7d52852f57a10" category="list-text">확인할 LUN을 오프라인 상태로 설정합니다. 여기서 중단 기간은 &gt;입니다</block>
+  <block id="a84256d94c5d7dc207681d16b3b74f9c" category="list-text">LUN 확인을 시작합니다.</block>
+  <block id="8a06e7cadf858c88a55293291b1df731" category="list-text">LUN 확인 상태를 표시합니다.</block>
+  <block id="4430041a866393962bf0ca6a22b8c82f" category="list-text">LUN 검증을 중지합니다. 상태가 Verify is complete(검증 완료)로 표시되더라도 이 단계를 수동으로 수행해야 합니다.</block>
+  <block id="2817949546193391fe4e33ff2547300a" category="list-text">검증 완료 후 LUN을 온라인 상태로 전환합니다. 작업 중단 기간은 여기서 &gt; 로 끝납니다</block>
+  <block id="88342d3bc522d34c0d7d4b696af5ecbe" category="summary">FLI 기능을 사용하여 타사 SAN 스토리지에서 ONTAP 시스템으로 데이터를 마이그레이션할 수 있습니다. FLI 마이그레이션 기능은 다양한 프로세스와 시스템을 지원합니다.</block>
+  <block id="4a3f341a06b2f81b12a06ac327ed46ae" category="doc">외부 LUN 임포트 기능</block>
+  <block id="295debfc2712e7f9df807131dc4e4332" category="list-text">온라인 및 오프라인 마이그레이션 지원</block>
+  <block id="806b5a0cfabbcce4b9c185870dcdd879" category="list-text">운영 체제 독립성: 블록 레벨 데이터 마이그레이션은 볼륨 관리자 또는 운영 체제 유틸리티에 의존하지 않습니다.</block>
+  <block id="4a22b7c1adb1bceeb5ae5998e9d63ea5" category="list-text">파이버 채널 패브릭 독립성:FLI는 Brocade 및 Cisco FC 패브릭과 완벽하게 호환됩니다.</block>
+  <block id="0935f8777ca963eb7423694b02e249c4" category="list-text">대부분의 Fibre Channel 스토리지 지원 지원되는 어레이 목록은 상호 운용성 매트릭스 를 참조하십시오.</block>
+  <block id="cab8969abddd17bed082bfec1d0ac04b" category="list-text">기본 다중 경로 및 로드 밸런싱 지원</block>
+  <block id="834b11b5984bac06416d6e8768628ce1" category="list-text">CLI 기반 관리</block>
+  <block id="86a23697ca540b3445846c38e1c69c58" category="doc">ESXi 호스트에 대한 다중 경로 검증</block>
+  <block id="ccae24600a5eb1fe0c21af103f3ddd5c" category="paragraph">ESXi 호스트에 대해 다음 단계를 완료합니다.</block>
+  <block id="af0dea2ff9e1176fecfc21e3f9959904" category="list-text">VMware vSphere Client를 사용하여 ESXi 및 가상 머신을 확인합니다.</block>
+  <block id="103e554c972c4e96ee868818d7c433c5" category="image-alt">vSphere 스토리지 데이터 저장소</block>
+  <block id="9da6e0e19777c0ebe4053540e1e32e5c" category="list-text">vSphere Client를 사용하여 마이그레이션할 SAN LUN을 결정합니다.</block>
+  <block id="4c5794f4bad936901feaec744c3276a6" category="image-alt">vSphere 스토리지 디바이스입니다</block>
+  <block id="42424b4c0d9464fd16dd6015713977eb" category="list-text">마이그레이션할 VMFS 및 RDM(vfat) 볼륨을 결정합니다. 'esxcli storage filesystem list'</block>
+  <block id="19c1d3faac0375666b3e82fb8346aeac" category="paragraph">extends \(스팬 VMFS\)가 있는 VMFS의 경우 스팬 중 일부인 모든 LUN을 마이그레이션해야 합니다. GUI에서 모든 확장을 표시하려면 구성\&gt;하드웨어\&gt;스토리지 로 이동한 다음 데이터 저장소 를 클릭하여 속성 링크를 선택합니다.</block>
+  <block id="b586eeb8706c79d74e50c50a444e4630" category="paragraph">마이그레이션 후 다시 스토리지에 추가하는 동안 동일한 VMFS 레이블이 있는 여러 LUN 항목이 표시됩니다. 이 시나리오에서는 고객에게 머리로 표시된 항목만 선택하도록 요청해야 합니다.</block>
+  <block id="29653f427528dd7c73cde811da4919a5" category="list-text">마이그레이션할 LUN과 크기를 결정합니다. esxcfg-scsidevs-c</block>
+  <block id="9de12501bb2142a7b2ec2289208e45da" category="list-text">마이그레이션할 RDM(Raw Device Mapping) LUN을 식별합니다.</block>
+  <block id="be89db6f2fec82a00d85b806c598a3ee" category="list-text">RDM 디바이스 찾기: "+find/VMFS/volumes-name**-RDM**+</block>
+  <block id="7731a33633f59fb732485a3dd7c5fb81" category="list-text">앞의 출력에서 -Rdmp 및 -RDM을 제거하고 vmkfstools 명령을 실행하여 VML 매핑 및 RDM 유형을 찾습니다.</block>
+  <block id="97459251311bc6fc344bb07f299cdb93" category="paragraph">패스스루는 물리적 \(Rdmp\)가 있는 RDM으로, 비패스스루는 가상 \(RDMV\)가 있는 RDM입니다. VM 스냅샷 델타 vmdk가 오래된 naa ID가 있는 RDM을 가리키기 때문에 가상 RDM과 VM 스냅샷 복제본이 있는 VM이 마이그레이션 후 중단 됩니다. 따라서 마이그레이션을 수행하기 전에 고객에게 그러한 VM의 스냅샷 복사본을 모두 제거하도록 요청하십시오. VM을 마우스 오른쪽 버튼으로 클릭하고 Snapshot---\&gt;Snapshot Manager Delete All 버튼을 클릭합니다. NetApp 스토리지의 VMware 하드웨어 가속 잠금에 대한 자세한 내용은 NetApp KB 3013935를 참조하십시오.</block>
+  <block id="2691d88591e88679a1811b61d2e2f59d" category="list-text">LUN naa와 RDM 디바이스 간의 매핑을 식별합니다.</block>
+  <block id="0cf65c7ab3af2e525287b55acd731b21" category="list-text">가상 시스템 구성: 'esxcli storage filesystem list | grep VMFS'를 확인합니다</block>
+  <block id="1abcd23a32826bbad4ffb904fde775e9" category="list-text">데이터 저장소의 UUID를 기록합니다.</block>
+  <block id="c2dbaecbb6484b150b9df9ec555c57fe" category="list-text">/etc/vmware/hostd/vmInventory.xml 복제본을 만들고 파일 및 vmx 구성 경로의 내용을 기록합니다.</block>
+  <block id="6fb738ad7ba8ebd383451fcc9c614c23" category="list-text">가상 머신 하드 디스크를 식별합니다.</block>
+  <block id="30d5000b9319e73f23641aa68fbe7723" category="paragraph">제거된 RDM 디바이스를 순서대로 추가하려면 이 정보가 마이그레이션 후 필요합니다.</block>
+  <block id="9dbb45357e9175d4d9379f631599e6eb" category="list-text">RDM 디바이스, 가상 머신 매핑 및 호환성 모드를 확인합니다.</block>
+  <block id="e834487da4218cd041d8c9c6137a5d05" category="list-text">위의 정보를 사용하여 디바이스, 가상 머신, 호환성 모드 및 순서에 대한 RDM 매핑을 기록합니다.</block>
+  <block id="0011a2a5e4e0f2bc74cfb823af4ed22b" category="paragraph">나중에 VM에 RDM 디바이스를 추가할 때 이 정보가 필요합니다.</block>
+  <block id="16fa5041323f1d918bfced600b817efc" category="list-text">다중 경로 구성을 확인합니다.</block>
+  <block id="1d38f16887ca4137c27cc384d06f4ec1" category="list-text">vSphere Client에서 스토리지에 대한 다중 경로 설정을 가져옵니다.</block>
+  <block id="82af2cbe08d056387385934f422c35ec" category="list-text">vSphere Client에서 ESX 또는 ESXi 호스트를 선택하고 Configuration 탭을 클릭합니다.</block>
+  <block id="907c0c9f181ccc907ae86974fa73f8ff" category="list-text">스토리지 * 를 클릭합니다.</block>
+  <block id="e95077743be6f05d6ba11aa1669d8382" category="list-text">데이터 저장소 또는 매핑된 LUN을 선택합니다.</block>
+  <block id="ca1508bef4ecfaf5842f6dcf43d95d9b" category="list-text">속성 * 을 클릭합니다.</block>
+  <block id="e3ac6fbb391345767b192a28a3ffc588" category="list-text">필요한 경우 속성 대화 상자에서 원하는 범위를 선택합니다.</block>
+  <block id="1532c526343a31170caad2b28655d82d" category="list-text">Extent Device * &gt; * Manage Paths * 를 클릭하고 Manage Path 대화 상자에서 경로를 가져옵니다.</block>
+  <block id="34afbda9fb44fa95acdbbf9cfecc078c" category="image-alt">vSphere 스토리지 디바이스 경로</block>
+  <block id="ccff10b6fed485d4b5f809b53c8a91f4" category="list-text">ESXi 호스트 명령줄에서 LUN 경로 다중화 정보를 가져옵니다.</block>
+  <block id="bf03e7993cc2e418f032d103bf93bb4b" category="list-text">ESXi 호스트 콘솔에 로그인합니다.</block>
+  <block id="cffa35e9eba9345ca451680a2582e5a8" category="list-text">esxcli storage nmp device list 를 실행하여 다중 경로 정보를 가져옵니다.</block>
+  <block id="00c40d087dd4a31be52b8d6fac28f40d" category="summary">FLI 환경은 적절한 작동 및 지원을 위해 지원되는 방식으로 배포되어야 합니다. 엔지니어링에서 새 구성을 적용함에 따라 지원되는 구성 목록이 변경됩니다. 특정 구성에 대한 지원을 확인하려면 NetApp 상호 운용성 매트릭스 를 참조하십시오.</block>
+  <block id="6a1c4226f3aee4e57407c95af86a1f17" category="doc">FLI 지원 구성</block>
+  <block id="43e550da834f19c48e56d0033cb00d38" category="paragraph">ONTAP 8.3 이상이 지원되는 유일한 타겟 스토리지입니다. 타사 스토리지로의 마이그레이션은 지원되지 않습니다.</block>
+  <block id="fcb9a33acc71b7a736bb2974d90e8694" category="paragraph">지원되는 소스 스토리지 어레이, 스위치 및 펌웨어 목록은 상호 운용성 매트릭스 를 참조하십시오. 데이터 마이그레이션 프로그램은 NetApp 상호 운용성 매트릭스의 구성을 지원합니다.</block>
+  <block id="dcc4d70f83a987686da760765ac2bf87" category="paragraph">가져오기가 완료되고 모든 LUN이 NetApp 컨트롤러로 마이그레이션되면 모든 구성이 지원되는지 확인합니다.</block>
+  <block id="c5d3e2252c6e6bd9e8d96c4cab706dea" category="summary">분석 단계에서는 마이그레이션 작업을 진행하기 전에 해결해야 하는 항목을 중점적으로 다룹니다. 호스트 구성 정보는 NetApp 상호 운용성 매트릭스(IMT)에 나와 있는 지원 구성과 비교해야 합니다.</block>
+  <block id="8ba89e51b3d890505e472db571ec3a7c" category="doc">분석 단계 IMT 모범 사례</block>
+  <block id="8a2a301e8347a58fa5fcec72e3e86763" category="paragraph">IMT는 NetApp에서 인증한 타사 제품 및 구성 요소와 함께 작동하는 NetApp 제품의 구성에 대한 정보를 검색할 수 있는 웹 기반 유틸리티입니다. IMT에는 지원 및 인증된 NetApp 구성이 모두 포함되어 있습니다. 지원되는 구성은 NetApp에서 검증한 구성입니다. 인증 구성은 타사 구성 요소와 함께 사용할 수 있는 자격을 갖춘 구성입니다.</block>
+  <block id="d69a23b8d6fe4971d7f2af3d695c5d42" category="section-title">IMT 모범 사례</block>
+  <block id="c2876a5bfe1c981f3e417ec46a12c137" category="list-text">계획 워크시트의 스위치 및 호스트 섹션에 필요한 소프트웨어 및 업그레이드에 대한 NetApp IMT 권장 사항을 입력합니다.</block>
+  <block id="a40164db08647aaaa21bf2393356342a" category="list-text">ONTAP OS, 프로토콜 및 CF 모드와 같은 정적 정보를 IMT에 입력하여 시작합니다. 그런 다음 사이트 조사를 필터 가이드로 사용하여 호스트 OS, 볼륨 관리자 및 HBA 정보를 입력합니다.</block>
+  <block id="fc00cf78392da95d5c61c5338119d7cb" category="list-text">결과가 반환되지 않도록 특별히 지정하지 마십시오. 여러 개의 반환된 결과를 보고 가장 적합한 결과를 선택하는 것이 좋습니다.</block>
+  <block id="6c33f5ffdac3f6628740f0a07c7efe16" category="list-text">호스트 HBA는 때때로 OEM 부품 번호에 보고되며 IMT에 입력하기 전에 상호 참조되어야 합니다.</block>
+  <block id="72478fd6b5d450d3dac62d2334efecf6" category="list-text">각 호스트를 IMT와 비교하여 지원 가능성을 확인합니다.</block>
+  <block id="4b5cb83d8cd3443786bcae757daddd3c" category="summary">데이터 마이그레이션으로 인해 발생하는 몇 가지 문제는 다운타임 연장, 잠재적 위험, 리소스 부족, 부적절한 전문성으로 인해 발생합니다.</block>
+  <block id="aa5697a54463f92c391659bc3be3a016" category="doc">데이터 마이그레이션의 도전 과제</block>
+  <block id="7054980f6214b91459bce8f20151d2a1" category="paragraph">데이터 가용성 요구사항이 점점 까다로워지고 다운타임을 허용할 수 없는 수준으로 증가함에 따라 비즈니스 운영 시 데이터 마이그레이션 프로세스가 더욱 중요해지고 있습니다. 운영 시스템에 대한 성능 영향, 잠재적 데이터 손상 및 손실과 같은 위험 요인은 데이터 마이그레이션 프로세스에서 우려됩니다.</block>
+  <block id="d27fb9bbea51069b68ab2f5432543521" category="summary">기본 FLI 개념을 이해하면 올바른 작동에 도움이 되며 초기 구성 작업을 줄이는 데 도움이 됩니다.</block>
+  <block id="11ce7ca493874241e6de73f36e76dc33" category="doc">외부 LUN 임포트 개념</block>
+  <block id="a635e4870c056f10cc8a4a774c87a454" category="list-text">* 외부 배열 *</block>
+  <block id="1142ed06cc52da94575e331106808cdd" category="paragraph">외부 어레이는 ONTAP를 실행하지 않는 스토리지 디바이스입니다. 이를 타사 어레이 또는 소스 스토리지라고도 합니다. 7-Mode에서 ONTAP로 전환할 경우, 외부 어레이는 ONTAP 7-Mode를 실행하는 NetApp에서 만든 어레이가 됩니다.</block>
+  <block id="a99a6b5b20318a751b15e43d73141d18" category="list-text">* 외부 LUN *</block>
+  <block id="2fe29a93f3a3eab21182d5a81bc99563" category="paragraph">외부 LUN은 해당 어레이의 네이티브 디스크 형식을 사용하여 타사 스토리지에서 호스팅되는 사용자 데이터가 포함된 LUN입니다.</block>
+  <block id="55d647a56891fd09add9e72e442e56dc" category="list-text">FLI LUN 관계 *</block>
+  <block id="dedb6b3b975741af7cf74bbb7e594172" category="paragraph">FLI LUN 관계는 데이터 가져오기를 위해 소스 스토리지와 대상 스토리지 간에 지속적으로 페어링됩니다. 소스 및 대상 엔드포인트는 LUN입니다.</block>
+  <block id="ac7c22231860f72fd69473ba39e8faf6" category="list-text">* LUN 임포트 *</block>
+  <block id="bf135405a6d006313580e0907e9bcefc" category="paragraph">LUN 임포트란 외부 LUN의 데이터를 타사 형식에서 네이티브 NetApp 형식 LUN으로 전송하는 프로세스입니다.</block>
+  <block id="23321edbb4f7e3b1befd67b860a1b8cd" category="summary">상호 운용성 매트릭스 툴(IMT) 을 통해 NetApp에서 검증한 타사 제품 및 구성 요소와 함께 작동하는 NetApp 제품의 구성에 대한 정보를 찾아야 합니다.</block>
+  <block id="53dd876eedeaea76ed1102ca50d7640a" category="doc">IMT를 사용하여 FLI에 대해 지원되는 구성 확인</block>
+  <block id="cc62db77ffdb8047d1bbd7fd4c1187af" category="paragraph">ONTAP 9.9.1부터, 어레이가 IMT에서 지원되는 것으로 나열되지 않은 경우 NetApp Support 사이트에서 SAN LUN 마이그레이션 앱을 사용하여 어레이가 지원되는지 여부를 확인할 수 있습니다.</block>
+  <block id="cfa91e2daad15c0a21a421633f79ec89" category="list-text">상호 운용성 매트릭스 툴 으로 이동합니다.</block>
+  <block id="41a52d397d383cba9d812eb2b4f72df9" category="list-text">어레이 모델을 검색합니다.</block>
+  <block id="ecbd3fc8e53ae81e46a44ebbaef27e25" category="list-text">FLI(Foreign LUN Import) 백엔드 상호 운용성 * 을 선택하십시오.</block>
+  <block id="35bbbc8e718a18a4a6c659f82feb49b7" category="list-text">FAS 모델 * 및 * ONTAP 버전 * 을 선택하여 지원되는 구성을 확인합니다.</block>
+  <block id="9a164cb97c547085a3cb4c26131c9ff6" category="list-text">프런트엔드 지원 호스트 구성의 경우 * build end to end view with ONTAP SAN host * 를 클릭합니다.</block>
+  <block id="4e335933ad262c6d858fc345312ead0e" category="list-text">스위치 지원 구성의 경우 * ONTAP SAN 호스트 * 탭에서 * SAN-스위치 * 에 대한 빌드-투-엔드 보기를 클릭합니다.</block>
+  <block id="334f3b19fe4476b7bb42e2b23424b1b1" category="summary">Windows 클러스터가 있는 경우 클러스터된 모든 호스트가 오프라인인 경우에도 쿼럼 디스크에 대한 SCSI-3 예약을 제거해야 합니다.</block>
+  <block id="25006587c6eb133b6454333db22ccf83" category="doc">SCSI-3 영구 예약을 지우는 중입니다</block>
+  <block id="eaf1edb4af8f97f8b0aa752d18d9fc9c" category="paragraph">소스 LUN에 외부 디스크로 레이블을 지정하려고 하면 다음 오류 메시지가 나타납니다.</block>
+  <block id="fb35e3ce7ff14ee2a388ceef040b9f9b" category="paragraph">'storage disk remove-reservation' 명령을 사용하여 NetApp 컨트롤러의 쿼럼 디스크에 대한 SCSI-3 예약을 제거할 수 있습니다.</block>
+  <block id="63307163e34daa85fc7fb4e76e1dc056" category="paragraph">이 오류와 이에 대한 개선 사항을 보여주는 스니펫이 있습니다.</block>
+  <block id="2f76739cb66361248c2666f532a46fe3" category="summary">다음 단계에서는 FLI 마이그레이션이 완료된 후 대상 어레이에서 소스 어레이를 제거하는 방법을 보여줍니다.</block>
+  <block id="f02a202284a71f0c60334d44842c2ae9" category="doc">ONTAP에서 소스 스토리지 제거</block>
+  <block id="5beb511c52c08ddc7aa3d7f8e19052f0" category="list-text">표시된 모든 소스 스토리지를 표시합니다.</block>
+  <block id="6b3a439221d85d6d1956cbac8d709274" category="list-text">소스 스토리지 시스템을 제거합니다.</block>
+  <block id="c614218c0adf7263666120fbe714869d" category="summary">사이트 조사 및 계획 워크시트의 일부로 집계 상태에 대한 정보가 포함된 탭이 있어야 합니다.</block>
+  <block id="acf867d4e1dc8af3eb922419a5b3fe21" category="doc">사이트 조사 및 계획 워크시트 집계 상태 탭</block>
+  <block id="bceb4f070020d638ef1535978542228d" category="paragraph">다음은 집계 상태 탭을 설정하는 방법의 예입니다.</block>
+  <block id="911f94bc298fc88538ecc2c44b5d778d" category="cell">NetApp 애그리게이트 정보</block>
+  <block id="9bbf373797bf7cf7ba62c80023682e25" category="paragraph">컨트롤러</block>
+  <block id="2ee34178bb8415b7d7234cd27b83aed6" category="paragraph">집계</block>
+  <block id="3cb06647e5ace30337f57aed8c87b0e1" category="paragraph">총 크기(GB)</block>
+  <block id="72f0b61e3b8040d7c9957ca326dc981d" category="paragraph">사용된 용량(GB)</block>
+  <block id="70ed673b65daa8d0437b28e534f4ec4e" category="paragraph">사용 가능(GB)</block>
+  <block id="0d4f11be31f944fbc267afc1f7a2f666" category="paragraph">빌드 아웃 이전</block>
+  <block id="8802080a4dc2981f17e7c4648f43afe7" category="summary">사이트 조사 및 계획 워크시트의 일부로 소스 LUN에 대한 정보가 포함된 탭을 설정해야 합니다.</block>
+  <block id="4037e8193f042717a79bf3fdefd4aae6" category="doc">사이트 조사 및 계획 워크시트 소스 LUN 탭</block>
+  <block id="46fdb96658c0c805a565f783cb6eb4a2" category="paragraph">다음은 소스 LUN 탭을 설정하는 방법의 예입니다.</block>
+  <block id="2d1ef22a8170261433e49f3f13fa84f0" category="cell">소스 LUN</block>
+  <block id="40336b4a1c70e07af22b9f21262986c6" category="paragraph">마스킹된 LUN</block>
+  <block id="05ae95ecb2f7d95ca46671f2f897261f" category="paragraph">스토리지 그룹 이름입니다</block>
+  <block id="810d83ecd7beb0a611c20100683a7a29" category="paragraph">호스트 LUN ID입니다</block>
+  <block id="f2c1a8aa1a5dba14298dc15ab86f89fe" category="paragraph">스토리지 LUN ID입니다</block>
+  <block id="0777a79b52ef0fea07a0a84f1a9dbaa1" category="paragraph">두껍게/얇게</block>
+  <block id="e7d22294bdcb7133967c3548ece982e5" category="paragraph">UID</block>
+  <block id="34173cb38f07f89ddbebc2ac9128303f" category="paragraph">30</block>
+  <block id="0a908b7941c6bfd50ba866821e83cd2b" category="paragraph">두껍게</block>
+  <block id="aab3238922bcc25a6f606eb525ffdc56" category="paragraph">14</block>
+  <block id="9e94c459cc067652e6c139ae037e101d" category="paragraph">60060e801046b96004f2bf460000000e</block>
+  <block id="9bf31c7ff062936a96d3c8bd1f8f2ff3" category="paragraph">15</block>
+  <block id="6c0b1505f0e4e77904908c3bd5751da6" category="paragraph">60060e801046b96004f2bf460000000f</block>
+  <block id="859bbe216d0947bdecdaf16ea962c801" category="paragraph">모든 LUN. 2a</block>
+  <block id="23124a0cebc0542d84709d8e266d5175" category="cell">사용자 지정 접두어</block>
+  <block id="43188da50098252bd688d8fdc94fa0c9" category="paragraph">LUN 이름입니다</block>
+  <block id="a2028db730253321b2c891368a4720b5" category="paragraph">시작 섹터</block>
+  <block id="3c7344e5b218f090342709f3f664587f" category="paragraph">파티션 오프셋</block>
+  <block id="5d50df56461172dd7ee4729d48b65d36" category="cell">LUN30</block>
+  <block id="acb7ebb11014d0a8e3d38c764ff6f3d4" category="paragraph">368050176)을 참조하십시오</block>
+  <block id="07eb13fbccaba4642b97f153c0944d33" category="paragraph">LUN14</block>
+  <block id="558325bdc5d5119e93467e7fe7fcea48" category="paragraph">33619968</block>
+  <block id="3498819c9e2fcba4d3ad19d511ca5791" category="paragraph">LUN15</block>
+  <block id="fa5cc795f3efc0faea3a45eb87e12e15" category="summary">FLI 온라인 마이그레이션을 준비하기 위해 호스트 및 소스 LUN 경로와 기타 세부 정보를 확인합니다.</block>
+  <block id="31e1add98209878d916efa23aa2559d1" category="doc">FLI 온라인: LUN 경로 준비</block>
+  <block id="cff83af772a5c931d87e0ec392c65011" category="list-text">ONTAP에서 권한 수준을 '고급'으로 변경합니다.</block>
+  <block id="dc7514532bed3a4a24eee1600be36a25" category="list-text">소스 어레이가 대상 컨트롤러에서 표시되는지 확인합니다.</block>
+  <block id="714f5c3f42e6d50fa3a07a75065ed6bc" category="list-text">소스 LUN 세부 정보를 표시합니다.</block>
+  <block id="576bea06d886b9a2fa68f1f700b329a2" category="list-text">소스 스토리지가 모든 이니시에이터 포트를 통해 검색되는지 확인합니다.</block>
+  <block id="b1afc11741a1365578d6687902a80f9c" category="paragraph">다음 출력에서 단어 래핑은 의미가 없습니다.</block>
+  <block id="d6632b113eb61cc6169c37b5aaa2af6c" category="list-text">소스 스토리지에서 매핑된 LUN을 나열합니다. 디스크 속성 및 경로를 확인합니다.</block>
+  <block id="c302f97364cfa08aa702820c4dd75d9f" category="list-text">소스 LUN을 봅니다.</block>
+  <block id="6f2f723476c5e8bc76767da78eed7b6f" category="list-text">소스 LUN을 외부 LUN으로 표시합니다.</block>
+  <block id="2bc692441e597927901b155531aa7b0b" category="list-text">FLI LUN 임포트 명령에 일련 번호가 사용됩니다. 모든 외부 LUN 및 해당 일련 번호를 나열합니다.</block>
+  <block id="e3d5bef4351707870248d295bf853c71" category="list-text">대상 볼륨을 생성합니다.</block>
+  <block id="02b44137acae3cb866151edc5d8bec0b" category="list-text">볼륨을 확인합니다.</block>
+  <block id="0bdb969954d1ebc907fbc30b699c37d9" category="paragraph">FLI 마이그레이션은 대상 LUN의 모든 블록을 수정합니다. FLI 마이그레이션 전에 볼륨에 기본 또는 기타 Snapshot 복사본이 있으면 볼륨이 가득 차게 됩니다. FLI 마이그레이션이 필요하기 전에 정책을 변경하고 기존 Snapshot 복사본을 제거합니다. 마이그레이션 후 스냅샷 정책을 다시 설정할 수 있습니다.</block>
+  <block id="6be823019bbb6847b1762479cd37d547" category="paragraph">LUN create 명령은 파티션 오프셋을 기반으로 크기와 정렬을 감지하고 그에 따라 외부 디스크 옵션을 사용하여 LUN을 생성합니다. I/O 정렬 불량을 검토하려면 NetApp 기술 자료 문서 * 정렬되지 않은 I/O란 무엇입니까? 를 참조하십시오. 또한 일부 I/O는 항상 부분 쓰기일 수 있으므로 잘못 정렬된 것처럼 보입니다. 예를 들어 데이터베이스 로그가 있습니다.</block>
+  <block id="f442cef583acdd786cc01fb43b15d936" category="list-text">타겟 LUN을 생성합니다. 'lun create' 명령은 파티션 오프셋을 기준으로 크기와 정렬을 감지하고 이에 따라 외래 디스크 인수를 사용하여 LUN을 생성합니다.</block>
+  <block id="dd9967c7a136ea2fa96f2a1bc02ea6ad" category="list-text">새 LUN을 확인합니다.</block>
+  <block id="908c0c1ea3cecf46c6d311f6e01738b0" category="list-text">호스트 이니시에이터가 있는 프로토콜 FCP의 igroup을 생성합니다.</block>
+  <block id="841969bf5101dcb2453d20bdc7d549f5" category="list-text">호스트가 새 igroup에 대한 모든 경로에 로그인하는지 확인합니다.</block>
+  <block id="3ce2d76e4c6623bac936c8d97cf1ce57" category="list-text">대상 LUN을 오프라인 상태로 전환합니다.</block>
+  <block id="2e960c5468f29481e7cb679c3cc91596" category="list-text">대상 LUN을 igroup에 매핑합니다.</block>
+  <block id="3338b7cacb43fdfbf43af2fd97583993" category="list-text">새 LUN과 외부 LUN 간의 가져오기 관계를 생성합니다.</block>
+  <block id="6fcf6136fc83f5f370118fdad729cb70" category="summary">FLI 7-Mode에서 ONTAP 워크플로우에 대한 마이그레이션 후 작업은 다른 FLI 워크플로와 유사합니다.</block>
+  <block id="e7464f89282dab124d964e0997ebdaca" category="doc">FLI 전환 워크플로우 마이그레이션 후 작업</block>
+  <block id="81b269ef8294e928f2cd88a8dbdf2143" category="list-text">준비가 되면 LUN 임포트 관계를 삭제할 수 있습니다.</block>
+  <block id="fe46af39ef03dd8446cbb8b335198a2e" category="paragraph">이제 호스트가 새 ONTAP LUN에 대한 모든 I/O에 대해 새 NetApp 어레이에 액세스하고 소스 7-Mode LUN을 더 이상 사용하지 않기 때문에 LUN 임포트 관계를 안전하게 제거할 수 있습니다.</block>
+  <block id="9e0f7b9c4e32d10eb6d0d1b4be5f7fa3" category="list-text">마이그레이션 후 모든 서버 수정 작업이 수행됩니다.</block>
+  <block id="b208ac80b5fcbb3c77c71f6fbbb17090" category="paragraph">타사 소프트웨어가 제거되고 NetApp 소프트웨어가 설치 및 구성되었으며 호스트가 NetApp의 LUN에 액세스하게 됩니다.</block>
+  <block id="fa8dc6899d89e51526213a2a8ab9aa76" category="summary">마이그레이션 프로세스의 검증 단계에서는 마이그레이션 후 정리 및 마이그레이션 계획 실행의 정확성을 확인하는 데 중점을 둡니다. 소스 스토리지의 이니시에이터 레코드와 소스 영역과 대상 영역 간의 존이 제거됩니다.</block>
+  <block id="fdb87b07dc517f2422992acdcbaba2ce" category="doc">단계 워크플로를 확인합니다</block>
+  <block id="c95e22746ae7f51fc92fdffd42f07397" category="paragraph">다음 그림은 검증 단계 워크플로를 보여 줍니다.</block>
+  <block id="95c41a387e815b4edb965c3074645f2e" category="image-alt">1단계를 확인합니다</block>
+  <block id="37e5739527f14abd34423792a642951a" category="paragraph">검증 단계 작업이 다음 표에 나열되어 있습니다.</block>
+  <block id="f988327a3c5a7e8c3d4cfc29a4a8d770" category="paragraph">고객이 애플리케이션 테스트를 수행합니다.</block>
+  <block id="b3f821f9020a8f4c34451218062e4928" category="list-text">zoneset에서 호스트-소스 스토리지 영역을 제거합니다.</block>
+  <block id="4e186740c8ed9d9da08a71a1e7972b09" category="list-text">대상 영역에 대한 소스 스토리지를 제거합니다.</block>
+  <block id="b710e65d106e44e23416360abb993186" category="list-text">새 zoneset를 백업합니다.</block>
+  <block id="4f898f9ff7575048ae18731b51f01e50" category="list-text">LUN 정렬을 확인합니다.</block>
+  <block id="308ccca670502104950a1f6d472c9b3e" category="list-text">이벤트 로그에서 FLI 가져오기 로그를 수집합니다.</block>
+  <block id="ca4d4e3e481571abfbef114495129d74" category="list-text">마이그레이션 프로세스 중에 수동으로 생성한 스냅샷 복사본을 제거합니다.</block>
+  <block id="f6c9dc6f588c3b56a7c547b6a36f656c" category="list-text">소스 스토리지를 제거합니다.</block>
+  <block id="b5922f7a2dcd5576a7a5d8ca6c389d46" category="list-text">최종 구성을 문서화합니다.</block>
+  <block id="08a40bafb5e2db7781fe0e4d18424e7c" category="list-text">호스트 스토리지 이니시에이터 그룹을 제거합니다.</block>
+  <block id="320928b8c8e19e9f23a00694a5f75023" category="list-text">대상 스토리지 이니시에이터 그룹을 제거합니다.</block>
+  <block id="c9838de04898435a42a4c0f79df5b474" category="summary">나중에 필요할 경우 쉽게 되돌릴 수 있도록 사후 마이그레이션 스냅샷 복사본을 생성할 수 있습니다.</block>
+  <block id="bf178123a273dcbafcda5c352db6bd5e" category="doc">마이그레이션 후 Snapshot 복사본 생성</block>
+  <block id="9591f95b6bfc5019e71eef4292d7e21d" category="list-text">마이그레이션 후 스냅샷 복사본을 생성하려면 '스냅 생성' 명령을 실행합니다.</block>
+  <block id="f67b39704d7ba7e8c70385ece8fabad0" category="summary">오프라인 외부 LUN 가져오기 프로세스의 일부로 대상 스토리지의 소스 LUN을 확인해야 합니다.</block>
+  <block id="bdc246f75e0b7cb0910efac99821e4d4" category="doc">오프라인 FLI를 위해 대상 스토리지의 소스 LUN 확인</block>
+  <block id="16432777987df48d84f1d6b78c74fe0c" category="list-text">소스 LUN을 확인하고 소스 스토리지에서 대상 스토리지로 매핑합니다.</block>
+  <block id="5974308baaa765decb4dca2586d474ab" category="list-text">모드를 Advanced:'Set-Privilege Advanced'로 변경합니다</block>
+  <block id="5f91021d271bc951faffb84c865af2e4" category="list-text">계속 진행할지 묻는 메시지가 나타나면 y를 입력합니다.</block>
+  <block id="ef369b8a18ae9000f3ef049c0af23f31" category="list-text">ONTAP에서 소스 스토리지를 검색합니다. 몇 분 정도 기다린 후 소스 스토리지를 다시 검색합니다. '스토리지 배열 쇼'</block>
+  <block id="eb203702882ce5219436695b36021041" category="list-text">Hitachi 스토리지에서 매핑된 소스 LUN을 나열합니다. 디스크 속성 및 경로를 확인합니다.</block>
+  <block id="7cd0a1343bd368fb35ed72c387afdaa5" category="paragraph">케이블 연결에 따라 필요한 경로 수(각 소스 컨트롤러에 대한 경로 2개 이상)를 확인해야 합니다. 스토리지 LUN을 마스킹한 후 이벤트 로그도 확인해야 합니다.</block>
+  <block id="af99c9abf614a82b80d08359e5e0a888" category="summary">사이트 조사 및 계획 워크시트의 일부로 LUN 레이아웃에 대한 정보가 포함된 탭을 설정해야 합니다.</block>
+  <block id="f01d3ff99f3ac13d61d7586c2e8dc665" category="doc">사이트 설문조사 및 계획 워크시트 NetApp LUN 레이아웃 탭</block>
+  <block id="e672da4fadd27ee2f19017ef42dce852" category="paragraph">다음은 NetApp LUN Layouts 탭을 설정하는 방법의 예입니다.</block>
+  <block id="f4dc3ce9f4d7c741a2ac13a451458d51" category="cell">NetApp LUN 정보</block>
+  <block id="5a33fdd3ad048388d676b3cfe62a76b4" category="paragraph">볼륨 이름</block>
+  <block id="191fac23c2b2ea4e948178972521292f" category="paragraph">볼륨 크기</block>
+  <block id="95072ca072e4d2f6530e44299d188efd" category="paragraph">볼륨 보장</block>
+  <block id="50971f496a3590b9c84a943824e0e760" category="paragraph">스냅 예약</block>
+  <block id="795d018d375de9845a4997b30eca99ec" category="paragraph">S/N</block>
+  <block id="a4c2838f9e8470b88f44e476a47d44b2" category="paragraph">LUN 설명입니다</block>
+  <block id="c1feafdc6047736ec551a3372eaede0b" category="paragraph">GB 크기</block>
+  <block id="197550a398f21ab68f65c3c4b21d5ea5" category="paragraph">LUN 예약입니다</block>
+  <block id="22aaadfcc402bfcfa93fb34226cf5435" category="paragraph">분할 예약</block>
+  <block id="f97c03bf3e9580446d70d479f5aad1e0" category="paragraph">볼륨 자동 크기 조정</block>
+  <block id="af022fe70cd3bd3260b3f6db496447e9" category="paragraph">스냅 자동 삭제</block>
+  <block id="4a4136bdaaf4cd0229fb9e3b64dec990" category="paragraph">Igroup</block>
+  <block id="77863eecd3628172144d619c2f03fb64" category="paragraph">LUN ID입니다</block>
+  <block id="c2ece9a18147c056e75e4008644a9526" category="paragraph">호스트 유형</block>
+  <block id="16b78e95661c918bc1b982fd64852c02" category="paragraph">드라이브 문자</block>
+  <block id="365518f89953ce6275308d4727cae73a" category="summary">FLI 7-Mode에서 ONTAP로 LUN이 적절하게 마이그레이션되었는지 확인할 수 있는 옵션이 제공됩니다.</block>
+  <block id="d2f81b636a69103d1ca4925b272ed2d2" category="doc">FLI 7-Mode에서 ONTAP로의 마이그레이션 결과 검증</block>
+  <block id="c0f4e671971b3d7af486117ca521aad5" category="paragraph">소스 LUN과 대상 LUN을 비교하려면 검증 작업을 시작합니다. 검증 과정을 모니터링합니다. 검증 중인 LUN은 검증 세션 동안 오프라인 상태여야 합니다. 검증 세션은 소스 LUN과 대상 LUN 간의 블록 간 비교이므로 시간이 오래 걸릴 수 있습니다. 마이그레이션과 거의 동일한 시간이 소요됩니다. 검증이 필요하지 않지만 임포트 프로세스에 익숙하도록 가져오기/마이그레이션된 LUN의 하위 집합을 검증하는 것이 좋습니다.</block>
+  <block id="90b54dd0fd35f6452d1b6c6464d9cfe6" category="paragraph">LUN을 다시 온라인 상태로 전환하기 전에 LUN 임포트 검증을 명시적으로 중지해야 합니다. 그렇지 않으면 LUN이 온라인 상태로 실패합니다. 이 동작은 ONTAP의 향후 릴리스에서 변경될 예정입니다.</block>
+  <block id="ecd3bf53d542cc1fc8055b3c20fff418" category="list-text">확인할 LUN을 오프라인 상태로 설정합니다.</block>
+  <block id="2cdc70de3fe5b5fb6f8cf38d2c2c45d5" category="list-text">검증 완료 후 LUN을 온라인 상태로 전환합니다.</block>
+  <block id="ae7ab55b954ce2a8356bf4bd743966ef" category="summary">이 섹션에서는 FLI 오프라인 워크플로우의 예를 들어, 4개의 FLI 워크플로우 중 하나를 제공합니다.</block>
+  <block id="bc27398f19f6acf48269b6f7ee4f086c" category="doc">FLI 오프라인 워크플로우</block>
+  <block id="0ca2698feff5a5fc2d35a0504189c848" category="paragraph">이 워크플로우에서는 HDS AMS2100 어레이를 소스 스토리지로 사용합니다. 오프라인 워크플로에는 다음과 같은 작업이 있습니다.</block>
+  <block id="d1f93c9975320718dcc00c5f80427297" category="list-text">컷오버 준비</block>
+  <block id="ca63dcfd0f9848e972e7ac63e9bf3494" category="list-text">데이터를 가져오는 중입니다</block>
+  <block id="ba8f47747c3717527073a5c3d8eacb92" category="list-text">마이그레이션 결과 확인(선택 사항)</block>
+  <block id="2c9d6f9fe74e21cf8104c62c4ad61ceb" category="list-text">FLI 오프라인 마이그레이션 후 작업</block>
+  <block id="ee39d65a1817160f3851b1ca24746c37" category="doc">Windows 호스트에 대한 다중 경로 검증</block>
+  <block id="a4354633cd0119e1314f471d610ea422" category="paragraph">Windows 호스트에 대해 다음 단계를 완료합니다.</block>
+  <block id="7ae3521b4795a0df6960b48844b8bede" category="list-text">디스크 관리를 엽니다.</block>
+  <block id="36a890df783d05afe153f32ada876698" category="list-text">Windows 바탕 화면에서 * 시작 * 을 클릭합니다.</block>
+  <block id="b94b9ba613928ff9d75e25ce0cb374e2" category="list-text">검색 시작 필드에 diskmgmt.msc 를 입력합니다.</block>
+  <block id="39ddfcd62e9a6f642a082e4825c6ff4f" category="list-text">프로그램 목록에서 disskmgmt를 클릭합니다.</block>
+  <block id="8b103231da97e357c81333af4cc4b45e" category="list-text">여러 경로를 확인할 각 디스크를 마우스 오른쪽 단추로 클릭한 다음 * 속성 * 을 클릭합니다.</block>
+  <block id="c0829f1bd784906bc2260964e7df8fcc" category="list-text">MPIO 탭의 MPIO 정책 선택 목록에서 활성화된 모든 경로를 클릭합니다.</block>
+  <block id="08531ca1dfb960884b4522ff558a0b0d" category="image-alt">Windows MPIO 속성</block>
+  <block id="ef7d878aad6a3854d597cac990e1eb38" category="paragraph">명령줄을 사용하여 다중 경로를 확인하려면 다음 단계를 수행하십시오.</block>
+  <block id="411ebc979cd3a229976869daa9547a33" category="list-text">Windows 명령 프롬프트를 엽니다.</block>
+  <block id="d4680a9ea0a2cb04b104f631e80d8264" category="list-text">mpclaim.exe--v c:\multipathconfig.txt 를 실행하여 다중 경로 구성을 캡처합니다.</block>
+  <block id="cd2ea2efb6e484e9f76aa6c911f083cf" category="summary">사이트 조사 및 계획 워크시트의 일부로 FAS 구성에 대한 정보가 포함된 탭이 있어야 합니다.</block>
+  <block id="d816e66cd7b51d120e7ae740a2d2b7d8" category="doc">사이트 조사 및 계획 워크시트 FAS 구성 탭</block>
+  <block id="cb27b289fa8961c6a3dcd409d777c342" category="paragraph">다음은 FAS 구성 탭을 설정하는 방법의 예입니다.</block>
+  <block id="b84efa9ec93a064c12da482ba494099b" category="cell">클러스터 관리 IP 주소입니다</block>
+  <block id="9e12573417a5e1a70dacdfe728c09eaa" category="cell">클러스터 관리 자격 증명을 사용할 수 있습니다</block>
+  <block id="02e0c36133d83110f2a47708c5ce68e0" category="cell">ONTAP 시스템 관리자 호스트</block>
+  <block id="a306b25ca39f0c5e5575dd90b3761d1d" category="cell">* IP 주소 *</block>
+  <block id="7dae56175078a018f0721e319b388024" category="cell">* 자격 증명 사용 가능 *</block>
+  <block id="8670cefa5e241d7f2c36f1d08ded1bcd" category="cell">네트워크 포트</block>
+  <block id="6c3a6944a808a7c0bbb6788dbec54a9f" category="cell">노드</block>
+  <block id="fae895126fcd0f82b8f0db8894e4f0d3" category="cell">인터페이스 이름</block>
+  <block id="182aeb116dd563a6020ec9b2d5b6595e" category="cell">포트 유형입니다</block>
+  <block id="0cf18d635363289b9e7befc3b0fc04e2" category="cell">포트 속도</block>
+  <block id="271180c589c683c06cd9b55cc844e8e2" category="cell">VLAN 이름/ID입니다</block>
+  <block id="f3e44848e63789171c3347e7c081e989" category="cell">IFGRP</block>
+  <block id="c50f4a752643297cd09ba0deaf0c0827" category="cell">SVM 이름</block>
+  <block id="a1fa27779242b4902f7ae3bdd5c6d508" category="cell">유형</block>
+  <block id="9985b4390c40137573e6da05caf85874" category="cell">프로토콜</block>
+  <block id="4ef6db84545e8901a68f8f8bba1e2843" category="cell">SVM 루트 볼륨</block>
+  <block id="0b7e67b6cdcf0432b624d53588d520fb" category="cell">SVM</block>
+  <block id="bd7a9717d29c5ddcab1bc175eda1e298" category="cell">볼륨</block>
+  <block id="6f6cb72d544962fa333e2e34ce64f719" category="cell">크기</block>
+  <block id="62a0282d39568be094470486eaf70c4f" category="cell">산</block>
+  <block id="4d969e8b934c5fca2972aa5ca89cd046" category="cell">* LUN 이름 *</block>
+  <block id="4723f79b4c76db2bb88703ca85a0fa04" category="cell">* LUN 크기 *</block>
+  <block id="55946dce3b039c612e377062b2a6c9a6" category="cell">SVM 네트워크 인터페이스</block>
+  <block id="5319e46e7aff85e8f2c763ae6b0069cc" category="cell">인터페이스 역할</block>
+  <block id="45f4070f03f0721053a889b3aff17dfe" category="cell">IP 주소/넷마스크</block>
+  <block id="905c8ceef55a3828a2d0115025e02146" category="cell">홈 노드/홈 포트</block>
+  <block id="e2f2186cb6b3e3290c59124e7b35a0c5" category="cell">페일오버 그룹</block>
+  <block id="e9cc22da4fb9aa2f267050cd1fb086ab" category="cell">SVM FCP 대상 포트</block>
+  <block id="4d131d200df65c3832cdd6401d8fdfff" category="cell">FCP 포트 이름</block>
+  <block id="6fe11fe2c43e2fccb1743ba6f247c73d" category="cell">WWNN입니다</block>
+  <block id="bbf654b919d931391a0abf64d103a2b3" category="cell">홈 노드</block>
+  <block id="ee4bf62727cdb91796ed0b8880d0f794" category="cell">홈 포트</block>
+  <block id="26faba057c84b48262b937a3841fc54a" category="cell">노드 FCP 이니시에이터 포트</block>
+  <block id="b42e7e9f43276548d600d26ad21cd252" category="cell">노드 이름</block>
+  <block id="22bb75b17c257e3403e89aa51a170ac3" category="cell">WWN입니다</block>
+  <block id="ce9f3448f4c39e84f8694df961238e2d" category="cell">홈런노드</block>
+  <block id="8770610db40a53a03c108175b271b913" category="summary">다음은 프로덕션 패브릭 A에 있는 Cisco 패브릭의 예입니다</block>
+  <block id="a8fed5a2ca2d65761448f6ed9aa9205f" category="doc">운영 패브릭의 Cisco 패브릭 예</block>
+  <block id="7b7dd1ebbfa00e3f7abbb8856a056b68" category="summary">데이터 마이그레이션 프로세스는 테스트된 방법론을 제공하는 단계로 구성됩니다. 데이터 마이그레이션 방법을 사용하여 마이그레이션 선택 항목 및 작업의 범위 지정, 계획 및 문서화 작업을 수행할 수 있습니다.</block>
+  <block id="38346e2f91e39b3fc13cc551fd4078a3" category="doc">데이터 마이그레이션 방법입니다</block>
+  <block id="d1dcea3e0a85c462dc11103e6886176f" category="list-text">발견 단계</block>
+  <block id="51023a36eaba7a9dd7996d766e07e915" category="paragraph">환경에서 호스트, 스토리지 및 패브릭에 대한 정보를 수집합니다.</block>
+  <block id="ec018b890a64a03de77740782e573260" category="list-text">분석 단계</block>
+  <block id="d7a41e203b08492752f4eef6bf0bb17d" category="paragraph">수집된 데이터를 검토하고 각 호스트 또는 스토리지 시스템에 적합한 마이그레이션 방식을 결정합니다.</block>
+  <block id="b37cddc7ce7610ad2a8a0431f068fc7c" category="list-text">계획 단계</block>
+  <block id="9ae842fc5e8004ac52ce415f80e0fda5" category="paragraph">마이그레이션 계획을 생성 및 테스트하고, 대상 스토리지를 프로비저닝하고, 마이그레이션 툴을 구성합니다.</block>
+  <block id="1b6dec684aa1f6e66018baa0a87b5a75" category="list-text">실행 단계</block>
+  <block id="950811ad7d76389f44bfbc3ce4ed97db" category="paragraph">데이터를 마이그레이션하고 호스트 문제 해결 작업을 수행합니다.</block>
+  <block id="4a906f3b5858522ee75dd08c0279ffaa" category="list-text">검증 단계</block>
+  <block id="14af639fbf9d5e97f36e602336dd8493" category="paragraph">새로운 시스템 구성을 검증하고 문서를 제공합니다.</block>
+  <block id="d14e2b5319e65fca6ba432616eac77a8" category="summary">검색 단계에서는 성공적인 마이그레이션 계획 및 실행에 필요한 고객 환경 정보를 수집합니다.</block>
+  <block id="0cfaebcf4a89b4193b480502a8ca8d20" category="doc">위상 데이터 수집 절차를 검색합니다</block>
+  <block id="55876228853abf632dec9346a4f372ec" category="inline-link">문서화</block>
+  <block id="c9b0b0cdb99c109d54409d115823f6ca" category="paragraph">데이터 수집 단계에서 Active IQ OneCollect를 사용합니다. 자세한 내용은 Active IQ OneCollect를 참조하십시오<block ref="2f8e9d10eb7fb637d135022d03c2adab" category="inline-link-rx"></block>.</block>
+  <block id="dbe84cd10fc78ddffac6c2603bb5e334" category="summary">마이그레이션 방법론의 분석 및 계획 단계에서는 사이트 조사 및 계획 워크시트를 사용하여 기존 구성, 타겟 구성, 차이, 개선 계획을 문서화해야 합니다.</block>
+  <block id="52d8ff059d88cc5b65a5a53537d4c524" category="doc">샘플 사이트 조사 및 계획 워크시트</block>
+  <block id="7bafc2e73cbb5786f7652b776e4d06e8" category="paragraph">이 섹션에서는 사이트 조사 및 계획 스프레드시트에 포함해야 하는 정보 유형의 예를 제공합니다. 다음 탭을 사용하는 것이 좋습니다.</block>
+  <block id="bbaff12800505b22a853e8b7f4eb6a22" category="list-text">연락처</block>
+  <block id="179d692ef9707bcf6d92ff37fd394ec8" category="list-text">설문 조사</block>
+  <block id="2dcb257462b6fc9a2001084d2fd657d6" category="list-text">스토리지 디바이스(소스)</block>
+  <block id="78537d40eeebddc438670db9e1670be8" category="list-text">스토리지 디바이스(대상)</block>
+  <block id="fe70ec6ed4c5c9ca26262de5f6dea17f" category="list-text">HBA 및 영역 정보</block>
+  <block id="829f9e559b35482ba2f26a2870a0349e" category="list-text">NetApp LUN 레이아웃</block>
+  <block id="f22322f0d88fb0493fcb4b36d5e1c583" category="list-text">집계 상태</block>
+  <block id="82911d14232afbf61871f222ca6c2a53" category="list-text">FAS 구성</block>
+  <block id="6a1242268d67eaeac1c352b218f7960e" category="list-text">SDS CLI 스크립트</block>
+  <block id="5ee8c627194be9305eb2f195346bf13e" category="summary">FLI 7-Mode에서 ONTAP로의 마이그레이션을 준비하려면 호스트 및 소스 LUN 경로와 기타 세부 정보를 확인하십시오.</block>
+  <block id="7892998f6cd1a85180c0b47cb02c2b6c" category="doc">마이그레이션을 위한 소스 및 타겟 스토리지 준비</block>
+  <block id="62915faa86ce0270957550462ab778f3" category="list-text">ONTAP에서 '고급' 권한 레벨로 변경합니다.</block>
+  <block id="6957ef5bef3e2b05030e2f318c20f70e" category="list-text">나열된 스토리지 오류에 대한 세부 정보를 봅니다. 일부 오류는 계속하기 전에 조치가 필요할 수 있습니다. 그러나 다음 예에 표시된 ""이 장치는 ONTAP(R) LUN입니다." 오류는 무시해도 됩니다.</block>
+  <block id="b8e20808df451129caa39264a050e4ae" category="paragraph">"이 장치는 ONTAP\(R\) LUN입니다."라는 오류 메시지는 FLI가 FlexArray 또는 ONTAP 대상 가상화를 지원하지 않는 ONTAP 기술을 사용하기 때문에 발생합니다. FLI는 LUN을 가져올 수 있지만 FlexArray에서는 LUN 가상화를 지원하지 않습니다.</block>
+  <block id="e5810d56320059c0373293d0da4050c0" category="list-text">7-Mode 스토리지에서 매핑된 LUN을 나열합니다. 디스크 속성 및 경로를 확인합니다.</block>
+  <block id="625ca7c53b2a8736ccd6170298b95c8c" category="list-text">타겟 LUN을 생성합니다. lun create 명령은 파티션 오프셋을 기반으로 크기와 정렬을 감지하고 그에 따라 외래 디스크 인수를 사용하여 LUN을 생성합니다</block>
+  <block id="97c500043e97619a7cdae1db7eb50436" category="list-text">타겟 LUN을 생성합니다.</block>
+  <block id="785fe114b1b46895afc9982f8587b494" category="list-text">테스트 LUN을 테스트 igroup에 매핑합니다.</block>
+  <block id="07bf6de22d85337808d6babd2bfc8074" category="list-text">테스트 LUN을 오프라인 상태로 전환합니다.</block>
+  <block id="ef65c159255abade95e057cfcf3aa501" category="summary">이전에 수행되지 않은 미처리 서버 개선 작업은 마이그레이션 후 수행됩니다.</block>
+  <block id="cf4e13b9b7146fa58901a5bc51850ed3" category="paragraph">타사 소프트웨어가 제거되고 NetApp 소프트웨어가 설치 및 구성되었으며 호스트가 NetApp의 LUN에 액세스하게 됩니다. 특정 호스트 유형에 대한 마이그레이션 후 개선 작업의 예는 _호스트 개선_ 항목을 참조하십시오.</block>
+  <block id="dfe7b37a42a22434a5cd3777ed775602" category="summary">스토리지, 스위치 및 호스트가 적절히 구성되었는지 확인하고 마이그레이션 기간과 작업 수준을 추정할 수 있는 몇 가지 샘플을 얻기 위해 하나 이상의 테스트 마이그레이션을 수행해야 합니다.</block>
+  <block id="29b36bd1e7c4f736d341e2632051fa93" category="doc">마이그레이션 테스트</block>
+  <block id="ee499a8b98fda959d00d7caca3584161" category="summary">FLI(Foreign LUN Import)는 FlexArray 기술을 활용하여 외부 LUN을 마운트하므로 FCP를 사용하는 소스 어레이에만 연결할 수 있습니다. FLI는 FC LUN만 지원합니다. 하지만 iSCSI LUN을 가져올 수 있는 해결 방법이 있습니다. 다른 FLI 온라인 7-Mode에서 ONTAP 워크플로우에 비해 iSCSI LUN을 FC LUN으로 가져올 것이므로 중단 기간은 전체 워크플로우를 포괄합니다.</block>
+  <block id="8c83908f3246c4ea01517197b1f0a841" category="doc">비 FC LUN 임포트</block>
+  <block id="dc54dc0df5ad07a6c087036a2585ee52" category="paragraph">다른 FLI 온라인 7-Mode에서 ONTAP 워크플로우에 비해 iSCSI LUN을 FC LUN으로 가져올 것이므로 중단 기간은 전체 워크플로우를 포괄합니다.</block>
+  <block id="e7ce7ac413ef9c629400cec0539ce23e" category="list-text">소스 스토리지에서 원하는 iSCSI LUN을 해당 iSCSI igroup에서 매핑 해제해야 합니다.</block>
+  <block id="842e827119a02e372de448435365debd" category="list-text">소스 어레이에서 LUN을 FC igroup에 매핑하여 대상 어레이 WWPN이 igroup에 추가되었는지 확인합니다.</block>
+  <block id="0258050cca747222a2b609aa3285e960" category="list-text">LUN을 가져옵니다.</block>
+  <block id="23c60b9a16c85bf54bf9deb89552d63e" category="list-text">LUN을 가져온 후 새 iSCSI igroup을 생성하고 호스트를 igroup에 추가할 수 있습니다.</block>
+  <block id="e16c7b5aab5d164850b42f6028a1861d" category="list-text">호스트에서 LUN을 다시 검색합니다.</block>
+  <block id="2d38b1ddaadd9ebf668f48aacb8534ef" category="paragraph">이 문서에 기술된 특정 제품과 기술이 현재 사용 환경을 지원하는지 확인하려면 NetApp Support 사이트의 상호 운영성 매트릭스 툴 (IMT)을 활용하십시오. NetApp IMT에는 NetApp이 지원하는 구성을 설계하는 데 사용할 수 있는 제품 구성요소 및 버전이 정의되어 있습니다. 구체적인 결과는 게시된 기술사양과 그에 따른 고객 설치 환경에 따라 달라집니다.</block>
+  <block id="e61c2744635e0ead09ed814faf13c8bc" category="summary">이 섹션에서는 FLI 7-Mode에서 ONTAP로의 전환 워크플로우의 예를 설명합니다. 전환 워크플로는 온라인 또는 오프라인 워크플로로 실행할 수 있습니다.</block>
+  <block id="5622dcadbb8a7ee925f9431d7f32bf92" category="doc">FLI 7-Mode에서 ONTAP로의 전환 워크플로우</block>
+  <block id="a033f4d0615f80cc9a96ca353f5716c3" category="paragraph">소스 LUN이 32비트 애그리게이트에서 호스팅되거나 LUN이 잘못 정렬된 경우 FLI 전환을 권장합니다. FLI 7-Mode에서 ONTAP로 전환할 때 LUN을 7-Mode에서 ONTAP으로 전환하는 기능과 LUN 정렬 방식을 수정하고 LUN을 32비트에서 64비트 애그리게이트로 전환하는 기능을 결합할 수 있습니다. 7MTT(7-Mode 전환 툴)를 비롯한 다른 LUN 전환 방법은 ONTAP로 전환하기 전에 LUN 정렬을 수정 및/또는 32비트를 64비트 애그리게이트로 변환하는 것이 필요할 수 있습니다.</block>
+  <block id="ce17710d1a5ef97860c3ed605057e8ad" category="paragraph">FLI 7-Mode에서 ONTAP로의 전환 워크플로는 온라인 또는 오프라인 워크플로가 될 수 있습니다. 소스 어레이가 NetApp 7-Mode 스토리지 어레이인 경우를 제외하고, 이러한 워크플로우는 두 FLI 오프라인 및 온라인 마이그레이션 워크플로우와 기능적으로 동일합니다. 두 워크플로우 모두 마이그레이션 제품과 동일한 규칙 및 절차를 공유합니다. FLI 온라인 워크플로우 호스트 운영 지원 목록이 포함되어 있습니다.</block>
+  <block id="96e5e27ccd9119890b490f0a6581514b" category="paragraph">제공된 예는 FLI 7-Mode에서 ONTAP 프로세스까지 전체적으로 연습해야 합니다. FLI 7-Mode에서 ONTAP로의 전환 흐름에는 다음 작업이 포함됩니다.</block>
+  <block id="03b433884d8ecdd978e2277adf7713ba" category="list-text">소스 및 대상 스토리지 준비</block>
+  <block id="8129cc4d9aa314cede44f0db47578d65" category="list-text">FLI 전환 마이그레이션 후 작업</block>
+  <block id="ed7cbae072fb6b5459833b1aaf0b2b9c" category="summary">FLI(Foreign LUN Import)는 ONTAP에 내장된 기능으로, 사용자가 데이터를 간편하고 효율적으로 외부 어레이 LUN에서 NetApp LUN으로 가져올 수 있습니다.</block>
+  <block id="bd6d110624152bef80bfb3a40415afcb" category="doc">외부 LUN 임포트 개요</block>
+  <block id="5ae42afc477ebe652aee70c0421e761c" category="paragraph">모든 FLI 마이그레이션은 LUN 레벨에서 작동합니다. FLI는 엄격한 블록 기반 툴이며, 파일, 기록, NFS 및 CIFS 기반 마이그레이션은 지원되지 않습니다. NFS 및 CIFS/SMB와 같은 파일 레벨 프로토콜에 대한 다른 마이그레이션 방법론에 대한 자세한 내용은 _Data Migration Tools 빠른 참조 가이드_를 참조하십시오.</block>
+  <block id="e545390b6a02c90809e3ba41d6cd0d49" category="paragraph">FLI는 NetApp FlexArray ® 기술을 활용하여 외부 RAID 어레이 LUN을 검색하고 해당 LUN에서 데이터를 가져옵니다. FlexArray을 사용하면 NetApp ONTAP 컨트롤러가 하나 이상의 타사 어레이 앞에서 이니시에이터 역할을 할 수 있습니다. FlexArray는 이러한 어레이에서 백엔드 스토리지로 LUN을 마운트한 다음 해당 LUN의 공간을 NetApp 유니파이드 스토리지(FCP, FCoE, iSCSI, NFS 및 CIFS/SMB 프로토콜 액세스 허용)로 SAN 또는 NAS 환경의 호스트에 표시할 수 있습니다.</block>
+  <block id="19f6373fc1d63d6ca70966941c8c6838" category="paragraph">FLI에는 FlexArray 라이센스가 필요하지 않습니다. FLI는 FlexArray 기술을 활용하여 외부 LUN을 NetApp ONTAP 어레이에 복사한 다음, 해당 LUN을 사용하는 호스트 및 애플리케이션이 현재 LUN을 호스팅하는 NetApp 어레이를 향하도록 할 수 있습니다. ONTAP에서 더 이상 프로페셔널 서비스 실행을 마이그레이션할 필요는 없지만, NetApp은 가장 간단한 마이그레이션을 제외한 모든 마이그레이션에 대해 범위 지정, 계획, 교육을 수행하는 프로페셔널 서비스를 적극 권장합니다.</block>
+  <block id="603139ad94ee4b366078d1718edd6cc8" category="paragraph">FLI는 SAN LUN을 ONTAP로 마이그레이션하도록 개발되었습니다. FLI는 다음을 포함하되 이에 국한되지 않는 다양한 마이그레이션 요구사항을 지원합니다.</block>
+  <block id="8f9080da05de4c15ecad29c5259754e0" category="list-text">FlexArray 구성에서 지원되는 대로 EMC, Hitachi, HP 및 기타 공급업체의 이기종 스토리지 어레이 간에 데이터 마이그레이션</block>
+  <block id="63fcf874938b3f8a8d09eea8f4e717fd" category="list-text">데이터 센터 재배치, 통합 및 어레이 교체 시 블록 데이터의 마이그레이션을 간소화하고 가속화합니다.</block>
+  <block id="99abf425200601a606145e997abba074" category="list-text">마이그레이션 및 LUN 재정렬을 단일 워크플로우로 통합</block>
+  <block id="587d7ded98be7df0f5f867261e578e9e" category="paragraph">또한 7-Mode에서 ONTAP로 전환 절차를 사용하면 32비트에서 64비트 애그리게이트로 변환하고, 정렬 문제를 해결하고, LUN을 단일 작업으로 마이그레이션할 수 있습니다.</block>
+  <block id="e54685159c7474efa74aedc4b8c29106" category="inline-xref-macro">LUN 요구 사항 및 제한 사항</block>
+  <block id="4c905b9a5d9837a1d1309ec0bbc65581" category="paragraph">FLI는 NetApp 스토리지에서 데이터 마이그레이션을 위해 가져올 LUN을 검색할 수 있도록 지원합니다. 외부 LUN은 NetApp 스토리지의 디스크로 표시되며, 사용자 데이터를 실수로 덮어쓰지 않도록 해당 LUN에 소유권이 자동으로 할당되지 않습니다. 외부 어레이 LUN이 포함된 디스크는 외부 디스크로 표시되어야 합니다. NetApp 스토리지에 FLI를 사용하려면 외부 어레이 LUN 구성 규칙을 엄격하게 준수해야 합니다. 자세한 내용은 <block ref="0c1805ddb0e0c88224858f6489806cc7" category="inline-xref-macro-rx"></block>.</block>
+  <block id="e848157e470882bb6cecc83cbc92062d" category="paragraph">FLI는 각 컨트롤러에서 최소 1개의 물리적 FC 포트를 필요로 하며 LUN이 이니시에이터 모드에서 직접 마이그레이션하도록 합니다. 각 패브릭에 하나씩 두 개의 포트를 사용하는 것이 좋지만, 단일 포트를 사용할 수 있습니다. 이러한 포트는 소스 스토리지에 접속하는 데 사용되며 소스 LUN을 보고 마운트하려면 조닝 및 마스킹되어야 합니다. 포트를 타겟에서 이니시에이터로 변경해야 하는 경우, FC 포트를 타겟에서 이니시에이터로 변환하는 프로세스를 검토하려면 _FlexArray 가상화 설치 요구 사항 및 참조 가이드_를 참조하십시오.</block>
+  <block id="eab5ce4cf7af1499d92d1389fefa2f66" category="paragraph">FLI 마이그레이션은 오프라인 상태에서 수행할 수 있으며, 임포트 기간 동안 운영이 중단되거나 주로 무중단 온라인이 될 수 있습니다.</block>
+  <block id="b0b8376daf73a10ceae233832249516f" category="paragraph">이 그림에서는 마이그레이션을 위해 호스트를 오프라인으로 전환하는 FLI 오프라인 데이터 마이그레이션을 보여 줍니다. NetApp 어레이는 데이터를 타사 어레이에서 직접 복사합니다.</block>
+  <block id="3b1a98b47b97af6d96e1b57d86c0ef45" category="image-alt">FLI 데이터 마이그레이션 개요</block>
+  <block id="4ab82376627d3c92c29ab3d0e5562860" category="paragraph">이 그림은 FLI 온라인 데이터 마이그레이션을 보여 줍니다. 호스트가 새 LUN이 호스팅되는 NetApp 컨트롤러에 연결되어 있습니다. 그런 다음 가져오는 동안 호스트 작업을 재개하고 계속할 수 있습니다.</block>
+  <block id="41472df39787eec959ea5cef1aad8ef3" category="inline-link">데이터 마이그레이션 툴 빠른 참조 가이드</block>
+  <block id="b4ad04dd5f331d7793a4a573eb0f12cc" category="paragraph"><block ref="b4ad04dd5f331d7793a4a573eb0f12cc" category="inline-link-rx"></block></block>
+  <block id="3e93c4ba8debcbb0556af1cd7ab1b741" category="summary">FLI 마이그레이션을 시작하기 전에 LUN이 다음 요구사항을 충족해야 합니다.</block>
+  <block id="e80e48acabbfbfabe9d26f77e6893f2e" category="list-text">FLI는 각 컨트롤러에서 최소 1개의 FC 포트를 필요로 하며 LUN이 이니시에이터 모드에서 직접 마이그레이션하도록 합니다.</block>
+  <block id="1aa4f2a052fd81ec3e8e4d05af38fa3d" category="list-text">ONTAP에서 할당을 방지하려면 대상 스토리지에서 외부 LUN을 외부 LUN으로 표시해야 합니다.</block>
+  <block id="9aa3188a54765c6430f32b9c1bd813fd" category="list-text">가져오기를 시작하기 전에 외부 LUN이 가져오기 관계에 있어야 합니다.</block>
+  <block id="44aa1f7a817892effc0c87066a63421e" category="list-text">LUN은 외부 LUN과 크기가 같아야 하며 디스크 블록 크기가 같아야 합니다. 이러한 두 요구 사항은 LUN 생성 단계에서 모두 적용됩니다.</block>
+  <block id="712ab059b692b9bc1b27b9cc4debdd19" category="list-text">LUN은 확장하거나 축소해서는 안 됩니다.</block>
+  <block id="28346dfebd33c0a30bb74655c8205c5e" category="list-text">LUN은 하나 이상의 igroup에 매핑되어야 합니다.</block>
+  <block id="1be37e9706ae71ec79642c4a74ddb6e4" category="list-text">관계를 생성하기 전에 NetApp LUN을 오프라인 상태로 전환해야 합니다. 그러나 LUN 관계가 생성된 후 온라인 FLI의 경우 온라인으로 되돌릴 수 있습니다.</block>
+  <block id="e646e16bee8b32e6ea29e30d01970a6c" category="section-title">제한 사항</block>
+  <block id="9f0253275fe68858c0af6b82677674c0" category="list-text">모든 마이그레이션이 LUN 레벨입니다.</block>
+  <block id="627efaeda3a2eeb48c8581eb26bd2021" category="list-text">FLI는 FC(파이버 채널) 연결만 지원합니다.</block>
+  <block id="9abb410f41517924252f8ab199b93f86" category="list-text">FLI는 iSCSI 연결을 직접 지원하지 않습니다. FLI를 사용하여 iSCSI LUN을 마이그레이션하려면 LUN 유형을 FC로 변경해야 합니다. 마이그레이션이 완료되면 LUN 유형이 다시 iSCSI로 변경됩니다.</block>
+  <block id="0d5c34a6d2d41eb1d2d8330835270135" category="summary">데이터 마이그레이션 프로세스의 계획 단계에서는 세부적인 마이그레이션 계획을 수립하고 모든 작업이 실제 마이그레이션에 준비되도록 하는 데 필요한 작업에 중점을 둡니다. 대부분의 마이그레이션 작업은 이 단계에서 수행되는 계획입니다.</block>
+  <block id="eac3a1a74e25173545de3b7efc1d8b80" category="doc">계획 단계 워크플로</block>
+  <block id="0264e1e7f4ae9cc5f9ba5ebe373f57f4" category="paragraph">계획 단계에서는 분석 단계에서 수집한 호스트 차이 분석 정보를 사용하여 개선 계획을 개발합니다. 계획 중에 호스트 개선 정보를 사용합니다. 엔드 투 엔드 연결을 검증한 후 테스트 마이그레이션을 수행하여 운영 마이그레이션을 시작하기 전에 모든 것이 제대로 구성되었는지 확인합니다.</block>
+  <block id="9795dd3baed0cc837e1b9cf32a4ccc4a" category="paragraph">다음 그림에서는 계획 워크플로를 보여 줍니다.</block>
+  <block id="1946a9dc1ec2894c2234c5ba4d6a5c54" category="image-alt">1단계 계획 및 준비</block>
+  <block id="612160c830618272ed4c07bdf0279fd3" category="list-text">기존 zoneset을 백업합니다.</block>
+  <block id="be13c48aabcbfa550f5272ec96d5ee4b" category="list-text">소스 스토리지를 대상 스토리지에 조닝(Zoning)합니다.</block>
+  <block id="f91fe921e2cb5678f810267ad4821614" category="list-text">이니시에이터 포트를 Fabric에 연결합니다.</block>
+  <block id="8b5e513dbb2d978c90d0638d390ec7a3" category="list-text">소스 스토리지를 검색하고 LUN을 테스트합니다. 소스 LUN을 외부 LUN으로 표시합니다.</block>
+  <block id="0ea64a2d0c2ec6081e63669e255b06b4" category="list-text">외부 LUN을 사용하여 테스트 LUN을 생성합니다.</block>
+  <block id="5a228bfc3c958e8197e88901f5109173" category="list-text">테스트 igroup을 생성하고 테스트 LUN을 매핑합니다.</block>
+  <block id="66bfd800d23df5177030f5ced90cc5d4" category="list-text">오프라인 테스트 LUN</block>
+  <block id="3f06e7f1198ba8a2316271b777fb4a86" category="list-text">가져오기 관계를 생성하고 테스트 마이그레이션을 시작합니다.</block>
+  <block id="d0cbf31fdfc6212f4d9c6c2947bae517" category="list-text">가져오기 관계를 삭제하고 테스트 LUN 매핑을 해제합니다.</block>
+  <block id="69490deb4a1399cd7f7cac6a9595dee0" category="list-text">테스트 LUN을 제거합니다.</block>
+  <block id="3bdb3eeb4374f515d55cadf9b0eea48b" category="list-text">이니시에이터 포트 WWPN을 사용하여 대상 스토리지에 대한 호스트 그룹을 생성합니다.</block>
+  <block id="6898bdcc3b373b911a309ad3bd771de2" category="list-text">테스트 LUN(1GB)을 생성합니다.</block>
+  <block id="cb3d5d2eaf6c7842ca58c3e41c3a5ae0" category="list-text">대상 스토리지 호스트 그룹에 테스트 LUN을 할당(매핑/마스크)합니다.</block>
+  <block id="3be720072e03679f7ed0f85258130b70" category="summary">ONTAP 외부 LUN 임포트</block>
+  <block id="dbd3f1a817d137c052ec01ef60940131" category="doc">ONTAP 외부 LUN 임포트 설명서</block>
+  <block id="9273826bb0d876c78b121ff252c71f0e" category="sidebar">ONTAP FLI 문서</block>
+  <block id="9a4c1be88c2720ce2a1f8a5fd2b27a5c" category="sidebar">FLI 워크플로우</block>
+  <block id="9661e4f0a38203cee0d0ec82dcba896f" category="sidebar">오프라인 워크플로</block>
+  <block id="afec4ed45e968a4fe6c00ed1c1e83691" category="sidebar">온라인 워크플로</block>
+  <block id="88f3f903d8cfd4ec8cf08ee64f86504b" category="sidebar">FLI를 이용한 SAN 마이그레이션</block>
+  <block id="3b878279a04dc47d60932cb294d96259" category="sidebar">개요</block>
+  <block id="8d98bee06f527b9e9c395ead1ae98be3" category="sidebar">외부 LUN 임포트</block>
+  <block id="135b308ed83c53f1516b7c754566d1c4" category="sidebar">시작하기 전에</block>
+  <block id="a4d60e73cb9c1bfe95e0f1e874619b10" category="sidebar">FLI 마이그레이션 후 절차</block>
+  <block id="11bfb49706ab1fb0b0c2c70607371003" category="sidebar">zoneset에서 소스 스토리지 및 호스트 영역을 제거하는 중입니다</block>
+  <block id="faad5f79401b38fa8970d5b9e778ca6a" category="sidebar">외부 LUN 가져오기 성능</block>
+</blocks>

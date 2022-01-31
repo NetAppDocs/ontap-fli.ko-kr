@@ -1,0 +1,21 @@
+---
+permalink: san-migration/task_rebooting_the_host_to_validate_system_state.html 
+sidebar: sidebar 
+keywords: reboot, host, validate, system state 
+summary: 마이그레이션 호스트는 구성을 변경하기 전에 재부팅됩니다. 마이그레이션을 진행하기 전에 시스템이 정상 작동이 확인된 상태인지 확인합니다. 
+---
+= 호스트를 재부팅하여 시스템 상태를 확인합니다
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+마이그레이션 호스트는 구성을 변경하기 전에 재부팅됩니다. 마이그레이션을 진행하기 전에 시스템이 정상 작동이 확인된 상태인지 확인합니다.
+
+재부팅 후에도 서버 구성이 영구적이고 원시적인 상태인지 확인하려면 다음 단계를 수행하십시오.
+
+.단계
+. 열려 있는 모든 응용 프로그램을 종료합니다.
+. 호스트를 재부팅합니다.
+. 로그에서 오류를 검토합니다.
+

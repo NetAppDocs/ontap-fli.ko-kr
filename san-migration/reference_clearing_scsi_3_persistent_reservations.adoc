@@ -1,0 +1,57 @@
+---
+permalink: san-migration/reference_clearing_scsi_3_persistent_reservations.html 
+sidebar: sidebar 
+keywords: clear, scsi-3, persistent, reservations 
+summary: Windows 클러스터가 있는 경우 클러스터된 모든 호스트가 오프라인인 경우에도 쿼럼 디스크에 대한 SCSI-3 예약을 제거해야 합니다. 
+---
+= SCSI-3 영구 예약을 지우는 중입니다
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Windows 클러스터가 있는 경우 클러스터된 모든 호스트가 오프라인인 경우에도 쿼럼 디스크에 대한 SCSI-3 예약을 제거해야 합니다.
+
+소스 LUN에 외부 디스크로 레이블을 지정하려고 하면 다음 오류 메시지가 나타납니다.
+
+ Error: command failed: The specified foreign disk has SCSI persistent reservations. Disk serial number: "6006016021402700787BAC217B44E411". Clear the reservation using the "storage disk remove-reservation" command before creating the import relationship.
+'storage disk remove-reservation' 명령을 사용하여 NetApp 컨트롤러의 쿼럼 디스크에 대한 SCSI-3 예약을 제거할 수 있습니다.
+
+[listing]
+----
+storage disk remove-reservation –disk disk_name
+----
+이 오류와 이에 대한 개선 사항을 보여주는 스니펫이 있습니다.
+
+[listing]
+----
+cluster-4b::*> lun offline -vserver fli_cluster -path /vol/fli_volume/cluster_CVS
+cluster-4b::*> lun import create -vserver fli_cluster -path /vol/fli_volume/cluster_CVS -foreign-disk 6006016021402700787BAC217B44E411
+Error: command failed: The specified foreign disk is not marked as foreign. Disk serial number: "6006016021402700787BAC217B44E411".
+
+cluster-4b::*> sto disk show -disk DGC-1.6 -fields serial-number,is-foreign
+ (storage disk show)
+disk is-foreign serial-number
+------- ---------- --------------------------------
+DGC-1.6 true 6006016021402700787BAC217B44E411
+
+cluster-4b::*> lun import create -vserver fli_cluster -path /vol/fli_volume/cluster_CVS -foreign-disk 6006016021402700787BAC217B44E411
+
+Error: command failed: The specified foreign disk has SCSI persistent reservations. Disk serial number: "6006016021402700787BAC217B44E411". Clear the reservation using the "storage disk remove-reservation" command before creating the import relationship.
+
+cluster-4b::*> storage disk remove-reservation -disk DGC-1.6
+cluster-4b::*> lun import create -vserver fli_cluster -path /vol/fli_volume/cluster_CVS -foreign-disk 6006016021402700787BAC217B44E411
+cluster-4b::*> lun online -vserver fli_cluster -path /vol/fli_volume/cluster_CVS
+cluster-4b::*> lun import show
+
+vserver foreign-disk path operation admin operational percent in progress state state complete
+ -------------------------------------------------------------------------------
+fli_cluster 6006016021402700787BAC217B44E411 /vol/fli_volume/cluster_CVS import stopped stopped 0
+
+cluster-4b::*> lun import start -vserver fli_cluster -path /vol/fli_volume/cluster_CVS
+cluster-4b::*> lun import show
+
+vserver foreign-disk path operation admin operational percent in progress state state complete
+-------------------------------------------------------------------------------
+fli_cluster 6006016021402700787BAC217B44E411 /vol/fli_volume/cluster_CVS import started in_progress 7
+----

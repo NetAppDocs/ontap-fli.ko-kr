@@ -1,0 +1,27 @@
+---
+permalink: san-migration/concept_migration_report.html 
+sidebar: sidebar 
+keywords: migration, report 
+summary: 가져오기 로그는 클러스터 이벤트 로그 파일에 저장됩니다. 마이그레이션에 성공했는지 확인하려면 로그에서 오류를 검토해야 합니다. 
+---
+= 마이그레이션 보고서
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+가져오기 로그는 클러스터 이벤트 로그 파일에 저장됩니다. 마이그레이션에 성공했는지 확인하려면 로그에서 오류를 검토해야 합니다.
+
+마이그레이션 보고서는 다음과 같이 나타나야 합니다.
+
+[listing]
+----
+DataMig-cmode::*> rows 0; event log show –nodes * –event fli*
+7/7/2014 18:37:21   DataMig-cmode-01 INFORMATIONAL fli.lun.verify.complete: Import verify of foreign LUN 83017542001E of size 42949672960 bytes from array model DF600F belonging to vendor HITACHI  with NetApp LUN QvChd+EUXoiS is successfully completed.
+~~~~~~ Output truncated ~~~~~~~
+----
+[NOTE]
+====
+소스 LUN과 대상 LUN을 비교하는 검증 단계는 마이그레이션 실행 단계에서 다룹니다. 가져오기 작업 및 외부 LUN에 연결되어 있으므로 가져오기 및 LUN 검증 단계는 마이그레이션 실행 단계에서 다룹니다.
+
+====

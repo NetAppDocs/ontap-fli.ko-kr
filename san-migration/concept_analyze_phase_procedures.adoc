@@ -1,0 +1,30 @@
+---
+permalink: san-migration/concept_analyze_phase_procedures.html 
+sidebar: sidebar 
+keywords: analyze, phase, imt, best practices 
+summary: '분석 단계에서는 마이그레이션 작업을 진행하기 전에 해결해야 하는 항목을 중점적으로 다룹니다. 호스트 구성 정보는 NetApp 상호 운용성 매트릭스(IMT)에 나와 있는 지원 구성과 비교해야 합니다.' 
+---
+= 분석 단계 IMT 모범 사례
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+분석 단계에서는 마이그레이션 작업을 진행하기 전에 해결해야 하는 항목을 중점적으로 다룹니다. 호스트 구성 정보는 NetApp 상호 운용성 매트릭스(IMT)에 나와 있는 지원 구성과 비교해야 합니다.
+
+IMT는 NetApp에서 인증한 타사 제품 및 구성 요소와 함께 작동하는 NetApp 제품의 구성에 대한 정보를 검색할 수 있는 웹 기반 유틸리티입니다. IMT에는 지원 및 인증된 NetApp 구성이 모두 포함되어 있습니다. 지원되는 구성은 NetApp에서 검증한 구성입니다. 인증 구성은 타사 구성 요소와 함께 사용할 수 있는 자격을 갖춘 구성입니다.
+
+
+
+== IMT 모범 사례
+
+* 계획 워크시트의 스위치 및 호스트 섹션에 필요한 소프트웨어 및 업그레이드에 대한 NetApp IMT 권장 사항을 입력합니다.
+* ONTAP OS, 프로토콜 및 CF 모드와 같은 정적 정보를 IMT에 입력하여 시작합니다. 그런 다음 사이트 조사를 필터 가이드로 사용하여 호스트 OS, 볼륨 관리자 및 HBA 정보를 입력합니다.
+* 결과가 반환되지 않도록 특별히 지정하지 마십시오. 여러 개의 반환된 결과를 보고 가장 적합한 결과를 선택하는 것이 좋습니다.
+* 호스트 HBA는 때때로 OEM 부품 번호에 보고되며 IMT에 입력하기 전에 상호 참조되어야 합니다.
+* 각 호스트를 IMT와 비교하여 지원 가능성을 확인합니다.
+
+
+* 관련 정보 *
+
+https://mysupport.netapp.com/NOW/products/interoperability["NetApp 상호 운용성"]

@@ -1,0 +1,24 @@
+---
+permalink: san-migration/concept_wiring_best_practices_for_fli.html 
+sidebar: sidebar 
+keywords: wire, best practices, fli migration 
+summary: FLI 마이그레이션을 위한 ONTAP 스토리지를 구성하려면 계획 정보와 권장 모범 사례에 따라 소스 스토리지를 패브릭에 배선해야 합니다. 
+---
+= FLI 마이그레이션에 대한 배선 모범 사례
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FLI 마이그레이션을 위한 ONTAP 스토리지를 구성하려면 계획 정보와 권장 모범 사례에 따라 소스 스토리지를 패브릭에 배선해야 합니다.
+
+FLI 마이그레이션을 위한 ONTAP 스토리지를 구성할 때는 다음과 같은 배선 모범 사례를 따르는 것이 좋습니다.
+
+* 이중화를 위해 이중 패브릭을 사용합니다.
+* FLI 마이그레이션을 위해 각 대상 스토리지에서 최소 2개의 이니시에이터와 2개의 타겟 포트를 사용하십시오.
+* 대상 스토리지 이니시에이터 포트를 호스트에 조닝(Zoning)하지 마십시오. ONTAP의 이니시에이터 포트는 소스 스토리지의 타겟 포트와 조닝(Zoning)하는 데 사용됩니다.
+
+
+다음은 운영 패브릭에서 소스 스토리지 및 대상 스토리지에 대한 배선의 예입니다.
+
+image::../media/configure_ontap_storage_for_fli_migration_1.png[운영 환경의 소스 및 대상 스토리지에 대한 배선]

@@ -1,0 +1,31 @@
+---
+permalink: san-migration/task_checking_supported_configuration_for_fli_using_imt.html 
+sidebar: sidebar 
+keywords: check, supported configurations, fli using imt 
+summary: '상호 운용성 매트릭스 툴(IMT) 을 통해 NetApp에서 검증한 타사 제품 및 구성 요소와 함께 작동하는 NetApp 제품의 구성에 대한 정보를 찾아야 합니다.' 
+---
+= IMT를 사용하여 FLI에 대해 지원되는 구성 확인
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+상호 운용성 매트릭스 툴(IMT) 을 통해 NetApp에서 검증한 타사 제품 및 구성 요소와 함께 작동하는 NetApp 제품의 구성에 대한 정보를 찾아야 합니다.
+
+[NOTE]
+====
+ONTAP 9.9.1부터, 어레이가 IMT에서 지원되는 것으로 나열되지 않은 경우 NetApp Support 사이트에서 SAN LUN 마이그레이션 앱을 사용하여 어레이가 지원되는지 여부를 확인할 수 있습니다.
+
+====
+.단계
+. 상호 운용성 매트릭스 툴 으로 이동합니다.
+. 어레이 모델을 검색합니다.
+. FLI(Foreign LUN Import) 백엔드 상호 운용성 * 을 선택하십시오.
+. FAS 모델 * 및 * ONTAP 버전 * 을 선택하여 지원되는 구성을 확인합니다.
+. 프런트엔드 지원 호스트 구성의 경우 * build end to end view with ONTAP SAN host * 를 클릭합니다.
+. 스위치 지원 구성의 경우 * ONTAP SAN 호스트 * 탭에서 * SAN-스위치 * 에 대한 빌드-투-엔드 보기를 클릭합니다.
+
+
+* 관련 정보 *
+
+https://mysupport.netapp.com/NOW/products/interoperability["NetApp 상호 운용성"]

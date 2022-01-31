@@ -1,0 +1,19 @@
+---
+permalink: san-migration/task_presenting_source_luns_to_ontap_storage_during_offline_fli.html 
+sidebar: sidebar 
+keywords: present, source luns, ontap storage, fli 
+summary: 오프라인 FLI 프로세스의 일환으로 소스 LUN을 ONTAP 스토리지에 제공해야 합니다. 
+---
+= FLI 중에 소스 LUN을 ONTAP 스토리지에 제공
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+오프라인 FLI 프로세스의 일환으로 소스 LUN을 ONTAP 스토리지에 제공해야 합니다.
+
+.단계
+. 소스 스토리지에 로그인합니다.
+. 계획 단계에서 생성한 호스트 그룹에 NetApp 이니시에이터를 추가합니다.
+. 사용 가능한 논리 LUN에서 마이그레이션해야 하는 호스트 LUN을 선택합니다. 사이트 조사 및 계획 워크시트의 소스 LUN 섹션에 나와 있는 각 호스트에 대해 LUN 이름을 사용합니다.
+

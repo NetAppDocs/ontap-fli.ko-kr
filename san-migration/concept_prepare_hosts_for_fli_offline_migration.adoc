@@ -1,0 +1,15 @@
+---
+permalink: san-migration/concept_prepare_hosts_for_fli_offline_migration.html 
+sidebar: sidebar 
+keywords: prepare, hosts, fli, offline, migration 
+summary: FLI 오프라인 실행 단계에서는 마이그레이션 호스트 준비를 포함합니다. 
+---
+= FLI 오프라인 마이그레이션을 위한 호스트 준비
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FLI 오프라인 실행 단계에서는 마이그레이션 호스트 준비를 포함합니다.
+
+대부분의 경우 이 단계를 수행하기 전에 이 개선 작업을 수행할 수 있습니다. 그렇지 않은 경우 호스트 연결 키트 또는 DSM 설치와 같은 호스트 조정을 수행합니다. 분석 단계에서는 각 호스트에서 수행해야 하는 항목의 간격 목록을 갖게 됩니다. 그러면 해당 호스트가 ONTAP를 사용하여 지원되는 구성에 있게 됩니다. 수행되는 마이그레이션 유형에 따라 호스트를 교정 및 재부팅하거나(온라인 FLI/7-Mode에서 ONTAP FLI로 FLI), 마이그레이션 프로세스가 완료될 때까지(오프라인 FLI) 문제를 해결하는 동시에 종료해야 합니다.

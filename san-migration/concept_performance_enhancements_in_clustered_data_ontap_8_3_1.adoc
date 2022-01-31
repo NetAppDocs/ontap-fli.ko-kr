@@ -1,0 +1,47 @@
+---
+permalink: san-migration/concept_performance_enhancements_in_clustered_data_ontap_8_3_1.html 
+sidebar: sidebar 
+keywords: performance, enhancements, ontap 8.3.1 
+summary: FLI는 성능을 더욱 효과적으로 관리하고 워크로드 부족 현상이 발생하지 않도록 일부 기능이 향상되었습니다. ONTAP 8.3.1의 FLI 개선 사항에는 새로운 스로틀 명령 및 LUN 임포트 기능에 처리량 및 QoS 정책 그룹을 보여주는 향상된 기능이 포함되어 있습니다. 
+---
+= ONTAP 8.3.1의 성능 향상
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FLI는 성능을 더욱 효과적으로 관리하고 워크로드 부족 현상이 발생하지 않도록 일부 기능이 향상되었습니다. ONTAP 8.3.1의 FLI 개선 사항에는 새로운 스로틀 명령 및 LUN 임포트 기능에 처리량 및 QoS 정책 그룹을 보여주는 향상된 기능이 포함되어 있습니다.
+
+LUN 임포트 스로틀 명령은 불러오기가 실행될 수 있는 최대 속도를 제한하는 데 사용됩니다.
+
+[listing]
+----
+cluster::*> lun import throttle -vserver fli_72C -path /vol/flivol/72Clun1 -max-throughput-limit
+
+{<integer>[KB|MB|GB|TB|PB]}  Maximum Throughput Limit (per sec)
+----
+LUN import show가 있는 인스턴스 스위치를 사용하면 임계치 조절 및 QoS 정보 등 확장된 LUN 임포트 정보를 표시할 수 있습니다.
+
+[listing]
+----
+cluster::*> lun import show -instance
+
+    Vserver Name: fli_72C
+    LUN Path: /vol/flivol/72Clun1
+    Foreign Disk Serial Number: D0i1E+G8Wg6m
+    Import Home Node: ontaptme-fc-cluster-01
+    Import Current Node: ontaptme-fc-cluster-01
+    Operation In Progress: import
+    Admin State: stopped
+    Operational State: stopped
+    Percent Complete: 0
+    Blocks Imported: -
+    Blocks Compared: -
+    Total Blocks: 6297480
+    Estimated Remaining Duration: -
+    Failure Reason: -
+    Maximum Throughput Limit(per sec): -
+    Current Throughput (per sec): -
+    QoS Policy Group: -
+----
+현재 처리량의 값은 가져오기 또는 확인 작업의 현재 처리량입니다. 사용자는 스로틀 값을 설정하기 전에 이를 확인해야 합니다. 실행 중이 아닐 때는 비어 있습니다. LUN 가져오기 스로틀이 사용된 경우 QoS 정책 그룹이 표시됩니다.

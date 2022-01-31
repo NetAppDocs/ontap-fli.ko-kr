@@ -1,0 +1,52 @@
+---
+permalink: san-migration/task_fli_offline_importing_the_data.html 
+sidebar: sidebar 
+keywords: fli offline, import data 
+summary: 다음 단계에서는 소스 LUN에서 대상 LUN으로 데이터를 가져오는 방법을 설명합니다. 
+---
+= FLI 오프라인: 데이터 가져오기
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+다음 단계에서는 소스 LUN에서 대상 LUN으로 데이터를 가져오는 방법을 설명합니다.
+
+.단계
+. 마이그레이션 가져오기를 시작합니다.
++
+[listing]
+----
+DataMig-cmode::*> lun import start –vserver datamig –path /vol/winvol/bootlun
+
+DataMig-cmode::*> lun import start –vserver datamig –path /vol/winvol/fdrive
+
+DataMig-cmode::*> lun import start –vserver datamig –path /vol/winvol/gdrive
+----
+. 가져오기 진행률을 모니터링합니다. 여기서 보는 진행률을 테스트 마이그레이션을 수행한 후 개발한 마이그레이션 성능 예측과 비교할 수 있습니다.
++
+[listing]
+----
+DataMig-cmode::*> lun import show –vserver datamig –fields vserver, foreign-disk, path, admin-state, operational-state, percent-complete, imported-blocks, total-blocks, , estimated-remaining-duration
+vserver foreign-disk path               admin-state operational-state percent-complete imported-blocks total-blocks estimated-remaining-duration
+------- ------------ ------------------ ----------- ----------------- ---------------- --------------- ------------ ----------------------------
+datamig 83017542000E /vol/winvol/fdrive started     completed         100              4194304         4194304      -
+datamig 83017542000F /vol/winvol/gdrive started     completed         100              6291456         6291456      -
+datamig 830175420010 /vol/linuxvol/bootlun
+                                        started     in_progress       83               35107077        41943040     00:00:48
+3 entries were displayed.
+----
+. 가져오기 작업이 성공적으로 완료되었는지 확인합니다.
++
+[listing]
+----
+DataMig-cmode::*> lun import show –vserver datamig –fields vserver, foreign-disk, path, admin-state, operational-state, percent-complete, imported-blocks, total-blocks, , estimated-remaining-duration
+vserver foreign-disk path               admin-state operational-state percent-complete imported-blocks total-blocks estimated-remaining-duration
+------- ------------ ------------------ ----------- ----------------- ---------------- --------------- ------------ ----------------------------
+datamig 83017542000E /vol/winvol/fdrive started     completed         100              4194304         4194304      -
+datamig 83017542000F /vol/winvol/gdrive started     completed         100              6291456         6291456      -
+datamig 830175420010 /vol/linuxvol/bootlun
+                                        started     completed         100
+3 entries were displayed.
+----
+

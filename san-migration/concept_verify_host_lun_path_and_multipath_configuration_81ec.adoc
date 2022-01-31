@@ -1,0 +1,15 @@
+---
+permalink: san-migration/concept_verify_host_lun_path_and_multipath_configuration_81ec.html 
+sidebar: sidebar 
+keywords: verify, host lun path, multipath, configuration 
+summary: 마이그레이션을 수행하기 전에 다중 경로가 올바르게 구성되고 제대로 작동하는지 확인하십시오. 
+---
+= 호스트 LUN 경로 및 다중 경로 구성을 확인합니다
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+마이그레이션을 수행하기 전에 다중 경로가 올바르게 구성되고 제대로 작동하는지 확인하십시오.
+
+LUN에 대해 사용 가능한 모든 경로가 활성 상태여야 합니다. Windows, Linux 및 ESXi 호스트에서 다중 경로를 확인하는 방법의 예는 SAN 호스트 다중 경로 검증 항목을 참조하십시오.

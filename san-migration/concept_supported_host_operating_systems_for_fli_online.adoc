@@ -1,0 +1,41 @@
+---
+permalink: san-migration/concept_supported_host_operating_systems_for_fli_online.html 
+sidebar: sidebar 
+keywords: supported, host, operating, systems, fli, online 
+summary: FLI 온라인 워크플로는 다음 운영 체제 중 하나를 실행하는 호스트에 연결된 LUN에 사용할 수 있습니다. 
+---
+= FLI 온라인 FLI에 대해 지원되는 호스트 운영 체제
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FLI 온라인 워크플로는 다음 운영 체제 중 하나를 실행하는 호스트에 연결된 LUN에 사용할 수 있습니다.
+
+. Microsoft(나열된 모든 서버 버전이 지원됨):
++
+** Windows Server 2008(Windows Server 장애 조치 클러스터 포함)
+** Microsoft Hyper-V Server 2008을 참조하십시오
+** Windows Server 2012(Windows Server 2012 클러스터 포함)
+** Microsoft Hyper-V Server 2012 를 참조하십시오
+
+
+. VMware:
++
+** 모든 ESXi 5.x 릴리스
+
+
+. Linux:
++
+** Red Hat Enterprise Linux(RHEL) 5.x/6.x
+
+
+
+
+이전 목록에 없는 호스트 운영 체제에 FLI 오프라인 워크플로를 사용하는 것을 고려해 보십시오.
+
+[NOTE]
+====
+NetApp 컨트롤러 대상이 MetroCluster인 경우 온라인 워크플로우를 사용하지 마십시오. 활성 온라인 가져오기 중에 사이트 페일오버가 발생한 경우 소스 어레이에 대한 쓰기 패스스루가 실패할 수 있으며 이로 인해 검증 실패와 잠재적인 데이터 손실이 발생할 수 있습니다. 대상이 MetroCluster인 경우 호스트 OS에 관계없이 FLI 오프라인 프로세스를 사용합니다.
+
+====

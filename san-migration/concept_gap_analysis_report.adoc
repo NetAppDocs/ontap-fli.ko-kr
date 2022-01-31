@@ -1,0 +1,23 @@
+---
+permalink: san-migration/concept_gap_analysis_report.html 
+sidebar: sidebar 
+keywords: gap, analysis, report 
+summary: 차이 분석은 고객의 현재 및 NetApp 권장 환경에 대한 보고서입니다. 마이그레이션 후 수행해야 하는 고객 환경에 대한 모든 권장 업그레이드를 제공합니다. 
+---
+= 차이 분석 보고서
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+차이 분석은 고객의 현재 환경과 NetApp 권장 환경에 대한 보고서입니다. 마이그레이션 후 수행해야 하는 고객 환경에 대한 모든 권장 업그레이드를 제공합니다.
+
+대상 구성(마이그레이션 후)에는 각 호스트에 대한 세부 정보(OS 구성, MPIO, HBA 세부 정보, Host Utility Kit 버전 등)가 포함됩니다. SnapDrive 및 SnapManager와 같은 NetApp 필수 추가 제품에 대한 정보도 제공됩니다.
+
+일반적으로 유지 관리 기간을 예약해야 하므로 실제 마이그레이션 이벤트가 발생할 때까지 필요한 변경 사항이 적용되지 않습니다. 일반적으로 마이그레이션 전에 MPIO 구성을 변경하면 현재 스토리지의 지원도 영향을 받습니다.
+
+사이트 설문조사 및 계획 워크시트의 호스트 섹션에 있는 완료된 NetApp 권장 섹션이 차이 분석 보고서로 사용됩니다. 마이그레이션 프로젝트에 포함된 모든 호스트에 대해 격차 분석을 완료해야 합니다. 완료된 차이 분석 보고서는 고객과 함께 검토해야 합니다.
+
+다음은 Gap 분석 보고서의 예입니다.
+
+image::../media/create_the_gap_analysis_report_1.png[차이 분석 보고서 1을 작성합니다]

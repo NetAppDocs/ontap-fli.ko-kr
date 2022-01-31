@@ -1,0 +1,17 @@
+---
+permalink: san-migration/concept_migration_process_overview.html 
+sidebar: sidebar 
+keywords: migration, process, overview 
+summary: FLI 마이그레이션 프로세스는 데이터 마이그레이션의 발견, 분석, 계획, 실행 및 검증과 같은 5단계 방법론입니다. 
+---
+= 마이그레이션 프로세스 개요
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FLI 마이그레이션 프로세스는 데이터 마이그레이션의 발견, 분석, 계획, 실행 및 검증과 같은 5단계 방법론입니다.
+
+image::../media/migration_overview_1.png[5단계 마이그레이션 방법입니다]
+
+이러한 단계는 마이그레이션 프로세스 전반에 걸쳐 일반적인 작업이 수행되는 위치를 파악하는 데 도움이 되는 일반적인 프레임워크를 제공합니다. 이 섹션의 차트에는 호스트, 패브릭, 대상 스토리지 및 소스 스토리지의 4가지 주요 구성 요소 각각에서 병렬로 수행할 수 있는 작업이 표시됩니다.

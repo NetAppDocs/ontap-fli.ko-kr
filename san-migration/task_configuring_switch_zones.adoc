@@ -1,0 +1,79 @@
+---
+permalink: san-migration/task_configuring_switch_zones.html 
+sidebar: sidebar 
+keywords: configure, switch, zones 
+summary: 소스 스토리지를 대상 스토리지에 연결하기 위해 SAN 스위치에 필요한 영역을 생성해야 합니다. 
+---
+= 스위치 영역 구성
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+소스 스토리지를 대상 스토리지에 연결하기 위해 SAN 스위치에 필요한 영역을 생성해야 합니다.
+
+.단계
+. 프로덕션 및 마이그레이션 패브릭의 각 스위치에 있는 기존 zoneset를 백업합니다.
+. 아래 그림과 같이 소스 스토리지 및 대상 스토리지를 조닝(Zoning)합니다.
++
+image::../media/configure_switch_zones_1.png[소스 및 대상 스토리지 조닝]
+
+. 영역을 생성하여 프로덕션 패브릭 A의 zoneset에 추가합니다
++
+다음은 ZONE ZONE_AMS2100_cDOT_Initiator_fabA에 대한 운영 패브릭 A의 예입니다.
+
++
+|===
+| WWPN입니다 | 영역 구성원 
+
+
+ a| 
+ 50:06:0e:80:10:46:b9:60 a| 
+ AMS2100 Ctrl 0 Port 0a
+
+
+ a| 
+ 50:06:0e:80:10:46:b9:68 a| 
+ AMS2100 Ctrl 1 Port 1a
+
+
+ a| 
+ 50:0a:09:80:00:d3:51:59 a| 
+ ONTAP Node 1 Port 0a
+
+
+ a| 
+ 50:0a:09:80:00:e7:81:04 a| 
+ ONTAP Node 2 Port 0a
+|===
+. 패브릭 A에서 zoneset을 활성화합니다
+. 영역을 생성하여 프로덕션 패브릭 B의 zoneset에 추가합니다
++
+다음은 zone_AMS2100_cDOT_Initiator_fabB의 운영 패브릭 A 운영 영역의 예입니다.
+
++
+|===
+| WWPN입니다 | 영역 구성원 
+
+
+ a| 
+ 50:06:0e:80:10:46:b9:64 a| 
+ AMS2100 Ctrl 0 Port 0e
+
+
+ a| 
+ 50:06:0e:80:10:46:b9:6c a| 
+ AMS2100 Ctrl 1 Port 1e
+
+
+ a| 
+ 50:0a:09:80:00:d3:51:59 a| 
+ ONTAP Node 1 Port 0b
+
+
+ a| 
+ 50:0a:09:80:00:e7:81:04 a| 
+ ONTAP Node 2 Port 0b
+|===
+. 운영 패브릭 B에서 zoneset을 활성화합니다
+

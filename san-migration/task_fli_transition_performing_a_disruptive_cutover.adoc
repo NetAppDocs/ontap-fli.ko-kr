@@ -1,0 +1,72 @@
+---
+permalink: san-migration/task_fli_transition_performing_a_disruptive_cutover.html 
+sidebar: sidebar 
+keywords: perform, disruptive, cutover, fli 7-mode, ontap 
+summary: 이 예는 FLI 전환 프로세스에서 무중단 컷오버를 수행하는 일반 단계를 보여줍니다. 
+---
+= FLI 7-Mode에서 ONTAP로 운영 중단 컷오버 수행
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+이 예는 FLI 전환 프로세스에서 무중단 컷오버를 수행하는 일반 단계를 보여줍니다.
+
+Windows, Linux 및 ESXi 호스트에 대한 호스트 개선 연습은 호스트 운영 체제 및 호스트 연결 키트 설명서와 이 가이드의 관련 항목을 참조하십시오.
+
+.단계
+. 7-Mode 시스템에서 소스 LUN이 매핑되는 igroup을 표시합니다.
++
+[listing]
+----
+stme-7ma> igroup show
+    FLI_on_fcp (FCP) (ostype: windows):
+        10:00:00:00:c9:e6:e2:79 (logged in on: 0c, vtic)
+        50:0a:09:81:00:96:43:70 (logged in on: 0c, vtic)
+        50:0a:09:81:00:96:3c:f0 (logged in on: 0c, vtic)
+----
++
+[NOTE]
+====
+unmap 명령이 실행된 직후 중단이 시작됩니다. 일반적으로 중단 기간은 분 단위로 측정할 수 있습니다. 말 그대로 호스트를 새 NetApp 타겟으로 이동하고 LUN을 검색하는 데 걸리는 시간입니다.
+
+====
+. 가져오는 LUN이 ESXi 호스트용 LUN인 경우, _ESXi caw/ATS refolling_항목의 지침을 검토하고 따르십시오.
+. unmap 명령을 사용하여 LUN을 호스트에서 이동합니다. (여기서 중단 기간이 시작됩니다.)
++
+[listing]
+----
+stme-7ma> igroup remove -f FLI_on_fcp 10:00:00:00:c9:e6:e2:79
+----
+. 호스트 이니시에이터가 더 이상 존재하지 않는지 확인합니다.
++
+[listing]
+----
+stme-7ma> igroup show
+    FLI_on_fcp (FCP) (ostype: windows):
+        50:0a:09:81:00:96:43:70 (logged in on: 0c, vtic)
+        50:0a:09:81:00:96:3c:f0 (logged in on: 0c, vtic)
+----
+. ONTAP 클러스터에서 대상 LUN을 온라인 상태로 전환하고 매핑되었는지 확인합니다.
++
+[listing]
+----
+cluster::*> lun online -vserver fli_72C -path /vol/flivol/72Clun1
+
+cluster::*> lun show -path /vol/flivol/72Clun1
+Vserver   Path                            State   Mapped   Type        Size
+--------- ------------------------------- ------- -------- -------- --------
+fli_72C   /vol/flivol/72Clun1             online  mapped   windows_2008
+                                                                      3.00GB
+----
+. 호스트의 디스크를 재검색하고 ONTAP 타겟에서 LUN을 찾습니다.
++
+[NOTE]
+====
+여기서 중단 기간이 종료됩니다.
+
+====
++
+LUN이 온라인 상태이고 매핑되었으며 호스트는 이제 새로운 ONTAP 호스팅 LUN을 마운트하고 있습니다. 읽기 작업은 ONTAP 스토리지를 통해 소스 LUN으로 전달되고 쓰기 작업은 새 ONTAP 호스팅 LUN과 원본 소스 LUN 모두에 기록됩니다. 마이그레이션이 완료되고 LUN 관계가 끊어질 때까지 소스 및 대상 LUN이 모두 동기화 상태로 유지됩니다.
+
+

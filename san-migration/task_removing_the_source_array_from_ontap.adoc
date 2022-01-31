@@ -1,0 +1,31 @@
+---
+permalink: san-migration/task_removing_the_source_array_from_ontap.html 
+sidebar: sidebar 
+keywords: remove, source array, ontap 
+summary: 다음 단계에서는 FLI 마이그레이션이 완료된 후 대상 어레이에서 소스 어레이를 제거하는 방법을 보여줍니다. 
+---
+= ONTAP에서 소스 스토리지 제거
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+다음 단계에서는 FLI 마이그레이션이 완료된 후 대상 어레이에서 소스 어레이를 제거하는 방법을 보여줍니다.
+
+.단계
+. 표시된 모든 소스 스토리지를 표시합니다.
++
+[listing]
+----
+DataMig-cmode::> storage array show
+Prefix Name Vendor Model  Options
+---- ---- ---- ---- ----- -------
+HIT-1 HITACHI_DF600F_1 HITACHI DF600F
+----
+. 소스 스토리지 시스템을 제거합니다.
++
+[listing]
+----
+DataMig-cmode::> storage array remove -name HITACHI_DF600F_1
+----
+

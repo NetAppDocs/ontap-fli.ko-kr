@@ -1,0 +1,31 @@
+---
+permalink: san-migration/concept_foreign_lun_import_concepts.html 
+sidebar: sidebar 
+keywords: foreign, lun, import, concepts 
+summary: 기본 FLI 개념을 이해하면 올바른 작동에 도움이 되며 초기 구성 작업을 줄이는 데 도움이 됩니다. 
+---
+= 외부 LUN 임포트 개념
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+기본 FLI 개념을 이해하면 올바른 작동에 도움이 되며 초기 구성 작업을 줄이는 데 도움이 됩니다.
+
+* * 외부 배열 *
++
+외부 어레이는 ONTAP를 실행하지 않는 스토리지 디바이스입니다. 이를 타사 어레이 또는 소스 스토리지라고도 합니다. 7-Mode에서 ONTAP로 전환할 경우, 외부 어레이는 ONTAP 7-Mode를 실행하는 NetApp에서 만든 어레이가 됩니다.
+
+* * 외부 LUN *
++
+외부 LUN은 해당 어레이의 네이티브 디스크 형식을 사용하여 타사 스토리지에서 호스팅되는 사용자 데이터가 포함된 LUN입니다.
+
+* FLI LUN 관계 *
++
+FLI LUN 관계는 데이터 가져오기를 위해 소스 스토리지와 대상 스토리지 간에 지속적으로 페어링됩니다. 소스 및 대상 엔드포인트는 LUN입니다.
+
+* * LUN 임포트 *
++
+LUN 임포트란 외부 LUN의 데이터를 타사 형식에서 네이티브 NetApp 형식 LUN으로 전송하는 프로세스입니다.
+
+

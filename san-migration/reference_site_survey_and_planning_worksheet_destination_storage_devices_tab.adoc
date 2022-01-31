@@ -1,0 +1,163 @@
+---
+permalink: san-migration/reference_site_survey_and_planning_worksheet_destination_storage_devices_tab.html 
+sidebar: sidebar 
+keywords: site, survey and planning worksheet, destination storage devices tab 
+summary: 사이트 조사 및 계획 워크시트의 일부로 대상 스토리지 장치에 대한 정보가 포함된 탭이 있어야 합니다. 
+---
+= 사이트 조사 및 계획 워크시트 대상 스토리지 디바이스 탭
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+사이트 조사 및 계획 워크시트의 일부로 대상 스토리지 장치에 대한 정보가 포함된 탭이 있어야 합니다.
+
+[cols="6*"]
+|===
+6+| 스토리지 시스템 
+
+
+ a| 
+클러스터 이름
+ a| 
+IP 주소
+ a| 
+배열 모드
+ a| 
+ONTAP
+ a| 
+SVM
+ a| 
+포트 유형
+
+
+
+ a| 
+DataMig-cDOT
+ a| 
+10.x.x.x
+ a| 
+FAS8080
+ a| 
+8.3.1로 업그레이드하기
+ a| 
+데이터마이그
+ a| 
+타겟
+
+
+
+ a| 
+DataMig-cDOT
+ a| 
+10.x.x.x
+ a| 
+FAS8080
+ a| 
+8.3.1로 업그레이드하기
+ a| 
+데이터마이그
+ a| 
+타겟
+
+
+
+ a| 
+DataMig-cDOT
+ a| 
+10.x.x.x
+ a| 
+FAS8080
+ a| 
+8.3.1로 업그레이드하기
+ a| 
+DataMig-01
+ a| 
+이니시에이터
+
+
+
+ a| 
+DataMig-cDOT
+ a| 
+10.x.x.x
+ a| 
+FAS8080
+ a| 
+8.3.1로 업그레이드하기
+ a| 
+DataMig-01
+ a| 
+이니시에이터
+
+|===
+[cols="5*"]
+|===
+5+| 스토리지 시스템 
+
+
+ a| 
+포트 이름
+ a| 
+LIF 이름
+ a| 
+WWPN입니다
+ a| 
+패브릭 이름
+ a| 
+대상 유형
+
+
+
+ a| 
+0C
+ a| 
+편두통1
+ a| 
+20:01:00:a0:98:2f:xx:xx
+ a| 
+제품 A
+ a| 
+타겟
+
+
+
+ a| 
+0D
+ a| 
+편두통2
+ a| 
+20:01:00:a0:98:2f:xx:xx
+ a| 
+제품 B
+ a| 
+타겟
+
+
+
+ a| 
+0A
+ a| 
+해당 없음
+ a| 
+50:0a:09:81:00:xx:xx:xx
+ a| 
+제품 A
+ a| 
+타겟
+
+
+
+ a| 
+0b
+ a| 
+해당 없음
+ a| 
+50:0a:09:81:00:xx:xx:xx
+ a| 
+제품 B
+ a| 
+타겟
+
+|===
+다음은 대상 스토리지 디바이스 탭을 설정하는 방법의 예입니다.

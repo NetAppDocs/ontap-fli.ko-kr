@@ -1,0 +1,296 @@
+---
+permalink: san-migration/reference_site_survey_and_planning_worksheet_lun_details_tab.html 
+sidebar: sidebar 
+keywords: site, survey and planning worksheet, lun details tab 
+summary: 사이트 조사 및 계획 워크시트의 일부로 LUN 세부 정보에 대한 정보가 포함된 탭이 있어야 합니다. 
+---
+= 사이트 조사 및 계획 워크시트 LUN 세부 정보 탭
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+사이트 조사 및 계획 워크시트의 일부로 LUN 세부 정보에 대한 정보가 포함된 탭이 있어야 합니다.
+
+다음은 LUN 세부 정보 탭을 설정하는 방법의 예입니다.
+
+|===
+5+| LUN 세부 정보입니다 
+
+
+ a| 
+출처
+
+
+
+ a| 
+호스트 이름
+ a| 
+스토리지 그룹
+ a| 
+운영 체제
+ a| 
+클러스터형
+ a| 
+스토리지 컨트롤러
+
+
+
+ a| 
+dm-rx200s6-21
+ a| 
+dm-rx200s6-21
+ a| 
+Microsoft Windows Server 2012 R2 Datacenter
+ a| 
+아니요
+ a| 
+AMS2100
+
+
+
+ a| 
+dm-rx200s6-22
+ a| 
+dm-rx200s6-22
+ a| 
+Red Hat Enterprise Linux Server 릴리스 5.10
+ a| 
+아니요
+ a| 
+AMS2100
+
+
+
+ a| 
+dm-rx200s6-20
+ a| 
+dm-rx200s6-20
+ a| 
+ESXi 5.5.0 빌드 - 1331820
+ a| 
+아니요
+ a| 
+AMS2100
+
+
+
+ a| 
+dm-rx200s6-20
+ a| 
+dm-rx200s6-20
+ a| 
+ESXi 5.5.0 빌드 - 1331820
+ a| 
+아니요
+ a| 
+AMS2100
+
+|===
+|===
+5+| LUN 세부 정보입니다 
+
+
+ a| 
+출처
+
+
+
+ a| 
+마운트 지점
+ a| 
+물리적 드라이브 번호입니다
+ a| 
+포트
+ a| 
+버스
+ a| 
+타겟
+
+
+
+ a| 
+C:
+ a| 
+PHYSICALDRIVE0
+ a| 
+2
+ a| 
+0
+ a| 
+0
+
+
+
+ a| 
+/
+ a| 
+SDA
+ a| 
+0
+ a| 
+0
+ a| 
+0
+
+
+
+ a| 
+BootLUN _ 데이터 저장소
+ a| 
+NAA.60060e801046b96004f2bf4600000014
+ a| 
+0
+ a| 
+0
+ a| 
+0
+
+
+
+ a| 
+VM_데이터 저장소
+ a| 
+NAA.60060e801046b96004f2bf4600000015
+ a| 
+0
+ a| 
+0
+ a| 
+0
+
+|===
+|===
+5+| LUN 세부 정보입니다 
+
+
+ a| 
+출처
+
+
+
+ a| 
+LUN을 클릭합니다
+ a| 
+PG80 SN
+ a| 
+PG83 SN/UID입니다
+ a| 
+LUN 크기(GB)
+ a| 
+오프셋 시작
+
+
+
+ a| 
+0
+ a| 
+ a| 
+60060e801046b96004f2bf460000001e
+ a| 
+40
+ a| 
+0
+
+
+
+ a| 
+0
+ a| 
+ a| 
+60060e801046b96004f2bf4600000010 을 참조하십시오
+ a| 
+20
+ a| 
+
+
+
+ a| 
+0
+ a| 
+ a| 
+60060e801046b96004f2bf4600000014
+ a| 
+20
+ a| 
+
+
+
+ a| 
+1
+ a| 
+ a| 
+60060e801046b96004f2bf4600000015 를 참조하십시오
+ a| 
+40
+ a| 
+
+|===
+|===
+5+| LUN 세부 정보입니다 
+
+
+ a| 
+출처
+
+
+
+ a| 
+LUN 유형입니다
+ a| 
+정렬
+ a| 
+사용자 정의 접두사(블록)
+ a| 
+사용자 지정 접두사(바이트)
+ a| 
+
+
+
+ a| 
+Windows
+ a| 
+정렬
+ a| 
+0
+ a| 
+0
+ a| 
+
+
+
+ a| 
+리눅스
+ a| 
+정렬
+ a| 
+0
+ a| 
+0
+ a| 
+
+
+
+ a| 
+VMware
+ a| 
+정렬
+ a| 
+0
+ a| 
+0
+ a| 
+
+
+
+ a| 
+VMware
+ a| 
+정렬
+ a| 
+0
+ a| 
+0
+ a| 
+
+|===

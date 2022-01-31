@@ -1,0 +1,13 @@
+---
+permalink: san-migration/concept_how_to_configure_source_arrays.html 
+sidebar: sidebar 
+keywords: configure, source, arrays 
+summary: '이니시에이터 포트에 대한 호스트 항목(LUN 마스킹, NetApp의 igroup)을 추가하려면 소스 어레이에 대한 어레이 설명서를 참조하십시오. 이 정보는 사이트 조사 및 계획 워크시트의 저장소 그룹 섹션에서 검색할 수 있습니다.' 
+---
+= 소스 스토리지 구성 방법
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+이니시에이터 포트에 대한 호스트 항목(LUN 마스킹, NetApp의 igroup)을 추가하려면 소스 어레이에 대한 어레이 설명서를 참조하십시오. 이 정보는 사이트 조사 및 계획 워크시트의 저장소 그룹 섹션에서 검색할 수 있습니다.

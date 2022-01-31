@@ -1,0 +1,66 @@
+---
+permalink: san-migration/task_fli_transition_verifying_fli_7_mode_to_ontap_migration.html 
+sidebar: sidebar 
+keywords: verify, fli 7-mode, ontap, migration, results 
+summary: FLI 7-Mode에서 ONTAP로 LUN이 적절하게 마이그레이션되었는지 확인할 수 있는 옵션이 제공됩니다. 
+---
+= FLI 7-Mode에서 ONTAP로의 마이그레이션 결과 검증
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FLI 7-Mode에서 ONTAP로 LUN이 적절하게 마이그레이션되었는지 확인할 수 있는 옵션이 제공됩니다.
+
+소스 LUN과 대상 LUN을 비교하려면 검증 작업을 시작합니다. 검증 과정을 모니터링합니다. 검증 중인 LUN은 검증 세션 동안 오프라인 상태여야 합니다. 검증 세션은 소스 LUN과 대상 LUN 간의 블록 간 비교이므로 시간이 오래 걸릴 수 있습니다. 마이그레이션과 거의 동일한 시간이 소요됩니다. 검증이 필요하지 않지만 임포트 프로세스에 익숙하도록 가져오기/마이그레이션된 LUN의 하위 집합을 검증하는 것이 좋습니다.
+
+[NOTE]
+====
+LUN을 다시 온라인 상태로 전환하기 전에 LUN 임포트 검증을 명시적으로 중지해야 합니다. 그렇지 않으면 LUN이 온라인 상태로 실패합니다. 이 동작은 ONTAP의 향후 릴리스에서 변경될 예정입니다.
+
+====
+.단계
+. 확인할 LUN을 오프라인 상태로 설정합니다.
++
+[listing]
+----
+cluster::*> lun offline -vserver fli_72C -path /vol/flivol/72Clun1
+Warning: This command will take LUN "/vol/flivol/72Clun1" in Vserver "fli_72C" offline.
+Do you want to continue? {y|n}: y
+----
+. LUN 확인을 시작합니다.
++
+[listing]
+----
+lun import verify start -vserver fli_72C -path /vol/flivol/72Clun1
+----
+. LUN 확인 상태를 표시합니다.
++
+[listing]
+----
+ontaptme-fc-cluster::*> lun import show -vserver fli_72C -path /vol/flivol/72Clun1
+vserver foreign-disk   path                operation admin operational percent
+                                         in progress state state       complete
+-------------------------------------------------------------------------------
+fli_72C D0i1E+G8Wg6m   /vol/flivol/72Clun1 verify    started
+                                                                        9
+----
++
+[NOTE]
+====
+LUN을 다시 온라인 상태로 전환하기 전에 LUN 임포트 검증을 명시적으로 중지해야 합니다. 그렇지 않으면 LUN이 온라인 상태로 실패합니다. 다음 CLI 출력을 참조하십시오.
+
+====
+. LUN 검증을 중지합니다. 상태가 Verify is complete(검증 완료)로 표시되더라도 이 단계를 수동으로 수행해야 합니다.
++
+[listing]
+----
+lun import verify stop -vserver fli_72C -path /vol/flivol/72Clun1
+----
+. 검증 완료 후 LUN을 온라인 상태로 전환합니다.
++
+[listing]
+----
+lun online -vserver fli_72C -path /vol/flivol/72Clun1
+----
+

@@ -1,0 +1,226 @@
+---
+permalink: san-migration/task_test_migration_example_using_hitachi_ams2100.html 
+sidebar: sidebar 
+keywords: test, migration, example, hitachi ams2100 
+summary: 다음은 Hitachi AMS2100을 외부 스토리지로 사용하는 테스트 마이그레이션의 예입니다. 관련 스토리지, 호스트 운영 체제 및 기타 변수에 따라 단계가 다를 수 있습니다. 
+---
+= Hitachi AMS2100을 사용하여 마이그레이션 예 테스트
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+다음은 Hitachi AMS2100을 외부 스토리지로 사용하는 테스트 마이그레이션의 예입니다. 관련 스토리지, 호스트 운영 체제 및 기타 변수에 따라 단계가 다를 수 있습니다.
+
+다음 예제를 테스트 마이그레이션을 수행하는 데 필요한 단계에 대한 일반적인 지침으로 사용할 수 있습니다. 테스트를 통해 이슈가 발생하는 경우 최대한 빨리 문제를 찾아 해결할 수 있도록 테스트 마이그레이션을 최대한 빨리 수행하는 것이 좋습니다. 테스트 마이그레이션은 운영 마이그레이션을 진행하기 전에 모든 소스 및 대상 스토리지 조합에서 수행해야 합니다.
+
+테스트 마이그레이션을 수행하려면 다음 단계를 수행하십시오.
+
+.단계
+. 소스 스토리지에 2GB 테스트 LUN을 생성합니다.
+. Hitachi Storage Navigator Modular as system에 로그인합니다.
+. AMS 2100 배열을 선택합니다.
+. Show and Configure Array * 를 클릭합니다.
+. root를 사용하여 로그인합니다.
+. 그룹 * 을 확장하고 * 논리 단위 * 를 선택합니다.
+. 테스트 LUN을 생성하려면 * LU * 생성 을 선택하십시오.
+. 2GB의 테스트 LUN을 생성합니다.
+. 확인 * 을 클릭합니다.
+. 여기에서 LUN 할당을 건너뛰고 * Close * 를 클릭하여 계속 진행합니다.
+. LUN 0026이 생성되었는지 확인합니다.
+. 그룹** 을 확장하고 * 논리 단위 * 를 선택합니다.
+. 테스트 LUN을 cDOT_FLI 호스트 그룹에 매핑하려면 * 호스트 그룹 * 을 선택합니다.
+. 이전 단계에서 생성한 호스트 그룹 cDOT_FLI를 선택하고 * 호스트 그룹 편집 * 을 클릭합니다.
+. 호스트 그룹의 포트를 선택합니다. 이 예에서는 0a, 0e, 1a, 1e 를 선택합니다. 선택한 모든 포트로 강제 설정 옵션을 선택합니다.
++
+image::../media/hds_storage_navigator_edit_host_group.gif[HDS Storage Navigator 호스트 그룹을 편집합니다]
+
+. Logical Units * 를 클릭하고 테스트 LUN LUN0026을 추가합니다.
+. LUN을 매핑하려면 * OK * 를 클릭합니다.
+. 예, 위의 경고를 읽었습니다를 선택하고 호스트 그룹 편집 * 을 선택한 다음 * 확인 * 을 클릭합니다.
+. 호스트 그룹 생성을 확인하고 * Close * 를 클릭합니다.
+. 소스 스토리지에서 대상 스토리지로 테스트 LUN 및 매핑을 확인하고 FLI(Foreign LUN Import) 가져오기를 수행합니다.
+. admin 사용자를 사용하여 SSH를 통해 ONTAP 스토리지에 로그인합니다.
+. 모드를 고급으로 변경합니다. "다타미크-cmode:::> set-Privilege advanced"를 선택합니다
+. 고급 명령을 계속 실행할지 묻는 메시지가 나타나면 y 를 입력합니다.
+. ONTAP에서 소스 스토리지를 검색합니다. 몇 분 정도 기다린 후 소스 어레이를 다시 검색합니다. '스토리지 배열 표시'입니다
++
+.. 스토리지 배열이 처음 검색되면 ONTAP가 자동으로 검색하여 배열을 표시하지 않을 수 있습니다. 다음 지침에 따라 ONTAP 이니시에이터 포트가 연결된 스위치 포트를 재설정합니다.
++
+예를 들어, ONTAP의 DataMig-cmode 클러스터 이니시에이터 포트 0a 및 0b는 Cisco 포트 4/9 및 4/11에 연결됩니다. Cisco 스위치에서 4/9번 포트를 재설정하려면 다음을 수행하십시오.
+
++
+[listing]
+----
+conf t
+interface fc4/9
+shutdown
+no shutdown
+exit
+exit
+----
++
+한 포트를 재설정하면 보통 충분합니다. 포트 하나를 재설정한 후 스토리지 목록과 LUN 경로를 확인합니다.
+
+
+
+. 'Storage array config show -array-name Hitachi_DF600F_1' 이니시에이터 포트를 통해 소스 스토리지가 검색되는지 확인합니다
++
+[listing]
+----
+
+             LUN   LUN
+Node         Group Count     Array Name       Array Target Port Initiator
+------------ ----- ----- ---------------------------- -----------------------
+DataMig-cmode-01 0     1    HITACHI_DF600F_1     50060e801046b960        0a
+                                                 50060e801046b964        0b
+                                                 50060e801046b968        0a
+                                                 50060e801046b96c        0b
+DataMig-cmode-02 0     1    HITACHI_DF600F_1     50060e801046b960        0a
+                                                 50060e801046b964        0b
+                                                 50060e801046b968        0a
+                                                 50060e801046b96c        0b
+----
+. Hitachi 스토리지에서 매핑된 테스트 LUN을 나열하고 'storage disk show-array-name Hitachi_DF600F_1-instance'라는 디스크 속성과 경로를 확인합니다
++
+[listing]
+----
+
+                  Disk: HIT-1.1
+        Container Type: unassigned
+            Owner/Home: -  / -
+               DR Home: -
+    Stack ID/Shelf/Bay: -  / -  / -
+                   LUN: 0
+                 Array: HITACHI_DF600F_1
+                Vendor: HITACHI
+                 Model: DF600F
+         Serial Number: 83017542001A
+                   UID: 48495441:43484920:38333031:37353432:30303236:00000000:00000000:00000000:00000000:00000000
+                   BPS: 512
+         Physical Size: -
+              Position: present
+Checksum Compatibility: block
+             Aggregate: -
+                  Plex: -
+Paths:
+                                LUN  Initiator Side        Target Side                                                        Link
+Controller         Initiator     ID  Switch Port           Switch Port           Acc Use  Target Port                TPGN    Speed      I/O KB/s          IOPS
+------------------ ---------  -----  --------------------  --------------------  --- ---  -----------------------  ------  -------  ------------  ------------
+DataMig-cmode-01   0a             0  DM-Cisco9506-1:4-9    DM-Cisco9506-1:2-24   AO  INU  50060e801046b968              2   2 Gb/S             0             0
+DataMig-cmode-01   0b             0  DM-Cisco9506-2:4-9    DM-Cisco9506-2:2-24   AO  INU  50060e801046b96c              2   2 Gb/S             0             0
+DataMig-cmode-01   0b             0  DM-Cisco9506-2:4-9    DM-Cisco9506-2:1-14   AO  INU  50060e801046b964              1   2 Gb/S             0             0
+DataMig-cmode-01   0a             0  DM-Cisco9506-1:4-9    DM-Cisco9506-1:1-14   AO  INU  50060e801046b960              1   2 Gb/S             0             0
+DataMig-cmode-02   0a             0  DM-Cisco9506-1:4-11   DM-Cisco9506-1:2-24   AO  INU  50060e801046b968              2   2 Gb/S             0             0
+DataMig-cmode-02   0b             0  DM-Cisco9506-2:4-11   DM-Cisco9506-2:2-24   AO  INU  50060e801046b96c              2   2 Gb/S             0             0
+DataMig-cmode-02   0b             0  DM-Cisco9506-2:4-11   DM-Cisco9506-2:1-14   AO  INU  50060e801046b964              1   2 Gb/S             0             0
+DataMig-cmode-02   0a             0  DM-Cisco9506-1:4-11   DM-Cisco9506-1:1-14   AO  INU  50060e801046b960              1   2 Gb/S             0             0
+
+Errors:
+-
+
+DataMig-cmode::*>
+----
+. 일련 번호를 사용하여 소스 LUN을 외부 LUN으로 표시합니다. '스토리지 디스크 세트 - 외부 LUN{-직렬-번호 83017542001A} - 외부 TRUE'입니다
+. 소스 LUN이 'storage disk show-array-name Hitachi_DF600F_1'으로 표시되어 있는지 확인합니다
+. 모든 외부 어레이와 일련 번호를 나열하십시오. 스토리지 디스크 표시 컨테이너 유형의 외부 필드 일련 번호
++
+[NOTE]
+====
+lun create 명령은 파티션 오프셋을 기반으로 크기와 정렬을 감지하고 그에 따라 외래 디스크 인수를 사용하여 LUN을 생성합니다.
+
+====
+. 'vol create-vserver datamig flivol aggr1-size 10g' 대상 볼륨을 생성합니다
+. 'lun create -vserver datamig -path /vol/fllivol/testlun1 -OSType linux-Foreign-disk 83017542001A'라는 외부 LUN을 사용하여 테스트 LUN을 생성합니다
+. 테스트 LUN을 나열하고 소스 LUN이 있는 LUN의 크기를 'lun show'로 확인하십시오
++
+[NOTE]
+====
+FLI 오프라인 마이그레이션의 경우 LUN을 igroup에 매핑하기 위해 온라인 상태여야 하고 LUN 임포트 관계를 생성하기 전에 오프라인 상태여야 합니다.
+
+====
+. 이니시에이터를 추가하지 않고 프로토콜 FCP의 테스트 igroup 작성: 'lun igroup create -vserver datamig-igroup test1-protocol fcp-OSType Linux'
+. 테스트 LUN을 테스트 igroup인 'lun map -vserver datamig -path /vol/fllivol/testlun1-igroup torg1'에 매핑합니다
+. 테스트 LUN을 오프라인 상태로 전환합니다. 'lun offline-vserver datamig-path/vol/fllivol/testlun1
+. 테스트 LUN 및 외부 LUN을 사용하여 가져오기 관계를 생성합니다. 'lun import create-vserver datamig-path /vol/fllivol/testlun1-Foreign-disk 83017542001A'
+. 마이그레이션 시작(가져오기): 'lun import start -vserver datamig -path /vol/fllivol/testlun1'을 시작합니다
+. 가져오기 진행률: 'lun import show -vserver datamig -path /vol/fllivol/luntest1'을 모니터링합니다
+. 가져오기 작업이 성공적으로 완료되었는지 확인합니다. 'lun import show -vserver datamig -path /vol/fllivol/testlun1'
++
+[listing]
+----
+vserver foreign-disk   path                operation admin operational percent
+                                         in progress state state       complete
+-------------------------------------------------------------------------------
+datamig 83017542001A   /vol/flivol/testlun1
+                                           import    started
+                                                           completed        100
+----
+. 소스 LUN과 대상 LUN을 비교하려면 검증 작업을 시작합니다. 확인 진행 상황을 모니터링합니다. 'LUN import verify start-vserver datamig-path /vol/fllivol/testlun1'
++
+[listing]
+----
+DataMig-cmode::*> lun import show -vserver datamig -path /vol/flivol/testlun1
+vserver foreign-disk   path                operation admin operational percent
+                                         in progress state state       complete
+-------------------------------------------------------------------------------
+datamig 83017542001A   /vol/flivol/testlun1
+                                           verify    started
+                                                           in_progress       44
+----
+. 'lun import show -vserver datamig -path /vol/fllivol/testlun1' 오류 없이 검증 작업이 완료되었는지 확인하십시오
++
+[listing]
+----
+vserver foreign-disk   path                operation admin operational percent
+                                         in progress state state       complete
+-------------------------------------------------------------------------------
+datamig 83017542001A   /vol/flivol/testlun1
+                                           verify    started
+                                                           completed        100
+----
+. 가져오기 관계를 삭제하여 마이그레이션 작업을 제거합니다. 'lun import delete -vserver datamig -path /vol/fllivol/testlun1''lun import show -vserver datamig-path /vol/fllivol/testlun1'
+. 테스트 igroup에서 테스트 LUN 매핑을 해제합니다. 'lun unmap -vserver datamig -path /vol/fllivol/testlun1 -igroup torg1'
+. 테스트 LUN을 온라인으로 'lun online - vserver datamig-path /vol/fllivol/testlun1'으로 설정합니다
+. 외부 LUN 속성을 false로 표시합니다. '스토리지 디스크 수정{-serial-number 83017542001A}-is-Foreign false'
++
+[NOTE]
+====
+ONTAP 이니시에이터 포트를 사용하여 소스 스토리지에 생성된 호스트 그룹을 제거하지 마십시오. 동일한 호스트 그룹이 해당 소스 스토리지에서 마이그레이션하는 동안 재사용됩니다.
+
+====
+. 소스 스토리지에서 테스트 LUN을 제거합니다.
++
+.. Hitachi Storage Navigator Modular에 시스템으로 로그인합니다.
+.. AMS 2100 배열을 선택하고 * 배열 표시 및 구성 * 을 클릭합니다.
+.. root를 사용하여 로그인합니다.
+.. 그룹 * 을 선택한 다음 * 호스트 그룹 * 을 선택합니다.
+.. CDOT_FLI_Igroup_을 선택하고 * 호스트 그룹 편집 * 을 클릭합니다.
+.. Edit Host Group 창에서 테스트 LUN을 매핑하기 위해 선택한 모든 타겟 포트를 선택하고 * Forced Set to all Selected Ports * 를 선택합니다.
+.. Logical Units * 탭을 선택합니다.
+.. Assigned Logical Units 창에서 테스트 LUN을 선택합니다.
+.. LUN 매핑을 제거하려면 * 제거 * 를 선택합니다.
+.. 확인 을 클릭합니다.
+.. 호스트 그룹을 제거하지 말고 테스트 LUN을 계속 삭제하십시오.
+.. 논리 단위를 선택합니다.
+.. 이전 단계에서 생성한 테스트 LUN(lun0026)을 선택합니다.
+.. LUN 삭제 * 를 클릭합니다.
+.. 테스트 LUN을 삭제하려면 * Confirm * (확인 *)을 클릭합니다.
+
+
+. 대상 스토리지에서 테스트 LUN을 삭제합니다.
++
+.. admin 사용자를 사용하여 SSH를 통해 ONTAP 스토리지에 로그인합니다.
+.. NetApp 스토리지 시스템에서 테스트 LUN을 오프라인 상태로 설정합니다. 'lun offline -vserver datamig -path /vol/fllivol/testlun1'
++
+[NOTE]
+====
+다른 호스트 LUN을 선택하지 않아야 합니다.
+
+====
+.. NetApp 스토리지 시스템에서 테스트 LUN을 제거합니다. 'lun destroy - vserver datamig-path /vol/fllivol/testlun1'
+.. NetApp 스토리지 시스템의 테스트 볼륨을 오프라인으로 설정합니다. 'vol offline-vserver datamig-volume flivol'
+.. NetApp 스토리지 시스템의 테스트 볼륨을 'vol destroy-vserver datamig-volume flivol'으로 제거합니다
+
+
+

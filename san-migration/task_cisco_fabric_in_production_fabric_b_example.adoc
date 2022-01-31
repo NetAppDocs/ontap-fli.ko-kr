@@ -1,0 +1,50 @@
+---
+permalink: san-migration/task_cisco_fabric_in_production_fabric_b_example.html 
+sidebar: sidebar 
+keywords: cisco, fabric, production, fabric b, example 
+summary: 다음은 프로덕션 패브릭 B에 있는 Cisco 패브릭의 예입니다 
+---
+= 운영 패브릭 B의 Cisco 패브릭
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+다음은 프로덕션 패브릭 B에 있는 Cisco 패브릭의 예입니다
+
+.단계
+. 운영 패브릭 B에 영역을 생성합니다
++
+[listing]
+----
+conf t
+zone name rx21_flicDOT vsan 10
+member pwwn 21:00:00:24:ff:30:14:c4
+member pwwn 20:02:00:a0:98:2f:94:d1
+member pwwn 20:04:00:a0:98:2f:94:d1
+zone name rx22_flicDOT vsan 10
+member pwwn 21:00:00:24:ff:30:04:84
+member pwwn 20:02:00:a0:98:2f:94:d1
+member pwwn 20:04:00:a0:98:2f:94:d1
+zone name rx20_flicDOT vsan 10
+member pwwn 21:00:00:24:ff:30:03:eb
+member pwwn 20:02:00:a0:98:2f:94:d1
+member pwwn 20:04:00:a0:98:2f:94:d1
+exit
+end
+----
+. 운영 패브릭 B에서 영역을 활성화합니다
++
+[listing]
+----
+conf t
+zoneset name PROD_RIGHT vsan 10
+member rx21_flicDOT
+member rx22_flicDOT
+member rx20_flicDOT
+exit
+zoneset activate name PROD_RIGHT vsan 10
+end
+copy running-config startup-config
+----
+

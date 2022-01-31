@@ -1,0 +1,13 @@
+---
+permalink: san-migration/concept_migration_tests.html 
+sidebar: sidebar 
+keywords: migration, tests 
+summary: 스토리지, 스위치 및 호스트가 적절히 구성되었는지 확인하고 마이그레이션 기간과 작업 수준을 추정할 수 있는 몇 가지 샘플을 얻기 위해 하나 이상의 테스트 마이그레이션을 수행해야 합니다. 
+---
+= 마이그레이션 테스트
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+스토리지, 스위치 및 호스트가 적절히 구성되었는지 확인하고 마이그레이션 기간과 작업 수준을 추정할 수 있는 몇 가지 샘플을 얻기 위해 하나 이상의 테스트 마이그레이션을 수행해야 합니다.

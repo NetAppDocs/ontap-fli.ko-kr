@@ -1,0 +1,26 @@
+---
+permalink: san-migration/concept_fli_7_mode_to_ontap_transition_workflow.html 
+sidebar: sidebar 
+keywords: fli, 7-mode, ontap, transition, workflow 
+summary: 이 섹션에서는 FLI 7-Mode에서 ONTAP로의 전환 워크플로우의 예를 설명합니다. 전환 워크플로는 온라인 또는 오프라인 워크플로로 실행할 수 있습니다. 
+---
+= FLI 7-Mode에서 ONTAP로의 전환 워크플로우
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+이 섹션에서는 FLI 7-Mode에서 ONTAP로의 전환 워크플로우의 예를 설명합니다. 전환 워크플로는 온라인 또는 오프라인 워크플로로 실행할 수 있습니다.
+
+소스 LUN이 32비트 애그리게이트에서 호스팅되거나 LUN이 잘못 정렬된 경우 FLI 전환을 권장합니다. FLI 7-Mode에서 ONTAP로 전환할 때 LUN을 7-Mode에서 ONTAP으로 전환하는 기능과 LUN 정렬 방식을 수정하고 LUN을 32비트에서 64비트 애그리게이트로 전환하는 기능을 결합할 수 있습니다. 7MTT(7-Mode 전환 툴)를 비롯한 다른 LUN 전환 방법은 ONTAP로 전환하기 전에 LUN 정렬을 수정 및/또는 32비트를 64비트 애그리게이트로 변환하는 것이 필요할 수 있습니다.
+
+FLI 7-Mode에서 ONTAP로의 전환 워크플로는 온라인 또는 오프라인 워크플로가 될 수 있습니다. 소스 어레이가 NetApp 7-Mode 스토리지 어레이인 경우를 제외하고, 이러한 워크플로우는 두 FLI 오프라인 및 온라인 마이그레이션 워크플로우와 기능적으로 동일합니다. 두 워크플로우 모두 마이그레이션 제품과 동일한 규칙 및 절차를 공유합니다. FLI 온라인 워크플로우 호스트 운영 지원 목록이 포함되어 있습니다.
+
+제공된 예는 FLI 7-Mode에서 ONTAP 프로세스까지 전체적으로 연습해야 합니다. FLI 7-Mode에서 ONTAP로의 전환 흐름에는 다음 작업이 포함됩니다.
+
+. 소스 및 대상 스토리지 준비
+. 운영 중단 컷오버 수행
+. 데이터를 가져오는 중입니다
+. 마이그레이션 결과를 확인하는 중입니다
+. FLI 전환 마이그레이션 후 작업
+

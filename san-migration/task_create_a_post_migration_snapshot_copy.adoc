@@ -1,0 +1,26 @@
+---
+permalink: san-migration/task_create_a_post_migration_snapshot_copy.html 
+sidebar: sidebar 
+keywords: Create, post-migration, snapshot, copies 
+summary: 나중에 필요할 경우 쉽게 되돌릴 수 있도록 사후 마이그레이션 스냅샷 복사본을 생성할 수 있습니다. 
+---
+= 마이그레이션 후 Snapshot 복사본 생성
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+나중에 필요할 경우 쉽게 되돌릴 수 있도록 사후 마이그레이션 스냅샷 복사본을 생성할 수 있습니다.
+
+.단계
+. 마이그레이션 후 스냅샷 복사본을 생성하려면 '스냅 생성' 명령을 실행합니다.
++
+[listing]
+----
+DataMig-cmode::> snap create -vserver datamig -volume winvol -snapshot post-migration
+
+DataMig-cmode::> snap create -vserver datamig -volume linuxvol -snapshot post-migration
+
+DataMig-cmode::> snap create -vserver datamig -volume esxvol -snapshot post-migration
+----
+

@@ -1,0 +1,24 @@
+---
+permalink: san-migration/task_fli_online_cleanup.html 
+sidebar: sidebar 
+keywords: clean up, fli, online migration 
+summary: FLI 온라인 마이그레이션이 완료된 후 LUN 임포트 관계를 제거합니다. 
+---
+= FLI 온라인 마이그레이션 정리
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FLI 온라인 마이그레이션이 완료된 후 LUN 임포트 관계를 제거합니다.
+
+준비가 완료되면 호스트가 새 ONTAP LUN에 대한 모든 I/O에 대해 새 NetApp 스토리지에 액세스하고 소스 LUN을 더 이상 사용하지 않기 때문에 LUN 임포트 관계를 안전하게 제거할 수 있습니다.
+
+.단계
+. LUN 임포트 관계를 삭제합니다.
++
+[listing]
+----
+lun import delete -vserver fli_72C -path /vol/flivol/72Clun1
+----
+

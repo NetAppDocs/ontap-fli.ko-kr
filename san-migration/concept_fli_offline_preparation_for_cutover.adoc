@@ -1,0 +1,15 @@
+---
+permalink: san-migration/concept_fli_offline_preparation_for_cutover.html 
+sidebar: sidebar 
+keywords: fli, offline, preparation, cutover 
+summary: 'FLI(Foreign LUN Imports)를 사전 마이그레이션하는 동안 호스트 및 소스 LUN 경로를 확인하고 확인합니다. 호스트가 재부팅되면 마이그레이션이 준비될 때까지 종료됩니다.' 
+---
+= FLI 오프라인: 전환 준비
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FLI(Foreign LUN Imports)를 사전 마이그레이션하는 동안 호스트 및 소스 LUN 경로를 확인하고 확인합니다. 호스트가 재부팅되면 마이그레이션이 준비될 때까지 종료됩니다.
+
+마이그레이션 및 수정 작업이 완료되면 호스트를 새 대상 스토리지에 연결하여 최종 사용자가 애플리케이션을 확인할 수 있습니다.

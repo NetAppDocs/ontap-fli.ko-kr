@@ -1,0 +1,23 @@
+---
+permalink: san-migration/concept_fli_supported_configurations.html 
+sidebar: sidebar 
+keywords: fli, supported, configurations 
+summary: FLI 환경은 적절한 작동 및 지원을 위해 지원되는 방식으로 배포되어야 합니다. 엔지니어링에서 새 구성을 적용함에 따라 지원되는 구성 목록이 변경됩니다. 특정 구성에 대한 지원을 확인하려면 NetApp 상호 운용성 매트릭스 를 참조하십시오. 
+---
+= FLI 지원 구성
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FLI 환경은 적절한 작동 및 지원을 위해 지원되는 방식으로 배포되어야 합니다. 엔지니어링에서 새 구성을 적용함에 따라 지원되는 구성 목록이 변경됩니다. 특정 구성에 대한 지원을 확인하려면 NetApp 상호 운용성 매트릭스 를 참조하십시오.
+
+ONTAP 8.3 이상이 지원되는 유일한 타겟 스토리지입니다. 타사 스토리지로의 마이그레이션은 지원되지 않습니다.
+
+지원되는 소스 스토리지 어레이, 스위치 및 펌웨어 목록은 상호 운용성 매트릭스 를 참조하십시오. 데이터 마이그레이션 프로그램은 NetApp 상호 운용성 매트릭스의 구성을 지원합니다.
+
+가져오기가 완료되고 모든 LUN이 NetApp 컨트롤러로 마이그레이션되면 모든 구성이 지원되는지 확인합니다.
+
+* 관련 정보 *
+
+https://mysupport.netapp.com/matrix["NetApp 상호 운용성 매트릭스 툴"]

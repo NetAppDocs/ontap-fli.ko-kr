@@ -1,0 +1,38 @@
+---
+permalink: san-migration/reference_site_survey_and_planning_worksheet_migration_schedule_tab.html 
+sidebar: sidebar 
+keywords: site, survey and planning worksheet, migration schedule tab 
+summary: 사이트 조사 및 계획 워크시트의 일부로 마이그레이션 일정에 대한 정보가 포함된 탭이 있어야 합니다. 
+---
+= 사이트 조사 및 계획 워크시트 마이그레이션 일정 탭
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+사이트 조사 및 계획 워크시트의 일부로 마이그레이션 일정에 대한 정보가 포함된 탭이 있어야 합니다.
+
+다음은 Migration Schedule 탭을 설정하는 방법의 예입니다.
+
+|===
+8+| 마이그레이션 일정 
+
+
+ a| 
+마이그레이션 날짜
+ a| 
+호스트
+ a| 
+OS
+ a| 
+응용 프로그램
+ a| 
+스토리지 컨트롤러
+ a| 
+LUN UID입니다
+ a| 
+LUN 크기입니다
+ a| 
+상태
+
+|===

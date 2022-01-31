@@ -1,0 +1,272 @@
+---
+permalink: san-migration/task_fli_transition_preparing_source_and_destination_arrays.html 
+sidebar: sidebar 
+keywords: prepare, source, destination, arrays, migration 
+summary: FLI 7-Mode에서 ONTAP로의 마이그레이션을 준비하려면 호스트 및 소스 LUN 경로와 기타 세부 정보를 확인하십시오. 
+---
+= 마이그레이션을 위한 소스 및 타겟 스토리지 준비
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FLI 7-Mode에서 ONTAP로의 마이그레이션을 준비하려면 호스트 및 소스 LUN 경로와 기타 세부 정보를 확인하십시오.
+
+.단계
+. ONTAP에서 '고급' 권한 레벨로 변경합니다.
++
+[listing]
+----
+cluster::> set adv
+
+Warning: These advanced commands are potentially dangerous; use them only when directed to do so by NetApp personnel.
+Do you want to continue? {y|n}: y
+
+cluster::*>
+----
+. 소스 어레이가 대상 컨트롤러에서 표시되는지 확인합니다.
++
+[listing]
+----
+cluster::*> storage array show
+Prefix                         Name   Vendor            Model Options
+-------- ---------------------------- -------- ---------------- ----------
+NET-1                    NETAPP_LUN_1   NETAPP              LUN
+
+cluster::*> storage array config show -array-name NETAPP_LUN_1
+             LUN   LUN
+Node         Group Count                   Array Name       Array Target Port Initiator
+------------ ----- ----- ---------------------------- ----------------------- ---------
+ontaptme-fc-cluster-01
+                 1     2                 NETAPP_LUN_1        500a0981880b813d        0d
+                                                             500a0981980b813d        0d
+ontaptme-fc-cluster-02
+                 1     2                 NETAPP_LUN_1        500a0981880b813d        0d
+                                                             500a0981980b813d        0d
+4 entries were displayed.
+
+Warning: Configuration errors were detected.  Use 'storage errors show' for detailed information.
+----
+. 나열된 스토리지 오류에 대한 세부 정보를 봅니다. 일부 오류는 계속하기 전에 조치가 필요할 수 있습니다. 그러나 다음 예에 표시된 ""이 장치는 ONTAP(R) LUN입니다." 오류는 무시해도 됩니다.
++
+[NOTE]
+====
+"이 장치는 ONTAP\(R\) LUN입니다."라는 오류 메시지는 FLI가 FlexArray 또는 ONTAP 대상 가상화를 지원하지 않는 ONTAP 기술을 사용하기 때문에 발생합니다. FLI는 LUN을 가져올 수 있지만 FlexArray에서는 LUN 가상화를 지원하지 않습니다.
+
+====
++
+[listing]
+----
+cluster::*> storage errors show
+Disk: NET-1.1
+UID: 60A98000:44306931:452B4738:5767366B:00000000:00000000:00000000:00000000:00000000:00000000
+--------------------
+NET-1.1 (60a9800044306931452b47385767366b): This device is an ONTAP(R) LUN.
+
+Disk: NET-1.2
+UID: 60A98000:44306931:452B4738:5767366D:00000000:00000000:00000000:00000000:00000000:00000000
+--------------------
+NET-1.2 (60a9800044306931452b47385767366d): This device is an ONTAP(R) LUN.
+
+2 entries were displayed.
+----
+. 소스 LUN 세부 정보를 표시합니다.
++
+[listing]
+----
+cluster::*> storage array config show -array-name NETAPP_LUN_1 -instance
+
+           Controller Name: ontaptme-fc-cluster-01
+                 LUN Group: 1
+        Array Target Ports: 500a0981880b813d
+                 Initiator: 0d
+                Array Name: NETAPP_LUN_1
+   Target Side Switch Port: stme-5010-4:2-6
+Initiator Side Switch Port: stme-5010-4:2-3
+      Number of array LUNs: 2
+
+           Controller Name: ontaptme-fc-cluster-01
+                 LUN Group: 1
+        Array Target Ports: 500a0981980b813d
+                 Initiator: 0d
+                Array Name: NETAPP_LUN_1
+   Target Side Switch Port: stme-5010-4:2-5
+Initiator Side Switch Port: stme-5010-4:2-3
+      Number of array LUNs: 2
+
+~~~~~~ Output truncated ~~~~~~~
+4 entries were displayed.
+
+Warning: Configuration errors were detected.  Use 'storage errors show' for detailed information.
+----
+. 소스 스토리지가 모든 이니시에이터 포트를 통해 검색되는지 확인합니다.
++
+[listing]
+----
+cluster::*> storage array config show -array-name NETAPP_LUN_1
+             LUN   LUN
+Node         Group Count                   Array Name       Array Target Port Initiator
+------------ ----- ----- ---------------------------- ----------------------- ---------
+ontaptme-fc-cluster-01
+                 1     2                 NETAPP_LUN_1        500a0981880b813d        0d
+                                                             500a0981980b813d        0d
+ontaptme-fc-cluster-02
+                 1     2                 NETAPP_LUN_1        500a0981880b813d        0d
+                                                             500a0981980b813d        0d
+4 entries were displayed.
+
+Warning: Configuration errors were detected.  Use 'storage errors show' for detailed information.
+----
+. 7-Mode 스토리지에서 매핑된 LUN을 나열합니다. 디스크 속성 및 경로를 확인합니다.
++
+[listing]
+----
+cluster::*> storage disk show -array-name NETAPP_LUN_1 -instance
+                  Disk: NET-1.1
+        Container Type: unassigned
+            Owner/Home: -  / -
+               DR Home: -
+    Stack ID/Shelf/Bay: -  / -  / -
+                   LUN: 0
+                 Array: NETAPP_LUN_1
+                Vendor: NETAPP
+                 Model: LUN
+         Serial Number: D0i1E+G8Wg6k
+                   UID: 60A98000:44306931:452B4738:5767366B:00000000:00000000:00000000:00000000:00000000:00000000
+                   BPS: 512
+         Physical Size: -
+              Position: present
+Checksum Compatibility: block
+             Aggregate: -
+                  Plex: -
+Paths:
+                                LUN  Initiator Side        Target Side                                                        Link
+Controller         Initiator     ID  Switch Port           Switch Port           Acc Use  Target Port                TPGN    Speed      I/O KB/s          IOPS
+------------------ ---------  -----  --------------------  --------------------  --- ---  -----------------------  ------  -------  ------------  ------------
+ontaptme-fc-cluster-02
+                   0d             0  stme-5010-4:2-4       stme-5010-4:2-6       ANO RDY  500a0981880b813d              1   4 Gb/S             0             0
+ontaptme-fc-cluster-02
+                   0d             0  stme-5010-4:2-4       stme-5010-4:2-5       AO  INU  500a0981980b813d              0   4 Gb/S             0             0
+ontaptme-fc-cluster-01
+                   0d             0  stme-5010-4:2-3       stme-5010-4:2-6       ANO RDY  500a0981880b813d              1   4 Gb/S             0             0
+ontaptme-fc-cluster-01
+                   0d             0  stme-5010-4:2-3       stme-5010-4:2-5       AO  INU  500a0981980b813d              0   4 Gb/S             0             0
+
+Errors:
+NET-1.1 (60a9800044306931452b47385767366b): This device is a ONTAP(R) LUN.
+~~~~~~ Output truncated ~~~~~~~
+2 entries were displayed.
+----
+. 소스 LUN이 외부 LUN으로 표시되어 있는지 확인합니다.
++
+[listing]
+----
+cluster::*> storage disk show -array-name NETAPP_LUN_1
+                     Usable           Disk    Container   Container
+Disk                   Size Shelf Bay Type    Type        Name      Owner
+---------------- ---------- ----- --- ------- ----------- --------- --------
+NET-1.1                   -     -   - LUN     unassigned  -         -
+NET-1.2                   -     -   - LUN     foreign     -         -
+2 entries were displayed.
+----
+. FLI LUN 임포트 명령에 일련 번호가 사용됩니다. 모든 외부 LUN 및 해당 일련 번호를 나열합니다.
++
+[listing]
+----
+cluster::*> storage disk show -container-type foreign -fields serial-number
+disk    serial-number
+------- --------------------------------
+NET-1.2 D0i1E+G8Wg6m
+----
+. 타겟 LUN을 생성합니다. lun create 명령은 파티션 오프셋을 기반으로 크기와 정렬을 감지하고 그에 따라 외래 디스크 인수를 사용하여 LUN을 생성합니다
++
+[listing]
+----
+cluster::*> vol create -vserver fli_72C -volume flivol -aggregate aggr1 -size 10G
+[Job 12523] Job succeeded: Successful
+----
+. 볼륨을 확인합니다.
++
+[listing]
+----
+cluster::*> vol show -vserver fli_72C
+Vserver   Volume       Aggregate    State      Type       Size  Available Used%
+--------- ------------ ------------ ---------- ---- ---------- ---------- -----
+fli_72C   flivol       aggr1        online     RW         10GB     9.50GB    5%
+fli_72C   rootvol      aggr1        online     RW          1GB    972.6MB    5%
+2 entries were displayed.
+----
+. 타겟 LUN을 생성합니다.
++
+[listing]
+----
+cluster::*> lun create -vserver fli_72C -path /vol/flivol/72Clun1 -ostype windows_2008 -foreign-disk D0i1E+G8Wg6m
+
+Created a LUN of size 3g (3224309760)
+----
+. 새 LUN을 확인합니다.
++
+[listing]
+----
+cluster::*> lun show -vserver fli_72C
+Vserver   Path                            State   Mapped   Type        Size
+--------- ------------------------------- ------- -------- -------- --------
+fli_72C   /vol/flivol/72Clun1             online  unmapped windows_2008
+                                                                      3.00GB
+----
+. 호스트 이니시에이터가 있는 프로토콜 FCP의 igroup을 생성합니다.
++
+[listing]
+----
+cluster::*> lun igroup create -vserver fli_72C -igroup 72C_g1 -protocol fcp -ostype windows –initiator 10:00:00:00:c9:e6:e2:79
+
+cluster::*> lun igroup show -vserver fli_72C -igroup 72C_g1
+          Vserver Name: fli_72C
+           Igroup Name: 72C_g1
+              Protocol: fcp
+               OS Type: windows
+Portset Binding Igroup: -
+           Igroup UUID: 7bc184b1-dcac-11e4-9a88-00a0981cc318
+                  ALUA: true
+            Initiators: 10:00:00:00:c9:e6:e2:79 (logged in)
+----
+. 테스트 LUN을 테스트 igroup에 매핑합니다.
++
+[listing]
+----
+cluster::*> lun map -vserver fli_72C -path /vol/flivol/72Clun1 -igroup 72C_g1
+
+cluster::*> lun mapping show -vserver fli_72C
+Vserver    Path                                      Igroup   LUN ID  Protocol
+---------- ----------------------------------------  -------  ------  --------
+fli_72C    /vol/flivol/72Clun1                       72C_g1        0  fcp
+----
+. 테스트 LUN을 오프라인 상태로 전환합니다.
++
+[listing]
+----
+cluster::*> lun offline -vserver fli_72C -path /vol/flivol/72Clun1
+
+Warning: This command will take LUN "/vol/flivol/72Clun1" in Vserver "fli_72C" offline.
+Do you want to continue? {y|n}: y
+
+cluster::*> lun show -vserver fli_72C
+Vserver   Path                            State   Mapped   Type        Size
+--------- ------------------------------- ------- -------- -------- --------
+fli_72C   /vol/flivol/72Clun1             offline mapped   windows_2008
+                                                                      3.00GB
+----
+. 새 LUN과 외부 LUN 간의 가져오기 관계를 생성합니다.
++
+[listing]
+----
+cluster::*> lun import create -vserver fli_72C -path /vol/flivol/72Clun1 -foreign-disk D0i1E+G8Wg6m
+
+cluster::*> lun import show -vserver fli_72C -path /vol/flivol/72Clun1
+vserver foreign-disk   path                operation admin operational percent
+                                         in progress state state       complete
+-------------------------------------------------------------------------------
+fli_72C D0i1E+G8Wg6m   /vol/flivol/72Clun1 import    stopped
+                                                           stopped            0
+----
+

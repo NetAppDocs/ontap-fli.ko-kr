@@ -1,0 +1,28 @@
+---
+permalink: san-migration/concept_variables_that_affect_foreign_lun_import_migration_performance.html 
+sidebar: sidebar 
+keywords: variables, affect, foreign lun import, migration, performance 
+summary: 지정된 마이그레이션의 완료 속도에 영향을 주는 여러 변수가 있습니다. 
+---
+= 외부 LUN 가져오기 마이그레이션 성능에 영향을 주는 변수
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+지정된 마이그레이션의 완료 속도에 영향을 주는 여러 변수가 있습니다.
+
+이러한 변수에는 다음이 포함됩니다.
+
+* 특정 소스와 대상 간에 실행 중인 동시 마이그레이션 수
+* 소스 스토리지 기능
+* 소스 스토리지 로드
+* 타겟 스토리지 기능
+* 대상 스토리지 로드
+* 마이그레이션 중에 LUN에 생성되는 입출력입니다
+* 프런트엔드 패브릭의 유형, 대역폭 및 팬인/팬아웃
+
+
+최상의 성능을 얻으려면 노드당 FLI 마이그레이션을 16회 이상 사용하지 않습니다.
+
+마이그레이션 성능에 영향을 주는 변수의 수를 고려할 때 테스트 마이그레이션을 여러 번 수행하는 것이 좋습니다. 일반적으로 테스트 표본이 클수록 특성 분석이 더 좋아집니다. 따라서 정확한 처리량 성능 샘플을 얻기 위해 다양한 크기의 테스트 마이그레이션을 수행하는 것이 좋습니다. 그런 다음 이러한 테스트의 성능 데이터를 사용하여 계획된 운영 마이그레이션의 시간과 기간을 추정할 수 있습니다.

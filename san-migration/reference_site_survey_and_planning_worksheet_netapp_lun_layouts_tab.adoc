@@ -1,0 +1,76 @@
+---
+permalink: san-migration/reference_site_survey_and_planning_worksheet_netapp_lun_layouts_tab.html 
+sidebar: sidebar 
+keywords: site, survey and planning worksheet, netapp lun layouts tab 
+summary: 사이트 조사 및 계획 워크시트의 일부로 LUN 레이아웃에 대한 정보가 포함된 탭을 설정해야 합니다. 
+---
+= 사이트 설문조사 및 계획 워크시트 NetApp LUN 레이아웃 탭
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+사이트 조사 및 계획 워크시트의 일부로 LUN 레이아웃에 대한 정보가 포함된 탭을 설정해야 합니다.
+
+다음은 NetApp LUN Layouts 탭을 설정하는 방법의 예입니다.
+
+|===
+7+| NetApp LUN 정보 
+
+
+ a| 
+스토리지 컨트롤러
+ a| 
+집계
+ a| 
+볼륨 이름
+ a| 
+볼륨 크기
+ a| 
+볼륨 보장
+ a| 
+스냅 예약
+ a| 
+LUN 이름입니다
+
+|===
+|===
+7+| NetApp LUN 정보 
+
+
+ a| 
+S/N
+ a| 
+LUN 유형입니다
+ a| 
+사용자 지정 접두어
+ a| 
+LUN 설명입니다
+ a| 
+GB 크기
+ a| 
+LUN 예약입니다
+ a| 
+분할 예약
+
+|===
+|===
+7+| NetApp LUN 정보 
+
+
+ a| 
+볼륨 자동 크기 조정
+ a| 
+스냅 자동 삭제
+ a| 
+Igroup
+ a| 
+LUN ID입니다
+ a| 
+호스트 유형
+ a| 
+드라이브 문자
+ a| 
+호스트
+
+|===

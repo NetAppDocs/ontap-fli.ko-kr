@@ -1,0 +1,29 @@
+---
+permalink: san-migration/reference_host_remediation.html 
+sidebar: sidebar 
+keywords: host remediation 
+summary: '마이그레이션 유형에 따라 호스트 개선이 마이그레이션(외부 LUN 임포트 온라인, 7-Mode에서 ONTAP로)에 인라인 방식으로 수행되거나 마이그레이션이 완료된 후(외부 LUN 임포트 오프라인) 발생할 수 있습니다.' 
+---
+= 호스트 수정
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+마이그레이션 유형에 따라 호스트 개선이 마이그레이션(외부 LUN 임포트 온라인, 7-Mode에서 ONTAP로)에 인라인 방식으로 수행되거나 마이그레이션이 완료된 후(외부 LUN 임포트 오프라인) 발생할 수 있습니다.
+
+다양한 호스트 OS에 대한 수정 단계를 위해 를 사용합니다. 차이 분석을 참조하고 계획 및 분석 단계 중에 통합하며, 마이그레이션 단계에 대한 적절한 NetApp 및 공급업체 문서를 참조하십시오.
+
+[NOTE]
+====
+FLI는 7MTT와 동일한 개선 절차를 사용합니다. 따라서 서로 다른 장소에 해당 절차를 여러 번 문서화하지 않고 동일한 개선 문서를 활용하는 것이 좋습니다.
+
+====
+[NOTE]
+====
+caw 문제 해결은 ESXi caw/ATS 개선 프로세스를 사용합니다.
+
+====
+* 관련 정보 *
+
+https://docs.netapp.com/us-en/ontap-7mode-transition/san-host/index.html["SAN 호스트 전환 및 수정"]

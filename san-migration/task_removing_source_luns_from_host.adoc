@@ -1,0 +1,35 @@
+---
+permalink: san-migration/task_removing_source_luns_from_host.html 
+sidebar: sidebar 
+keywords: remove, source, luns, hosts 
+summary: 다음 단계에서는 FLI 마이그레이션이 완료된 후 호스트에서 소스 LUN을 제거하는 방법을 설명합니다. 
+---
+= 호스트에서 소스 LUN을 제거하는 중입니다
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+다음 단계에서는 FLI 마이그레이션이 완료된 후 호스트에서 소스 LUN을 제거하는 방법을 설명합니다.
+
+
+NOTE: 이 작업에서는 예제에 _HDS AMS2100_어레이를 사용합니다. 다른 어레이 또는 다른 버전의 어레이 GUI를 사용하는 경우 작업이 다를 수 있습니다.
+
+호스트에서 소스 LUN을 제거하려면 다음 단계를 수행하십시오.
+
+.단계
+. Hitachi Storage Navigator Modular에 로그인합니다.
+. 마이그레이션되는 호스트를 선택하고 * 호스트 그룹 편집 * 을 선택합니다.
++
+image::../media/remove_source_luns_from_host_1.png[호스트 1에서 소스 LUN을 제거합니다]
+
+. 포트 * 를 선택하고 선택한 모든 포트에 대해 * 강제 설정 * 을 선택합니다.
++
+image::../media/remove_source_luns_from_host_2.png[호스트 2에서 소스 LUN을 제거합니다]
+
+. 할당된 논리 LUN에서 마이그레이션되는 호스트 LUN을 선택합니다. 소스 LUN 워크시트에 언급된 각 호스트에 대해 LUN 이름을 사용합니다. 여기에서 Windows 2012 호스트의 LUN을 선택하고 * Remove * 를 선택합니다.
++
+image::../media/remove_source_luns_from_host_3.png[호스트 3에서 소스 LUN을 제거합니다]
+
+. Linux 및 VMware ESX 호스트에 대해 이 단계를 반복합니다.
+

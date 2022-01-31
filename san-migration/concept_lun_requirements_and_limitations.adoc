@@ -1,0 +1,31 @@
+---
+permalink: san-migration/concept_lun_requirements_and_limitations.html 
+sidebar: sidebar 
+keywords: lun, requirements, limitations 
+summary: FLI 마이그레이션을 시작하기 전에 LUN이 다음 요구사항을 충족해야 합니다. 
+---
+= LUN 요구 사항 및 제한 사항
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FLI 마이그레이션을 시작하기 전에 LUN이 다음 요구사항을 충족해야 합니다.
+
+* FLI는 각 컨트롤러에서 최소 1개의 FC 포트를 필요로 하며 LUN이 이니시에이터 모드에서 직접 마이그레이션하도록 합니다.
+* ONTAP에서 할당을 방지하려면 대상 스토리지에서 외부 LUN을 외부 LUN으로 표시해야 합니다.
+* 가져오기를 시작하기 전에 외부 LUN이 가져오기 관계에 있어야 합니다.
+* LUN은 외부 LUN과 크기가 같아야 하며 디스크 블록 크기가 같아야 합니다. 이러한 두 요구 사항은 LUN 생성 단계에서 모두 적용됩니다.
+* LUN은 확장하거나 축소해서는 안 됩니다.
+* LUN은 하나 이상의 igroup에 매핑되어야 합니다.
+* 관계를 생성하기 전에 NetApp LUN을 오프라인 상태로 전환해야 합니다. 그러나 LUN 관계가 생성된 후 온라인 FLI의 경우 온라인으로 되돌릴 수 있습니다.
+
+
+
+
+== 제한 사항
+
+* 모든 마이그레이션이 LUN 레벨입니다.
+* FLI는 FC(파이버 채널) 연결만 지원합니다.
+* FLI는 iSCSI 연결을 직접 지원하지 않습니다. FLI를 사용하여 iSCSI LUN을 마이그레이션하려면 LUN 유형을 FC로 변경해야 합니다. 마이그레이션이 완료되면 LUN 유형이 다시 iSCSI로 변경됩니다.
+

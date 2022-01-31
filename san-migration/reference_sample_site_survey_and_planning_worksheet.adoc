@@ -1,0 +1,32 @@
+---
+permalink: san-migration/reference_sample_site_survey_and_planning_worksheet.html 
+sidebar: sidebar 
+keywords: sample, site, survey and planning, worksheet 
+summary: 마이그레이션 방법론의 분석 및 계획 단계에서는 사이트 조사 및 계획 워크시트를 사용하여 기존 구성, 타겟 구성, 차이, 개선 계획을 문서화해야 합니다. 
+---
+= 샘플 사이트 조사 및 계획 워크시트
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+마이그레이션 방법론의 분석 및 계획 단계에서는 사이트 조사 및 계획 워크시트를 사용하여 기존 구성, 타겟 구성, 차이, 개선 계획을 문서화해야 합니다.
+
+이 섹션에서는 사이트 조사 및 계획 스프레드시트에 포함해야 하는 정보 유형의 예를 제공합니다. 다음 탭을 사용하는 것이 좋습니다.
+
+* 연락처
+* 설문 조사
+* 스위치
+* 스토리지 디바이스(소스)
+* 스토리지 디바이스(대상)
+* 호스트
+* HBA 및 영역 정보
+* 소스 LUN
+* 스토리지 그룹
+* LUN 세부 정보입니다
+* NetApp LUN 레이아웃
+* 마이그레이션 일정
+* 집계 상태
+* FAS 구성
+* SDS CLI 스크립트
+

@@ -1,0 +1,21 @@
+---
+permalink: san-migration/concept_fli_using_workflow_automation_wfa.html 
+sidebar: sidebar 
+keywords: fli, using, workflow, automation, wfa, migration 
+summary: FLI와 함께 워크플로우 자동화를 사용하여 마이그레이션 전/후, 마이그레이션, 전환 작업 및 상태 점검을 자동화할 수 있습니다. 자동화된 마이그레이션에서 FLI는 워크플로우 자동화 소프트웨어를 사용하여 마이그레이션 프로세스의 일부를 자동화합니다. WFA를 사용하는 FLI는 온라인 또는 오프라인 모드에서 사용할 수 있습니다. 
+---
+= WFA(워크플로우 자동화)를 사용하는 FLI
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FLI와 함께 워크플로우 자동화를 사용하여 마이그레이션 전/후, 마이그레이션, 전환 작업 및 상태 점검을 자동화할 수 있습니다. 자동화된 마이그레이션에서 FLI는 워크플로우 자동화 소프트웨어를 사용하여 마이그레이션 프로세스의 일부를 자동화합니다. WFA를 사용하는 FLI는 온라인 또는 오프라인 모드에서 사용할 수 있습니다.
+
+FLI와 함께 WFA를 사용하려면 사용자 환경의 적합한 서버에 WFA를 다운로드하여 설치해야 합니다. WFA를 설치한 후에는 지정된 워크플로우를 다운로드합니다. FLI 자동화 팩 2개를 온라인으로 FLI와 FLI로 다운로드할 수 있습니다. 자동화 팩은 FLI 오프라인 및 FLI 온라인 워크플로우와 동일한 지원 규칙을 따릅니다. 여기에는 FLI를 온라인으로 지원하는 호스트 운영 체제 목록이 포함됩니다.
+
+WFA 자동화 팩은 WFA 자동화 스토어에서 다운로드할 수 있습니다. 수행된 특정 작업 및 기타 자세한 워크플로 정보에 대한 자세한 내용은 각 팩에 포함된 도움말 파일을 검토하십시오.
+
+* 관련 정보 *
+
+http://docs.netapp.com["OnCommand Workflow Automation - 워크플로 개발자 가이드"]

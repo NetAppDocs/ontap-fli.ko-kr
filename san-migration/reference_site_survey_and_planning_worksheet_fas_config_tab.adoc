@@ -1,0 +1,110 @@
+---
+permalink: san-migration/reference_site_survey_and_planning_worksheet_fas_config_tab.html 
+sidebar: sidebar 
+keywords: site, survey and planning worksheet, fas config tab 
+summary: 사이트 조사 및 계획 워크시트의 일부로 FAS 구성에 대한 정보가 포함된 탭이 있어야 합니다. 
+---
+= 사이트 조사 및 계획 워크시트 FAS 구성 탭
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+사이트 조사 및 계획 워크시트의 일부로 FAS 구성에 대한 정보가 포함된 탭이 있어야 합니다.
+
+다음은 FAS 구성 탭을 설정하는 방법의 예입니다.
+
+|===
+| 클러스터 이름 | 클러스터 관리 IP 주소입니다 | 클러스터 관리 자격 증명을 사용할 수 있습니다 2+| ONTAP 시스템 관리자 호스트 
+
+
+|  |  |  | * IP 주소 * | * 자격 증명 사용 가능 * 
+
+
+|  |  |  |  |  
+|===
+|===
+6+| 네트워크 포트 
+
+
+| 노드 | 인터페이스 이름 | 포트 유형입니다 | 포트 속도 | VLAN 이름/ID입니다 | IFGRP 
+
+
+ a| 
+ a| 
+ a| 
+ a| 
+ a| 
+ a| 
+
+|===
+|===
+| SVM 이름 | 유형 | 프로토콜 | 집계 | SVM 루트 볼륨 
+
+
+ a| 
+ a| 
+ a| 
+ a| 
+ a| 
+
+|===
+|===
+| SVM | 볼륨 | 집계 | 크기 | 산 
+
+
+|  |  |  | * LUN 이름 * | * LUN 크기 * 
+
+
+ a| 
+ a| 
+ a| 
+ a| 
+ a| 
+
+|===
+|===
+6+| SVM 네트워크 인터페이스 
+
+
+| SVM | 인터페이스 이름 | 인터페이스 역할 | IP 주소/넷마스크 | 홈 노드/홈 포트 | 페일오버 그룹 
+
+
+ a| 
+ a| 
+ a| 
+ a| 
+ a| 
+ a| 
+
+|===
+|===
+6+| SVM FCP 대상 포트 
+
+
+| SVM | FCP 포트 이름 | WWPN입니다 | WWNN입니다 | 홈 노드 | 홈 포트 
+
+
+ a| 
+ a| 
+ a| 
+ a| 
+ a| 
+ a| 
+
+|===
+|===
+6+| 노드 FCP 이니시에이터 포트 
+
+
+| 노드 이름 | FCP 포트 이름 | WWPN입니다 | WWN입니다 | 홈런노드 | 홈 포트 
+
+
+ a| 
+ a| 
+ a| 
+ a| 
+ a| 
+ a| 
+
+|===

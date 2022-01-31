@@ -1,0 +1,25 @@
+---
+permalink: san-migration/task_document_customer_environment.html 
+sidebar: sidebar 
+keywords: document, newly, migrated, environment 
+summary: 고객 환경을 문서화하려면 AutoSupport 명령을 실행해야 합니다. 
+---
+= 새로 마이그레이션된 환경 문서화
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+고객 환경을 문서화하려면 "AutoSupport" 명령을 실행해야 합니다.
+
+고객 환경을 문서화하려면 다음 단계를 수행하십시오.
+
+.단계
+. AutoSupport 명령을 실행하여 최종 구성을 문서화합니다.
++
+[listing]
+----
+B9CModeCluster::*> autosupport invoke -node DataMig-cmode-01 -type all –message “migration-final”
+----
+. 새로 마이그레이션된 환경을 완전히 문서화합니다.
+

@@ -1,0 +1,15 @@
+---
+permalink: san-migration/concept_data_migration_challenges.html 
+sidebar: sidebar 
+keywords: data, migration, challenges 
+summary: 데이터 마이그레이션으로 인해 발생하는 몇 가지 문제는 다운타임 연장, 잠재적 위험, 리소스 부족, 부적절한 전문성으로 인해 발생합니다. 
+---
+= 데이터 마이그레이션의 도전 과제
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+데이터 마이그레이션으로 인해 발생하는 몇 가지 문제는 다운타임 연장, 잠재적 위험, 리소스 부족, 부적절한 전문성으로 인해 발생합니다.
+
+데이터 가용성 요구사항이 점점 까다로워지고 다운타임을 허용할 수 없는 수준으로 증가함에 따라 비즈니스 운영 시 데이터 마이그레이션 프로세스가 더욱 중요해지고 있습니다. 운영 시스템에 대한 성능 영향, 잠재적 데이터 손상 및 손실과 같은 위험 요인은 데이터 마이그레이션 프로세스에서 우려됩니다.

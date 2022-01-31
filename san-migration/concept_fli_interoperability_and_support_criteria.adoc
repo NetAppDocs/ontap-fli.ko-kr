@@ -1,0 +1,32 @@
+---
+permalink: san-migration/concept_fli_interoperability_and_support_criteria.html 
+sidebar: sidebar 
+keywords: fli, interoperability, support, criteria 
+summary: 'FLI 상호 운용성 매트릭스(IMT)는 FlexArray IMT와 매우 유사하나, FLI에서 작동하는 NetApp 공인 소스 어레이를 더 잘 지원하기 위해 명백히 다른 상호 운용성 툴로 추가되었습니다.' 
+---
+= FLI 상호 운용성 및 지원 기준
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FLI 상호 운용성 매트릭스(IMT)는 FlexArray IMT와 매우 유사하나, FLI에서 작동하는 NetApp 공인 소스 어레이를 더 잘 지원하기 위해 명백히 다른 상호 운용성 툴로 추가되었습니다.
+
+외부 LUN 가져오기를 수행하기 전에 두 가지 상호 운용성 영역을 확인해야 합니다.
+
+* FLI가 지원되는지 확인하십시오. FLI IMT를 검토하면 됩니다.
+* 가져오기가 완료된 후 전체 종단 간 구성이 지원되는 구성인지 확인합니다. 이는 FAS/AFF IMT에서 가능합니다.
+
+
+또한 대상 ONTAP 버전과 비교하여 다음 세 가지 기준을 확인하십시오.
+
+* 소스 스토리지 플랫폼 모델 및 마이크로코드 버전
+* SAN 스위치 모델 및 마이크로코드 버전
+* 마이그레이션 후 LUN을 마운트하는 NetApp 컨트롤러, 고객 환경(스위치, HBA, 펌웨어, 서버 하드웨어 등) 및 SAN 연결 클라이언트
+
+
+이러한 세 가지 구성 요소 중 하나라도 지원되지 않는 경우 마이그레이션 프로세스 도중과 이후에 완벽한 성공과 지원을 보장하기 위해 몇 가지 해결 조치가 필요할 수 있습니다.
+
+* 관련 정보 *
+
+https://mysupport.netapp.com/NOW/products/interoperability["NetApp 상호 운용성"]

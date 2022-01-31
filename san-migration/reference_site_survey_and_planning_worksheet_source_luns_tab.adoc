@@ -1,0 +1,127 @@
+---
+permalink: san-migration/reference_site_survey_and_planning_worksheet_source_luns_tab.html 
+sidebar: sidebar 
+keywords: site, survey and planning worksheet, source luns tab 
+summary: 사이트 조사 및 계획 워크시트의 일부로 소스 LUN에 대한 정보가 포함된 탭을 설정해야 합니다. 
+---
+= 사이트 조사 및 계획 워크시트 소스 LUN 탭
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+사이트 조사 및 계획 워크시트의 일부로 소스 LUN에 대한 정보가 포함된 탭을 설정해야 합니다.
+
+다음은 소스 LUN 탭을 설정하는 방법의 예입니다.
+
+|===
+5+| 소스 LUN 
+
+
+ a| 
+마스킹된 LUN
+
+
+
+ a| 
+스토리지 그룹 이름입니다
+ a| 
+호스트 LUN ID입니다
+ a| 
+스토리지 LUN ID입니다
+ a| 
+두껍게/얇게
+ a| 
+UID
+
+
+
+ a| 
+dm-rx200s6-21
+ a| 
+0
+ a| 
+30
+ a| 
+두껍게
+ a| 
+60060e801046b96004f2bf460000001e
+
+
+
+ a| 
+dm-rx200s6-21
+ a| 
+1
+ a| 
+14
+ a| 
+두껍게
+ a| 
+60060e801046b96004f2bf460000000e
+
+
+
+ a| 
+dm-rx200s6-21
+ a| 
+2
+ a| 
+15
+ a| 
+두껍게
+ a| 
+60060e801046b96004f2bf460000000f
+
+|===
+|===
+5+| 소스 LUN 
+
+
+ a| 
+모든 LUN. 2a
+| 사용자 지정 접두어 
+
+
+ a| 
+LUN 이름입니다
+ a| 
+UID
+ a| 
+시작 섹터
+ a| 
+파티션 오프셋
+ a| 
+
+
+
+| LUN30  a| 
+ a| 
+ a| 
+368050176)을 참조하십시오
+ a| 
+0
+
+
+
+ a| 
+LUN14
+ a| 
+ a| 
+ a| 
+33619968
+ a| 
+0
+
+
+
+ a| 
+LUN15
+ a| 
+ a| 
+ a| 
+33619968
+ a| 
+0
+
+|===

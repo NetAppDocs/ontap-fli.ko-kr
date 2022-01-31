@@ -1,0 +1,17 @@
+---
+permalink: san-migration/concept_migration_execute_phase_workflow.html 
+sidebar: sidebar 
+keywords: execute, phase, workflows 
+summary: 실행 단계에서는 FLI 오프라인 또는 온라인 마이그레이션을 수행하기 위한 LUN 마이그레이션 작업에 중점을 둡니다. 
+---
+= 단계 워크플로 실행
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+실행 단계에서는 FLI 오프라인 또는 온라인 마이그레이션을 수행하기 위한 LUN 마이그레이션 작업에 중점을 둡니다.
+
+문제를 찾아 해결하고 위험을 줄이기 위해 호스트 이벤트 로그를 검토합니다. 호스트는 재부팅되어 주요 재구성이 발생하기 전에 호스트에 기본적인 문제가 없는지 확인합니다.
+
+소스 LUN이 대상 스토리지에 표시된 후 마이그레이션 작업을 생성하고 실행할 수 있습니다. 마이그레이션 완료(FLI 오프라인) 또는 FLI LUN 관계가 FLI 온라인 상태로 전환되면 호스트가 대상 스토리지에 조닝(zoning)됩니다. 새 LUN이 매핑되며 드라이버, 다중 경로 소프트웨어 및 분석 단계에서 식별된 기타 모든 업데이트에 대해 호스트 개선을 시작할 수 있습니다.

@@ -1,0 +1,14 @@
+---
+layout: astra 
+sidebar: sidebar 
+permalink: index.html 
+summary: ONTAP 외부 LUN 임포트 
+---
+= ONTAP 외부 LUN 임포트 설명서
+:hardbreaks:
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+

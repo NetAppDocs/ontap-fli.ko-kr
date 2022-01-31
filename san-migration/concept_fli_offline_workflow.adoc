@@ -1,0 +1,21 @@
+---
+permalink: san-migration/concept_fli_offline_workflow.html 
+sidebar: sidebar 
+keywords: fli, offline, workflow 
+summary: 이 섹션에서는 FLI 오프라인 워크플로우의 예를 들어, 4개의 FLI 워크플로우 중 하나를 제공합니다. 
+---
+= FLI 오프라인 워크플로우
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+이 섹션에서는 FLI 오프라인 워크플로우의 예를 들어, 4개의 FLI 워크플로우 중 하나를 제공합니다.
+
+이 워크플로우에서는 HDS AMS2100 어레이를 소스 스토리지로 사용합니다. 오프라인 워크플로에는 다음과 같은 작업이 있습니다.
+
+. 컷오버 준비
+. 데이터를 가져오는 중입니다
+. 마이그레이션 결과 확인(선택 사항)
+. FLI 오프라인 마이그레이션 후 작업
+

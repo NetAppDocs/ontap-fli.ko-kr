@@ -1,0 +1,28 @@
+---
+permalink: san-migration/task_removing_destination_array_configuration.html 
+sidebar: sidebar 
+keywords: remove, destination, array, configuration 
+summary: 다음 단계에서는 FLI 마이그레이션이 완료된 후 소스 어레이에서 대상 어레이 구성을 제거하는 방법을 보여줍니다. 
+---
+= 대상 배열 구성을 제거하는 중입니다
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+다음 단계에서는 FLI 마이그레이션이 완료된 후 소스 어레이에서 대상 어레이 구성을 제거하는 방법을 보여줍니다.
+
+.단계
+. Hitachi Storage Navigator Modular as system에 로그인합니다.
+. AMS 2100 * 배열을 선택하고 * Show * 및 * Configure Array * 를 클릭합니다.
+. root를 사용하여 로그인합니다.
+. 그룹 을 확장하고 * 호스트 그룹 * 을 선택합니다.
+. cDOT_FLI * 호스트 그룹을 선택하고 * 호스트 그룹 삭제 * 를 클릭합니다.
++
+image::../media/remove_destination_array_configuration_from_source_array_1.png[소스 스토리지 1에서 대상 스토리지 구성을 제거합니다]
+
+. 호스트 그룹 삭제를 확인합니다.
++
+image::../media/remove_destination_array_configuration_from_source_array_2.png[소스 스토리지 2에서 대상 스토리지 구성을 제거합니다]
+
+

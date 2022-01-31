@@ -1,0 +1,39 @@
+---
+permalink: san-migration/task_brocade_fabric_in_production_fabric_a_example.html 
+sidebar: sidebar 
+keywords: brocade, fabric, production, fabric A, example 
+summary: 다음은 운영 패브릭 A에 있는 Brocade 패브릭의 예입니다 
+---
+= 운영 패브릭의 예로 Brocade Fabric을 들 수 있습니다
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+다음은 운영 패브릭 A에 있는 Brocade 패브릭의 예입니다
+
+. 운영 패브릭 A에 영역을 생성합니다
++
+[listing]
+----
+zoneCreate "rx21_flicDOT", "21:00:00:24:ff:30:14:c5"
+zoneAdd "rx21_flicDOT", "20:01:00:a0:98:2f:94:d1"
+zoneAdd "rx21_flicDOT", "20:03:00:a0:98:2f:94:d1"
+zoneCreate "rx22_flicDOT", "21:00:00:24:ff:30:04:85"
+zoneAdd "rx22_flicDOT", "20:01:00:a0:98:2f:94:d1"
+zoneAdd "rx22_flicDOT", "20:03:00:a0:98:2f:94:d1"
+zoneCreate "rx20_flicDOT", "21:00:00:24:ff:30:03:ea"
+zoneAdd "rx20_flicDOT", "20:01:00:a0:98:2f:94:d1"
+zoneAdd "rx20_flicDOT", "20:03:00:a0:98:2f:94:d1"
+----
+. 운영 패브릭 A의 영역을 활성화합니다
++
+[listing]
+----
+cfgAdd "PROD_LEFT", "rx21_flicDOT"
+cfgAdd "PROD_LEFT", "rx22_flicDOT"
+cfgAdd "PROD_LEFT", "rx20_flicDOT"
+cfgEnable "PROD_LEFT"
+cfgSave
+----
+

@@ -1,0 +1,51 @@
+---
+permalink: san-migration/task_brocade_fabric_example.html 
+sidebar: sidebar 
+keywords: brocade, fabric, example 
+summary: 이 절차는 Brocade 패브릭 zoneset에서 소스 스토리지 및 호스트 영역 제거를 보여 줍니다. 
+---
+= Brocade 패브릭의 예
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+이 절차는 Brocade 패브릭 zoneset에서 소스 스토리지 및 호스트 영역 제거를 보여 줍니다.
+
+[NOTE]
+====
+예제의 영역 이름은 _rx21_AMS2100_입니다.
+
+====
+.단계
+. 패브릭 A의 zoneset에서 영역을 제거합니다
++
+[listing]
+----
+cfgDelete "PROD_LEFT", "rx21_AMS2100"
+cfgDelete "PROD_LEFT", "rx22_AMS2100"
+cfgDelete "PROD_LEFT", "rx20_AMS2100"
+----
+. 패브릭 A에서 zoneset을 활성화합니다
++
+[listing]
+----
+cfgEnable "PROD_LEFT"
+cfgSave
+----
+. 패브릭 B의 zoneset에서 영역을 제거합니다
++
+[listing]
+----
+cfgDelete "PROD_RIGHT", "rx21_AMS2100"
+cfgDelete "PROD_RIGHT", "rx22_AMS2100"
+cfgDelete "PROD_RIGHT", "rx20_AMS2100"
+----
+. 패브릭 B에서 zoneset을 활성화합니다
++
+[listing]
+----
+cfgEnable "PROD_RIGHT"
+cfgSave
+----
+

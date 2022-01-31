@@ -1,0 +1,20 @@
+---
+permalink: san-migration/concept_best_practices_for_fli_migration.html 
+sidebar: sidebar 
+keywords: best practices, foreign lun, import migration 
+summary: 'NetApp은 프로페셔널 서비스 또는 파트너 프로페셔널 서비스, 마이그레이션 범위 지정 및 계획, FLI(Foreign LUN Import) 7-Mode를 사용하여 ONTAP로 데이터 마이그레이션을 수행하는 방법에 대한 고객 인력을 교육하는 것을 적극 권장합니다.' 
+---
+= 외부 LUN 임포트 마이그레이션에 대한 모범 사례
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+NetApp은 프로페셔널 서비스 또는 파트너 프로페셔널 서비스, 마이그레이션 범위 지정 및 계획, FLI(Foreign LUN Import) 7-Mode를 사용하여 ONTAP로 데이터 마이그레이션을 수행하는 방법에 대한 고객 인력을 교육하는 것을 적극 권장합니다.
+
+* 마이그레이션 프로젝트를 시작하기 최소 1주 전에 테스트 마이그레이션을 수행하여 구성, 연결 및 처리량을 확인하고, 다른 문제를 발견하고, 방법론을 검증합니다.
+* 처리량을 극대화하기 위해 노드당 16개 이상의 마이그레이션을 동시에 실행하지 마십시오.
+* 검증이 필요하지 않지만 가져오기 프로세스를 검증하기 위해 임포트/마이그레이션된 LUN의 하위 세트를 확인하는 것이 좋습니다.
+* 테스트 마이그레이션에 관찰된 처리량을 사용하여 운영 마이그레이션 기간을 계획합니다.
+* 최상의 성능을 위해 사용량이 많지 않은 기간 동안 LUN을 마이그레이션합니다.
+

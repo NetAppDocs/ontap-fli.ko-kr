@@ -1,0 +1,26 @@
+---
+settings:
+  name: ONTAP
+  internal:
+    pdf_enabled: true
+  prod:
+    pdf_enabled: true
+    harmony_enabled: false
+  langs: ko-kr,us-en,ja-jp,zh-cn
+sidebar:
+  entries:
+  - title: ONTAP FLI 문서
+    url: "/index.html"
+  - section: san-migration
+homepage:
+  tiles:
+  - title: FLI 워크플로우
+    links:
+    - title: 오프라인 워크플로
+      url: "/san-migration/concept_fli_offline_workflow.html"
+    - title: 온라인 워크플로
+      url: "/san-migration/concept_fli_online_workflow.html"
+    - title: FLI 7-Mode에서 ONTAP로의 전환 워크플로우
+      url: "/san-migration/concept_fli_7_mode_to_ontap_transition_workflow.html"
+    - title: WFA(워크플로우 자동화)를 사용하는 FLI
+      url: "/san-migration/concept_fli_using_workflow_automation_wfa.html"
