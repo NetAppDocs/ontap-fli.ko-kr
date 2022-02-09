@@ -46,7 +46,7 @@ OBJLIB-LIB: ObjLib cleanup done.
 ~ # vmkfstools -Ph -v 1 /vmfs/volumes/fli-orig-3
 ~ # vmkfstools --help
 ----
-모드가 public only라는 단어를 나열한 경우 수정할 필요가 없습니다. 이 경우 abovepublic ATS-only 는 ATS가 활성화되어 있고 가져오기가 완료될 때까지 비활성화해야 하며, 이 시점에 다시 활성화할 수 있음을 의미합니다.
+모드가 단어 _public only_를 나열한 경우 수정이 필요하지 않습니다. 위_public ATS-only_는 ATS가 활성화되어 있고 가져오기가 완료될 때까지 해제되어야 함을 의미하며, 이 경우 다시 활성화할 수 있습니다.
 
 LUN에서 ATS/caw를 비활성화하려면 다음 명령을 사용합니다.
 

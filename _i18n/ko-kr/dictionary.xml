@@ -7,7 +7,6 @@
   <block id="af500a5659130b953b1aaa544c6a0927" category="paragraph">LUN을 두 개 이상의 호스트에서 공유하는 경우 ATS 비트가 설정 또는 해제된 동안 모든 호스트가 오프라인 상태여야 합니다. ATS를 활성화 또는 비활성화한 후 LUN을 새로 고쳐야 합니다. 다시 매핑을 완료한 후에는 호스트를 다시 백업하고 LUN에 액세스할 수 있는지 확인할 수 있습니다.</block>
   <block id="d4c0da0e413010dec4d7c586a702cb9a" category="paragraph">이전 버전의 VMFS를 실행하거나 이전 버전에서 업그레이드하는 경우에는 문제 해결을 수행할 필요가 없습니다. ATS/caw를 활성화 또는 비활성화해야 하는 경우 아래 나열된 명령을 사용할 수 있습니다. 그러나 VM이 활성 상태이고 VMFS5 데이터 저장소에 실행 중인 입출력이 있는 경우에는 두 가지 모두 작동하지 않습니다. 적절한 FLI 워크플로우의_Disruptive cutover_섹션에 나와 있는 호스트 시스템을 종료하고, 필요한 ATS/caw 변경을 수행한 다음, 호스트 중단 부분의 나머지 부분을 수행하는 것이 좋습니다.</block>
   <block id="b9125bb0d0a2719952566e797bbc87d8" category="paragraph">다음 명령을 실행하여 ATS/caw 상태를 확인할 수 있습니다.</block>
-  <block id="a74b9c9d4b6c9527065b4031f26db010" category="paragraph">모드가 public only라는 단어를 나열한 경우 수정할 필요가 없습니다. 이 경우 abovepublic ATS-only 는 ATS가 활성화되어 있고 가져오기가 완료될 때까지 비활성화해야 하며, 이 시점에 다시 활성화할 수 있음을 의미합니다.</block>
   <block id="786f914160b8e10857d5043def09e1f5" category="paragraph">LUN에서 ATS/caw를 비활성화하려면 다음 명령을 사용합니다.</block>
   <block id="bcd5c5dc804423a93948f3bfaaf2b8d0" category="paragraph">ATS/caw를 다시 활성화하려면 마이그레이션이 완료된 후 다음을 사용합니다.</block>
   <block id="82ace49e37ca11b2bc063013ceb3d2d2" category="summary">FLI 오프라인 워크플로우에서 소스 LUN 및 대상 LUN을 구성해야 합니다.</block>
@@ -37,7 +36,6 @@
   <block id="612c6ba81aba3ac58aded1a4788f669e" category="doc">새로 마이그레이션된 환경 문서화</block>
   <block id="4b01ccfdb3280d21ab30c98722404e14" category="paragraph">고객 환경을 문서화하려면 "AutoSupport" 명령을 실행해야 합니다.</block>
   <block id="eab8fbcbd63b2bcc58a738edcf07ee89" category="paragraph">고객 환경을 문서화하려면 다음 단계를 수행하십시오.</block>
-  <block id="d3bc15134b9b89158a56f1a4958ee36d" category="list-text">AutoSupport 명령을 실행하여 최종 구성을 문서화합니다.</block>
   <block id="0170954f27b1bc746248a2082fc577ca" category="list-text">새로 마이그레이션된 환경을 완전히 문서화합니다.</block>
   <block id="0815db692d92e6b68693c7dc13e0e8e1" category="summary">마이그레이션 전에 수행되지 않은 모든 서버 개선 작업은 마이그레이션 후 수행됩니다.</block>
   <block id="6793732288bb5f2142753d1aacd2e36d" category="doc">FLI 온라인 마이그레이션 후 작업</block>
@@ -201,7 +199,6 @@
   <block id="a4d212c349a12dc67caaf1bdfa5e4d19" category="list-text">7-Mode 시스템에서 소스 LUN이 매핑되는 igroup을 표시합니다.</block>
   <block id="db44befee07d23bb1b809e30950d2c3c" category="paragraph">unmap 명령이 실행된 직후 중단이 시작됩니다. 일반적으로 중단 기간은 분 단위로 측정할 수 있습니다. 말 그대로 호스트를 새 NetApp 타겟으로 이동하고 LUN을 검색하는 데 걸리는 시간입니다.</block>
   <block id="fa405c1c690c46367f1ef1157ddf641c" category="list-text">가져오는 LUN이 ESXi 호스트용 LUN인 경우, _ESXi caw/ATS refolling_항목의 지침을 검토하고 따르십시오.</block>
-  <block id="f42b3dd272148a8d6162afe53e1aa0b6" category="list-text">unmap 명령을 사용하여 LUN을 호스트에서 이동합니다. (여기서 중단 기간이 시작됩니다.)</block>
   <block id="17b0701d0156a56f3b06f4e8ca360a2d" category="list-text">호스트 이니시에이터가 더 이상 존재하지 않는지 확인합니다.</block>
   <block id="81b4eb05f5436ff7d6fa2f03ab1c0cf7" category="list-text">ONTAP 클러스터에서 대상 LUN을 온라인 상태로 전환하고 매핑되었는지 확인합니다.</block>
   <block id="e62bb1753cacdbef374c3d6549f43f42" category="list-text">호스트의 디스크를 재검색하고 ONTAP 타겟에서 LUN을 찾습니다.</block>
@@ -247,7 +244,6 @@
   <block id="1fdab799789df4703c0465cc9b2beb1b" category="list-text">운영 패브릭 B에서 영역을 활성화합니다</block>
   <block id="2f449876355c69512df7e569fe9c6a65" category="summary">FLI는 성능을 더욱 효과적으로 관리하고 워크로드 부족 현상이 발생하지 않도록 일부 기능이 향상되었습니다. ONTAP 8.3.1의 FLI 개선 사항에는 새로운 스로틀 명령 및 LUN 임포트 기능에 처리량 및 QoS 정책 그룹을 보여주는 향상된 기능이 포함되어 있습니다.</block>
   <block id="8c4a124ca6c953340797ff9481b86241" category="doc">ONTAP 8.3.1의 성능 향상</block>
-  <block id="63eeae1818a9dfec81b1b6cd4746532c" category="paragraph">LUN 임포트 스로틀 명령은 불러오기가 실행될 수 있는 최대 속도를 제한하는 데 사용됩니다.</block>
   <block id="e0e081b71a49cfb03b7e6586a50b4ec6" category="paragraph">LUN import show가 있는 인스턴스 스위치를 사용하면 임계치 조절 및 QoS 정보 등 확장된 LUN 임포트 정보를 표시할 수 있습니다.</block>
   <block id="1110e5db0b802b9d4685f94410bce548" category="paragraph">현재 처리량의 값은 가져오기 또는 확인 작업의 현재 처리량입니다. 사용자는 스로틀 값을 설정하기 전에 이를 확인해야 합니다. 실행 중이 아닐 때는 비어 있습니다. LUN 가져오기 스로틀이 사용된 경우 QoS 정책 그룹이 표시됩니다.</block>
   <block id="197e64993a9bd9d23c9208a3a59ae427" category="summary">이 가이드는 외부 어레이에서 ONTAP로 데이터를 마이그레이션하거나 NetApp 7-Mode 어레이에서 ONTAP로 LUN을 전환하려는 NetApp 고객을 위한 것입니다.</block>
@@ -470,7 +466,6 @@
   <block id="44023aa16885f326f40c8d26a3d792dc" category="list-text">자동 마이그레이션 시 FLI는 WFA(Workflow Automation) 소프트웨어를 사용하여 마이그레이션 프로세스의 일부를 자동화합니다. WFA를 사용하는 FLI는 온라인 또는 오프라인 모드에서 사용할 수 있습니다.</block>
   <block id="ed84643b976a61e35dab90c06a1328ad" category="paragraph">구조적으로 세 가지 마이그레이션과 전환 워크플로우가 상당히 유사합니다. 이 4가지 요소는 모두 NetApp의 FlexArray 기술을 활용하여 ONTAP 컨트롤러가 소스 어레이 앞에서 이니시에이터 역할을 수행하고, 이 위치를 사용하여 소스에서 대상 ONTAP 어레이의 LUN으로 블록 LUN 블록을 복제할 수 있게 합니다.</block>
   <block id="4d01f8ae44780dd783a9a1352d13eb15" category="paragraph">컷오버가 발생할 경우, 작업 중단 기간의 길이, 자동화를 사용할 때 또는 소스 어레이가 ONTAP 7-Mode 또는 타사 어레이를 실행하는 NetApp 스토리지인 경우 워크플로우와 그 차이점이 있습니다.</block>
-  <block id="ebe02209a860979dd6e9ae77de5b53da" category="paragraph">외부 LUN 임포트 온라인 워크플로우를 지원하는 호스트 운영 체제입니다</block>
   <block id="ee08544761e8c3668ae2cf410df0176e" category="summary">ONTAP FLI 정보 라이브러리를 시작합니다. 여기에서 외부 어레이에서 ONTAP로 데이터를 마이그레이션하고 NetApp 7-Mode 어레이에서 ONTAP로 LUN을 전환하는 데 도움이 되는 정보를 찾을 수 있습니다.</block>
   <block id="b4f00c3dc8ec2262f8447975755acf2d" category="doc">외부 LUN 가져오기를 사용한 SAN 마이그레이션</block>
   <block id="53a51b7dcda82a62f1a85a24f43b7788" category="summary">검증 작업은 선택 사항이지만 권장됩니다. 소스 LUN과 대상 LUN의 블록별 비교입니다. 마이그레이션 시간보다 작업이 거의 비슷하거나 약간 더 오래 걸리는지 확인합니다.</block>
@@ -584,8 +579,6 @@
   <block id="1c1b0e617e80d3e2dbae61aacaedca3e" category="summary">ONTAP 9.9.1부터 SAN LUN 마이그레이션 앱을 사용하여 FLI에 대한 외부 소스 어레이를 검증할 수 있습니다. 원하는 외부 어레이가 FLI IMT에 나열되지 않은 경우 SAN LUN 마이그레이션 앱을 사용할 수 있습니다.</block>
   <block id="af164dd8145e1764ed12737fe49cab35" category="doc">SAN LUN 마이그레이션 앱을 사용하여 FLI에 대해 지원되는 구성 확인</block>
   <block id="a1a90dff83c0faf191818ad546b59252" category="list-text">NetApp Support 사이트 로 이동합니다.</block>
-  <block id="b73cbaaa9320f00644c84f4f03a236a9" category="list-text">필터 기준 범주에서 마이그레이션을 선택합니다.</block>
-  <block id="a5d139676dbba59a8e909de2e942741e" category="list-text">SAN LUN 마이그레이션에서 앱 다운로드를 클릭합니다</block>
   <block id="159d7130f3d54d274afe13039b4ede40" category="list-text">소스 어레이에 대한 블록 액세스가 있는 FC 또는 iSCSI Linux 호스트에서 앱을 실행합니다.</block>
   <block id="26e7b511886f2cfa073850c2af28b79e" category="paragraph">외부 소스 스토리지를 확인할 수 있는 경우 녹색 확인 표시가 표시됩니다. 외부 소스 배열을 확인할 수 없는 경우 빨간색 X가 표시됩니다. 해당 어레이의 자격이 없는 경우 NetApp Support에 문의하여 추가 지원을 받을 수 있습니다.</block>
   <block id="0494482584ffb3a3845ebc27d94cf2c6" category="summary">오프라인 마이그레이션 워크플로는 마이그레이션 프로세스의 실행 단계에서 수행됩니다. 오프라인 워크플로우 다이어그램에서는 호스트, 패브릭, 대상 스토리지 및 소스 스토리지에서 수행되는 작업을 보여 줍니다.</block>
@@ -712,9 +705,7 @@
   <block id="12d51f0d0be473e79e59c83fa299c84a" category="list-text">AMS 2100 배열을 선택하고 * 배열 표시 및 구성 * 을 클릭합니다.</block>
   <block id="dd1756f111b1bbeab7f11d4f29b44065" category="list-text">그룹 * 을 선택한 다음 * 호스트 그룹 * 을 선택합니다.</block>
   <block id="423fa3edfa40593a696506ec9b87fb7a" category="list-text">CDOT_FLI_Igroup_을 선택하고 * 호스트 그룹 편집 * 을 클릭합니다.</block>
-  <block id="86a3dad40c70e95d7983fcbf18aea7d1" category="list-text">Edit Host Group 창에서 테스트 LUN을 매핑하기 위해 선택한 모든 타겟 포트를 선택하고 * Forced Set to all Selected Ports * 를 선택합니다.</block>
   <block id="6faa9428b17f6337269c355ad7611403" category="list-text">Logical Units * 탭을 선택합니다.</block>
-  <block id="5542bb8f92dc6fbcf06ec00600f7157c" category="list-text">Assigned Logical Units 창에서 테스트 LUN을 선택합니다.</block>
   <block id="4a47689d7570ed61cf2648819fdfbefe" category="list-text">LUN 매핑을 제거하려면 * 제거 * 를 선택합니다.</block>
   <block id="18d0ad44a1e563aaf9f5871e32535a6c" category="list-text">확인 을 클릭합니다.</block>
   <block id="06cd0fe07d89be63e096ae9b935a9747" category="list-text">호스트 그룹을 제거하지 말고 테스트 LUN을 계속 삭제하십시오.</block>
@@ -973,7 +964,6 @@
   <block id="2691d88591e88679a1811b61d2e2f59d" category="list-text">LUN naa와 RDM 디바이스 간의 매핑을 식별합니다.</block>
   <block id="0cf65c7ab3af2e525287b55acd731b21" category="list-text">가상 시스템 구성: 'esxcli storage filesystem list | grep VMFS'를 확인합니다</block>
   <block id="1abcd23a32826bbad4ffb904fde775e9" category="list-text">데이터 저장소의 UUID를 기록합니다.</block>
-  <block id="c2dbaecbb6484b150b9df9ec555c57fe" category="list-text">/etc/vmware/hostd/vmInventory.xml 복제본을 만들고 파일 및 vmx 구성 경로의 내용을 기록합니다.</block>
   <block id="6fb738ad7ba8ebd383451fcc9c614c23" category="list-text">가상 머신 하드 디스크를 식별합니다.</block>
   <block id="30d5000b9319e73f23641aa68fbe7723" category="paragraph">제거된 RDM 디바이스를 순서대로 추가하려면 이 정보가 마이그레이션 후 필요합니다.</block>
   <block id="9dbb45357e9175d4d9379f631599e6eb" category="list-text">RDM 디바이스, 가상 머신 매핑 및 호환성 모드를 확인합니다.</block>
@@ -1163,7 +1153,6 @@
   <block id="a4354633cd0119e1314f471d610ea422" category="paragraph">Windows 호스트에 대해 다음 단계를 완료합니다.</block>
   <block id="7ae3521b4795a0df6960b48844b8bede" category="list-text">디스크 관리를 엽니다.</block>
   <block id="36a890df783d05afe153f32ada876698" category="list-text">Windows 바탕 화면에서 * 시작 * 을 클릭합니다.</block>
-  <block id="b94b9ba613928ff9d75e25ce0cb374e2" category="list-text">검색 시작 필드에 diskmgmt.msc 를 입력합니다.</block>
   <block id="39ddfcd62e9a6f642a082e4825c6ff4f" category="list-text">프로그램 목록에서 disskmgmt를 클릭합니다.</block>
   <block id="8b103231da97e357c81333af4cc4b45e" category="list-text">여러 경로를 확인할 각 디스크를 마우스 오른쪽 단추로 클릭한 다음 * 속성 * 을 클릭합니다.</block>
   <block id="c0829f1bd784906bc2260964e7df8fcc" category="list-text">MPIO 탭의 MPIO 정책 선택 목록에서 활성화된 모든 경로를 클릭합니다.</block>
@@ -1246,7 +1235,6 @@
   <block id="6957ef5bef3e2b05030e2f318c20f70e" category="list-text">나열된 스토리지 오류에 대한 세부 정보를 봅니다. 일부 오류는 계속하기 전에 조치가 필요할 수 있습니다. 그러나 다음 예에 표시된 ""이 장치는 ONTAP(R) LUN입니다." 오류는 무시해도 됩니다.</block>
   <block id="b8e20808df451129caa39264a050e4ae" category="paragraph">"이 장치는 ONTAP\(R\) LUN입니다."라는 오류 메시지는 FLI가 FlexArray 또는 ONTAP 대상 가상화를 지원하지 않는 ONTAP 기술을 사용하기 때문에 발생합니다. FLI는 LUN을 가져올 수 있지만 FlexArray에서는 LUN 가상화를 지원하지 않습니다.</block>
   <block id="e5810d56320059c0373293d0da4050c0" category="list-text">7-Mode 스토리지에서 매핑된 LUN을 나열합니다. 디스크 속성 및 경로를 확인합니다.</block>
-  <block id="625ca7c53b2a8736ccd6170298b95c8c" category="list-text">타겟 LUN을 생성합니다. lun create 명령은 파티션 오프셋을 기반으로 크기와 정렬을 감지하고 그에 따라 외래 디스크 인수를 사용하여 LUN을 생성합니다</block>
   <block id="97c500043e97619a7cdae1db7eb50436" category="list-text">타겟 LUN을 생성합니다.</block>
   <block id="785fe114b1b46895afc9982f8587b494" category="list-text">테스트 LUN을 테스트 igroup에 매핑합니다.</block>
   <block id="07bf6de22d85337808d6babd2bfc8074" category="list-text">테스트 LUN을 오프라인 상태로 전환합니다.</block>
@@ -1332,4 +1320,16 @@
   <block id="a4d60e73cb9c1bfe95e0f1e874619b10" category="sidebar">FLI 마이그레이션 후 절차</block>
   <block id="11bfb49706ab1fb0b0c2c70607371003" category="sidebar">zoneset에서 소스 스토리지 및 호스트 영역을 제거하는 중입니다</block>
   <block id="faad5f79401b38fa8970d5b9e778ca6a" category="sidebar">외부 LUN 가져오기 성능</block>
+  <block id="1e82f5734f8c489d66bfd28dadbe2e7b" category="paragraph">모드가 단어 _public only_를 나열한 경우 수정이 필요하지 않습니다. 위_public ATS-only_는 ATS가 활성화되어 있고 가져오기가 완료될 때까지 해제되어야 함을 의미하며, 이 경우 다시 활성화할 수 있습니다.</block>
+  <block id="f39acf9ee6c52999fba0318708fad80c" category="list-text">각 볼륨에 대해 fraction_reserveoption을 0으로 설정하고 Snapshot 정책을 none으로 설정합니다.</block>
+  <block id="4ad1ced7e20a50ce9a61f18de8cc52c9" category="list-text">최종 구성을 문서화하기 위해 'AutoSupport' 명령어를 발행한다.</block>
+  <block id="603c38097d9812f10e39fcf68d323217" category="list-text">'unmap' 명령을 사용하여 호스트에서 LUN을 이동합니다. (여기서 중단 기간이 시작됩니다.)</block>
+  <block id="8d844627d2b3d4a9f5e6fd64bb23fbdd" category="paragraph">LUN 가져오기 임계치 명령은 불러오기가 실행될 수 있는 최대 속도를 제한하는 데 사용됩니다.</block>
+  <block id="fe9b94814e39a3c7f451e4e91676e2a1" category="list-text">범주별 필터 * 에서 * 마이그레이션 * 을 선택합니다.</block>
+  <block id="803493b6d9dbe590ab30e0e80a8e1b97" category="list-text">SAN LUN 마이그레이션 * 에서 * 앱 다운로드 * 를 클릭합니다.</block>
+  <block id="bcc013c3b737d7967f7bd1b74a363b17" category="list-text">Edit Host Group * 창에서 테스트 LUN을 매핑하기 위해 선택한 모든 타겟 포트를 선택하고 * Forced Set to all Selected Ports * 를 선택합니다.</block>
+  <block id="8c3b55fef9c0e25a2fe01d90beac075c" category="list-text">Assigned Logical Units * 창에서 테스트 LUN을 선택합니다.</block>
+  <block id="0115886be5608c75c55151af2dbe24c0" category="list-text">"/etc/vmware/hostd/vmInventory.xml"의 복제본을 만들고 파일 및 vmx 구성 경로의 내용을 기록합니다.</block>
+  <block id="d0148f5ec81506fa10252eb7af3017af" category="list-text">검색 시작 필드에 disskmgmt.msc를 입력합니다.</block>
+  <block id="c4d603e30723f5c0bb46df3db3fd8bc6" category="list-text">타겟 LUN을 생성합니다. 'lun create' 명령은 파티션 오프셋을 기준으로 크기와 정렬을 감지하고 이에 따라 외래 디스크 인수를 사용하여 LUN을 생성합니다</block>
 </blocks>

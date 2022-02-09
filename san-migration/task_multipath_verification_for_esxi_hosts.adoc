@@ -118,7 +118,7 @@ naa.60060e801046b96004f2bf4600000018                            vml.020004000060
 ~ #
 ----
 . 데이터 저장소의 UUID를 기록합니다.
-. /etc/vmware/hostd/vmInventory.xml 복제본을 만들고 파일 및 vmx 구성 경로의 내용을 기록합니다.
+. "/etc/vmware/hostd/vmInventory.xml"의 복제본을 만들고 파일 및 vmx 구성 경로의 내용을 기록합니다.
 +
 [listing]
 ----

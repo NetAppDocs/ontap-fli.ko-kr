@@ -196,9 +196,9 @@ ONTAP 이니시에이터 포트를 사용하여 소스 스토리지에 생성된
 .. root를 사용하여 로그인합니다.
 .. 그룹 * 을 선택한 다음 * 호스트 그룹 * 을 선택합니다.
 .. CDOT_FLI_Igroup_을 선택하고 * 호스트 그룹 편집 * 을 클릭합니다.
-.. Edit Host Group 창에서 테스트 LUN을 매핑하기 위해 선택한 모든 타겟 포트를 선택하고 * Forced Set to all Selected Ports * 를 선택합니다.
+.. Edit Host Group * 창에서 테스트 LUN을 매핑하기 위해 선택한 모든 타겟 포트를 선택하고 * Forced Set to all Selected Ports * 를 선택합니다.
 .. Logical Units * 탭을 선택합니다.
-.. Assigned Logical Units 창에서 테스트 LUN을 선택합니다.
+.. Assigned Logical Units * 창에서 테스트 LUN을 선택합니다.
 .. LUN 매핑을 제거하려면 * 제거 * 를 선택합니다.
 .. 확인 을 클릭합니다.
 .. 호스트 그룹을 제거하지 말고 테스트 LUN을 계속 삭제하십시오.
