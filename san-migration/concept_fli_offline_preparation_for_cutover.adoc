@@ -1,5 +1,6 @@
 ---
 permalink: san-migration/concept_fli_offline_preparation_for_cutover.html 
+redirect: ontap-fli/san-migration/task_rebooting_the_host_to_validate_system_state.html 
 sidebar: sidebar 
 keywords: fli, offline, preparation, cutover 
 summary: 'FLI(Foreign LUN Imports)를 사전 마이그레이션하는 동안 호스트 및 소스 LUN 경로를 확인하고 확인합니다. 호스트가 재부팅되면 마이그레이션이 준비될 때까지 종료됩니다.' 

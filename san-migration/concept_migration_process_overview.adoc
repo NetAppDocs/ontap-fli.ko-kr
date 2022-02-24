@@ -1,5 +1,6 @@
 ---
 permalink: san-migration/concept_migration_process_overview.html 
+redirect: ontap-fli/san-migration/concept_migration_discover_phase_workflow.html 
 sidebar: sidebar 
 keywords: migration, process, overview 
 summary: FLI 마이그레이션 프로세스는 데이터 마이그레이션의 발견, 분석, 계획, 실행 및 검증과 같은 5단계 방법론입니다. 

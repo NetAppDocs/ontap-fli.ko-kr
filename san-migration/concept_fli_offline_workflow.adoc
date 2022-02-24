@@ -1,5 +1,6 @@
 ---
 permalink: san-migration/concept_fli_offline_workflow.html 
+redirect: ontap-fli/san-migration/task_rebooting_the_host_to_validate_system_state.html 
 sidebar: sidebar 
 keywords: fli, offline, workflow 
 summary: 이 섹션에서는 FLI 오프라인 워크플로우의 예를 들어, 4개의 FLI 워크플로우 중 하나를 제공합니다. 

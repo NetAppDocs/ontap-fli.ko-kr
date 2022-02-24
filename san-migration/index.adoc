@@ -1,11 +1,7 @@
 ---
 permalink: san-migration/index.html 
-sidebar: sidebar 
-keywords: san migration, using, foreign lun import 
-summary: ONTAP FLI 정보 라이브러리를 시작합니다. 여기에서 외부 어레이에서 ONTAP로 데이터를 마이그레이션하고 NetApp 7-Mode 어레이에서 ONTAP로 LUN을 전환하는 데 도움이 되는 정보를 찾을 수 있습니다. 
+redirect: ontap-fli/san-migration/concept_data_migration_program_overview.html 
 ---
-= 외부 LUN 가져오기를 사용한 SAN 마이그레이션
-:icons: font
-:imagesdir: ../media/
+= 
 
 
