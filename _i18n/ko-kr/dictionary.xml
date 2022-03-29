@@ -466,8 +466,6 @@
   <block id="44023aa16885f326f40c8d26a3d792dc" category="list-text">자동 마이그레이션 시 FLI는 WFA(Workflow Automation) 소프트웨어를 사용하여 마이그레이션 프로세스의 일부를 자동화합니다. WFA를 사용하는 FLI는 온라인 또는 오프라인 모드에서 사용할 수 있습니다.</block>
   <block id="ed84643b976a61e35dab90c06a1328ad" category="paragraph">구조적으로 세 가지 마이그레이션과 전환 워크플로우가 상당히 유사합니다. 이 4가지 요소는 모두 NetApp의 FlexArray 기술을 활용하여 ONTAP 컨트롤러가 소스 어레이 앞에서 이니시에이터 역할을 수행하고, 이 위치를 사용하여 소스에서 대상 ONTAP 어레이의 LUN으로 블록 LUN 블록을 복제할 수 있게 합니다.</block>
   <block id="4d01f8ae44780dd783a9a1352d13eb15" category="paragraph">컷오버가 발생할 경우, 작업 중단 기간의 길이, 자동화를 사용할 때 또는 소스 어레이가 ONTAP 7-Mode 또는 타사 어레이를 실행하는 NetApp 스토리지인 경우 워크플로우와 그 차이점이 있습니다.</block>
-  <block id="ee08544761e8c3668ae2cf410df0176e" category="summary">ONTAP FLI 정보 라이브러리를 시작합니다. 여기에서 외부 어레이에서 ONTAP로 데이터를 마이그레이션하고 NetApp 7-Mode 어레이에서 ONTAP로 LUN을 전환하는 데 도움이 되는 정보를 찾을 수 있습니다.</block>
-  <block id="b4f00c3dc8ec2262f8447975755acf2d" category="doc">외부 LUN 가져오기를 사용한 SAN 마이그레이션</block>
   <block id="53a51b7dcda82a62f1a85a24f43b7788" category="summary">검증 작업은 선택 사항이지만 권장됩니다. 소스 LUN과 대상 LUN의 블록별 비교입니다. 마이그레이션 시간보다 작업이 거의 비슷하거나 약간 더 오래 걸리는지 확인합니다.</block>
   <block id="ce91b6039e58611f253af932de050269" category="doc">FLI 오프라인: 마이그레이션 결과 확인</block>
   <block id="47d2204501856353838ee78e45555084" category="list-text">소스 LUN과 대상 LUN을 비교하려면 검증 작업을 시작합니다. 검증 과정을 모니터링합니다.</block>
@@ -1332,4 +1330,20 @@
   <block id="0115886be5608c75c55151af2dbe24c0" category="list-text">"/etc/vmware/hostd/vmInventory.xml"의 복제본을 만들고 파일 및 vmx 구성 경로의 내용을 기록합니다.</block>
   <block id="d0148f5ec81506fa10252eb7af3017af" category="list-text">검색 시작 필드에 disskmgmt.msc를 입력합니다.</block>
   <block id="c4d603e30723f5c0bb46df3db3fd8bc6" category="list-text">타겟 LUN을 생성합니다. 'lun create' 명령은 파티션 오프셋을 기준으로 크기와 정렬을 감지하고 이에 따라 외래 디스크 인수를 사용하여 LUN을 생성합니다</block>
+  <block id="e9c44bbfd795a5d63d74c6a77afee70d" category="summary">법적 고지 사항은 저작권 선언, 상표, 특허 등에 대한 액세스를 제공합니다.</block>
+  <block id="30d965eef5ba25c6b9998ae38270b43e" category="doc">법적 고지</block>
+  <block id="6016a2b341113bf496b719905398ecd2" category="section-title">저작권</block>
+  <block id="de6edae22bc37b97b38a15c7f8af62e2" category="paragraph"><block ref="de6edae22bc37b97b38a15c7f8af62e2" category="inline-link-rx"></block></block>
+  <block id="126a02652da6de02962cf1b654fd6376" category="section-title">상표</block>
+  <block id="c4ce4761e466527d26b3e3d5ed1006fd" category="paragraph">NetApp, NetApp 로고, NetApp 상표 페이지에 나열된 마크는 NetApp Inc.의 상표입니다. 기타 회사 및 제품 이름은 해당 소유자의 상표일 수 있습니다.</block>
+  <block id="a93bc0a57623c2facaa010825c808507" category="paragraph"><block ref="a93bc0a57623c2facaa010825c808507" category="inline-link-rx"></block></block>
+  <block id="be89498d2f8a22ce47c02ba9795fe2af" category="section-title">특허</block>
+  <block id="d0b19d36be2c5f16e9aef46c8a452d3d" category="paragraph">NetApp 소유 특허 목록은 다음 사이트에서 확인할 수 있습니다.</block>
+  <block id="547ea2e305891e64d8e744949b0aca2c" category="paragraph"><block ref="547ea2e305891e64d8e744949b0aca2c" category="inline-link-rx"></block></block>
+  <block id="56c34c6410dd45c5cec44149ad0ce037" category="section-title">개인 정보 보호 정책</block>
+  <block id="50921fca0d376fca62102a5e608994e2" category="paragraph"><block ref="50921fca0d376fca62102a5e608994e2" category="inline-link-rx"></block></block>
+  <block id="b4de17ead867a3cf0b9d11e57e562672" category="section-title">기계 번역</block>
+  <block id="dd3918c571093dff2b94f7cef5066d01" category="inline-link-macro">NetApp.com</block>
+  <block id="5db028f960e19ec42098e3252e4fb1e3" category="paragraph">현지화된 컨텐츠에 대한 중요 정보는 에서 확인하십시오 <block ref="7e89bb7928e951b6f80ad1dab5c58475" category="inline-link-macro-rx"></block></block>
+  <block id="d648f2a68a54fd1b3329efc3cf24d29c" category="sidebar">법적 고지</block>
 </blocks>
