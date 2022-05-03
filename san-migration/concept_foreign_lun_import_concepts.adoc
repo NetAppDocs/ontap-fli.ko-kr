@@ -5,6 +5,7 @@ keywords: foreign, lun, import, concepts
 summary: 기본 FLI 개념을 이해하면 올바른 작동에 도움이 되며 초기 구성 작업을 줄이는 데 도움이 됩니다. 
 ---
 = 외부 LUN 임포트 개념
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

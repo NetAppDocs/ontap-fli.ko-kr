@@ -5,6 +5,7 @@ keywords: reasons, perform, test, migrations
 summary: 운영 데이터를 마이그레이션하기 전에 모든 구성을 고객 테스트 환경에서 테스트하는 것이 좋습니다. 
 ---
 = 테스트 마이그레이션을 수행해야 하는 이유
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

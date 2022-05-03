@@ -5,6 +5,7 @@ keywords: fli online, import, data
 summary: 다음은 소스 LUN에서 대상 LUN으로 데이터를 가져오는 단계입니다. 
 ---
 = FLI 온라인: 데이터 가져오기
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

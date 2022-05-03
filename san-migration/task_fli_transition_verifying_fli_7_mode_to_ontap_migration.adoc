@@ -5,6 +5,7 @@ keywords: verify, fli 7-mode, ontap, migration, results
 summary: FLI 7-Mode에서 ONTAP로 LUN이 적절하게 마이그레이션되었는지 확인할 수 있는 옵션이 제공됩니다. 
 ---
 = FLI 7-Mode에서 ONTAP로의 마이그레이션 결과 검증
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

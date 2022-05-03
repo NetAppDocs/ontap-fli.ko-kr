@@ -5,6 +5,7 @@ keywords: recommended, tools, data, migration
 summary: 서비스 툴은 원격 데이터 수집, 구성 및 스토리지 관리 작업과 같은 유용한 기능을 수행하기 위한 표준화된 방법을 제공합니다. 
 ---
 = 데이터 마이그레이션을 위한 권장 툴
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

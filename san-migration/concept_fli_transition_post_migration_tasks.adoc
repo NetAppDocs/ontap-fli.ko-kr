@@ -5,6 +5,7 @@ keywords: fli, transition, workflow, post-migration, tasks
 summary: FLI 7-Mode에서 ONTAP 워크플로우에 대한 마이그레이션 후 작업은 다른 FLI 워크플로와 유사합니다. 
 ---
 = FLI 전환 워크플로우 마이그레이션 후 작업
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

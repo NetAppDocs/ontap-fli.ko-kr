@@ -5,6 +5,7 @@ keywords: best practices, foreign lun, import migration
 summary: 'NetApp은 프로페셔널 서비스 또는 파트너 프로페셔널 서비스, 마이그레이션 범위 지정 및 계획, FLI(Foreign LUN Import) 7-Mode를 사용하여 ONTAP로 데이터 마이그레이션을 수행하는 방법에 대한 고객 인력을 교육하는 것을 적극 권장합니다.' 
 ---
 = 외부 LUN 임포트 마이그레이션에 대한 모범 사례
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

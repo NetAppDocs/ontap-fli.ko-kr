@@ -5,6 +5,7 @@ keywords: fli online, perform, disruptive, cutover
 summary: 이 예는 FLI 온라인 마이그레이션 프로세스에서 무중단 컷오버를 수행하는 일반적인 단계를 보여줍니다. 
 ---
 = FLI 온라인: 운영 중단 컷오버 수행
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

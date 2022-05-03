@@ -5,6 +5,7 @@ keywords: benefits, fli-based, solution
 summary: FLI 솔루션은 NetApp 고객에게 이러한 이점을 통해 특별한 가치를 제공하도록 설계되었습니다. 
 ---
 = FLI 기반 솔루션의 이점
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

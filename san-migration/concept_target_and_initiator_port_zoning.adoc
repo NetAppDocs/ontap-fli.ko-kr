@@ -5,6 +5,7 @@ keywords: target, initiator, port, zoning
 summary: FLI 마이그레이션에서는 NetApp 스토리지에서 소스 스토리지 LUN을 액세스해야 합니다. 대상 스토리지의 이니시에이터 포트를 사용하여 소스 스토리지의 타겟 포트를 조닝하면 됩니다. 
 ---
 = 타겟 및 이니시에이터 포트 조닝
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

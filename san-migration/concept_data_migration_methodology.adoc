@@ -5,6 +5,7 @@ keywords: data migration methodology
 summary: 데이터 마이그레이션 프로세스는 테스트된 방법론을 제공하는 단계로 구성됩니다. 데이터 마이그레이션 방법을 사용하여 마이그레이션 선택 항목 및 작업의 범위 지정, 계획 및 문서화 작업을 수행할 수 있습니다. 
 ---
 = 데이터 마이그레이션 방법입니다
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

@@ -5,6 +5,7 @@ keywords: site, survey and planning worksheet, sds cli scripts tab
 summary: 사이트 조사 및 계획 워크시트의 일부로 SDS CLI 스크립트에 대한 정보가 포함된 탭이 있어야 합니다. 
 ---
 = 사이트 조사 및 계획 워크시트 SDS CLI 스크립트 탭
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

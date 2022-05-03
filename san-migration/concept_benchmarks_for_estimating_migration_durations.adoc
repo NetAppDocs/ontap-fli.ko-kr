@@ -5,6 +5,7 @@ keywords: benchmarks, estimating, migration, durations
 summary: 계획 목적으로 특정 가정을 사용하여 데이터 마이그레이션의 노력 수준 및 기간을 추정할 수 있습니다. 
 ---
 = 마이그레이션 기간 추정을 위한 벤치마크
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

@@ -5,6 +5,7 @@ keywords: site, survey and planning worksheet, hosts tab
 summary: 사이트 조사 및 계획 워크시트의 일부로 마이그레이션 프로젝트 호스트 정보가 포함된 탭을 설정해야 합니다. 
 ---
 = 사이트 조사 및 계획 워크시트 호스트 탭
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

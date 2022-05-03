@@ -5,6 +5,7 @@ keywords: import, data, fli 7-mode, ontap
 summary: 다음 단계에서는 FLI를 사용하여 7-Mode 소스 LUN에서 ONTAP 대상 LUN으로 데이터를 가져오는 방법을 설명합니다. 
 ---
 = FLI 7-Mode에서 ONTAP로 데이터 가져오기
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

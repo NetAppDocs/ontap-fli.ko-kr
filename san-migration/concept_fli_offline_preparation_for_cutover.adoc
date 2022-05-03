@@ -6,6 +6,7 @@ keywords: fli, offline, preparation, cutover
 summary: 'FLI(Foreign LUN Imports)를 사전 마이그레이션하는 동안 호스트 및 소스 LUN 경로를 확인하고 확인합니다. 호스트가 재부팅되면 마이그레이션이 준비될 때까지 종료됩니다.' 
 ---
 = FLI 오프라인: 전환 준비
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

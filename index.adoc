@@ -6,6 +6,7 @@ summary: ONTAP 외부 LUN 임포트
 ---
 = ONTAP 외부 LUN 임포트 설명서
 :hardbreaks:
+:allow-uri-read: 
 :nofooter: 
 :icons: font
 :linkattrs: 

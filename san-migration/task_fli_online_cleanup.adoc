@@ -5,6 +5,7 @@ keywords: clean up, fli, online migration
 summary: FLI 온라인 마이그레이션이 완료된 후 LUN 임포트 관계를 제거합니다. 
 ---
 = FLI 온라인 마이그레이션 정리
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

@@ -5,6 +5,7 @@ keywords: intended, audience
 summary: 이 가이드는 외부 어레이에서 ONTAP로 데이터를 마이그레이션하거나 NetApp 7-Mode 어레이에서 ONTAP로 LUN을 전환하려는 NetApp 고객을 위한 것입니다. 
 ---
 = 대상
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

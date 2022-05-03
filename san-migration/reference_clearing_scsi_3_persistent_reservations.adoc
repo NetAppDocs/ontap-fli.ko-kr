@@ -5,6 +5,7 @@ keywords: clear, scsi-3, persistent, reservations
 summary: Windows 클러스터가 있는 경우 클러스터된 모든 호스트가 오프라인인 경우에도 쿼럼 디스크에 대한 SCSI-3 예약을 제거해야 합니다. 
 ---
 = SCSI-3 영구 예약을 지우는 중입니다
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

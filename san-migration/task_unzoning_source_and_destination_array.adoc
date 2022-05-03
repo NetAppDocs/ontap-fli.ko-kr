@@ -5,6 +5,7 @@ keywords: unzone, source, destination, array
 summary: 모든 마이그레이션, 전환 및 검증이 완료되면 소스 및 대상 스토리지의 존 기능을 해제할 수 있습니다. 
 ---
 = 소스 및 대상 스토리지의 조닝(zoning)을 해제합니다
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

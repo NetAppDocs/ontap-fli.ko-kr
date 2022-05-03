@@ -5,6 +5,7 @@ keywords: document, newly, migrated, environment
 summary: 고객 환경을 문서화하려면 AutoSupport 명령을 실행해야 합니다. 
 ---
 = 새로 마이그레이션된 환경 문서화
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

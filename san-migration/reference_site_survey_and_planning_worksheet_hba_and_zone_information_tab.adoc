@@ -5,6 +5,7 @@ keywords: site, survey and planning worksheet, hba and zone information tab
 summary: 사이트 조사 및 계획 워크시트의 일부로 HBA 및 영역 정보에 대한 정보가 포함된 탭을 설정해야 합니다. 
 ---
 = 사이트 조사 및 계획 워크시트 HBA 및 영역 정보 탭
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

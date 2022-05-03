@@ -5,6 +5,7 @@ keywords: physical, wiring, requirements, fli
 summary: FLI는 NetApp FlexArray과 동일한 배선 요구사항을 가지고 있습니다. NetApp 스토리지 이니시에이터 포트는 소스 스토리지 타겟 포트가 연결되는 패브릭에 연결됩니다. 소스 스토리지를 NetApp 스토리지에 연결하는 동안 FlexArray 모범 사례를 따르십시오. 
 ---
 = FLI의 물리적 배선 요구사항
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

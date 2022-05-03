@@ -5,6 +5,7 @@ keywords: configure, migration, jobs
 summary: FLI 오프라인 워크플로우에서 소스 LUN 및 대상 LUN을 구성해야 합니다. 
 ---
 = 마이그레이션 작업 구성
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

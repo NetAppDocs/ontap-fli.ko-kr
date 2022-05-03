@@ -5,6 +5,7 @@ keywords: present, source luns, ontap storage, fli
 summary: 오프라인 FLI 프로세스의 일환으로 소스 LUN을 ONTAP 스토리지에 제공해야 합니다. 
 ---
 = FLI 중에 소스 LUN을 ONTAP 스토리지에 제공
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

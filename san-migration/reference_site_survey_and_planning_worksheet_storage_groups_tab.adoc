@@ -5,6 +5,7 @@ keywords: site, survey and planning worksheet, storage groups tab
 summary: 사이트 조사 및 계획 워크시트의 일부로 스토리지 그룹에 대한 정보가 포함된 탭이 있어야 합니다. 
 ---
 = 사이트 조사 및 계획 워크시트 스토리지 그룹 탭
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

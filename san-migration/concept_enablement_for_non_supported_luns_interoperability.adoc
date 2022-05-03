@@ -6,6 +6,7 @@ keywords: enablement, non-supported, luns
 summary: 소스 스토리지의 호스트 OS, HBA, 스위치 및 ONTAP 스토리지와 상호 운용성 매트릭스에 지원되는 최종 구성이 모두 나와 있는지 확인해야 합니다. 
 ---
 = 지원되지 않는 LUN에 대한 지원
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

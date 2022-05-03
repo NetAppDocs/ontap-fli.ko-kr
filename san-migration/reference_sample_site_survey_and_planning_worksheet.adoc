@@ -5,6 +5,7 @@ keywords: sample, site, survey and planning, worksheet
 summary: 마이그레이션 방법론의 분석 및 계획 단계에서는 사이트 조사 및 계획 워크시트를 사용하여 기존 구성, 타겟 구성, 차이, 개선 계획을 문서화해야 합니다. 
 ---
 = 샘플 사이트 조사 및 계획 워크시트
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

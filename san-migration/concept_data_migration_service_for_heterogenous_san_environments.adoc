@@ -5,6 +5,7 @@ keywords: data, migration, service, heterogeneous, san, environments
 summary: 이기종 SAN 환경을 위한 데이터 마이그레이션 서비스는 FLI 기술을 사용하는 포괄적인 데이터 마이그레이션 솔루션입니다. SAN 데이터 마이그레이션 서비스는 오류를 줄이고 생산성을 높이며 NetApp 및 파트너 프로페셔널 서비스를 위한 데이터 마이그레이션을 일관되게 제공할 수 있는 소프트웨어 및 서비스를 제공합니다. 
 ---
 = 이기종 SAN 환경을 위한 데이터 마이그레이션 서비스
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

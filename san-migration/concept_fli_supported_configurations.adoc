@@ -5,6 +5,7 @@ keywords: fli, supported, configurations
 summary: FLI 환경은 적절한 작동 및 지원을 위해 지원되는 방식으로 배포되어야 합니다. 엔지니어링에서 새 구성을 적용함에 따라 지원되는 구성 목록이 변경됩니다. 특정 구성에 대한 지원을 확인하려면 NetApp 상호 운용성 매트릭스 를 참조하십시오. 
 ---
 = FLI 지원 구성
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

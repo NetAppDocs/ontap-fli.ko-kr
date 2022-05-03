@@ -5,6 +5,7 @@ keywords: fli, 7-mode, ontap, transition, workflow
 summary: 이 섹션에서는 FLI 7-Mode에서 ONTAP로의 전환 워크플로우의 예를 설명합니다. 전환 워크플로는 온라인 또는 오프라인 워크플로로 실행할 수 있습니다. 
 ---
 = FLI 7-Mode에서 ONTAP로의 전환 워크플로우
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

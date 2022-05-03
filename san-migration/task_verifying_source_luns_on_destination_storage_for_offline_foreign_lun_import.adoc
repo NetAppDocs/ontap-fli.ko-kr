@@ -5,6 +5,7 @@ keywords: verify, source luns, destination storage, offline fli
 summary: 오프라인 외부 LUN 가져오기 프로세스의 일부로 대상 스토리지의 소스 LUN을 확인해야 합니다. 
 ---
 = 오프라인 FLI를 위해 대상 스토리지의 소스 LUN 확인
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

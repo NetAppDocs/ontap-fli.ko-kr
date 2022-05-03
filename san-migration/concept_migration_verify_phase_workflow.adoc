@@ -5,6 +5,7 @@ keywords: verify, phase, workflow
 summary: 마이그레이션 프로세스의 검증 단계에서는 마이그레이션 후 정리 및 마이그레이션 계획 실행의 정확성을 확인하는 데 중점을 둡니다. 소스 스토리지의 이니시에이터 레코드와 소스 영역과 대상 영역 간의 존이 제거됩니다. 
 ---
 = 단계 워크플로를 확인합니다
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

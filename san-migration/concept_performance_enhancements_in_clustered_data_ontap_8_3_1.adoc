@@ -5,6 +5,7 @@ keywords: performance, enhancements, ontap 8.3.1
 summary: FLI는 성능을 더욱 효과적으로 관리하고 워크로드 부족 현상이 발생하지 않도록 일부 기능이 향상되었습니다. ONTAP 8.3.1의 FLI 개선 사항에는 새로운 스로틀 명령 및 LUN 임포트 기능에 처리량 및 QoS 정책 그룹을 보여주는 향상된 기능이 포함되어 있습니다. 
 ---
 = ONTAP 8.3.1의 성능 향상
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

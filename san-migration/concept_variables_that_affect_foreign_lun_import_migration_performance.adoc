@@ -5,6 +5,7 @@ keywords: variables, affect, foreign lun import, migration, performance
 summary: 지정된 마이그레이션의 완료 속도에 영향을 주는 여러 변수가 있습니다. 
 ---
 = 외부 LUN 가져오기 마이그레이션 성능에 영향을 주는 변수
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

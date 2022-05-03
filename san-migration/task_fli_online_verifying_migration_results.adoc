@@ -5,6 +5,7 @@ keywords: fli online, verify, migration, results
 summary: 검증 작업은 선택 사항이지만 권장됩니다. 소스 LUN과 대상 LUN의 블록별 비교입니다. 마이그레이션 시간보다 작업이 거의 비슷하거나 약간 더 오래 걸리는지 확인합니다. 
 ---
 = FLI 온라인: 마이그레이션 결과 확인
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

@@ -5,6 +5,7 @@ keywords: data, migration, program, overview
 summary: '데이터 마이그레이션 프로그램은 고객이 NetApp 스토리지로 마이그레이션하고 NetApp 7-Mode에서 ONTAP로 LUN을 마이그레이션하는 데 필요한 데이터 마이그레이션 솔루션을 제공합니다. FLI(Foreign LUN Import)는 데이터 마이그레이션 포트폴리오의 일부입니다.' 
 ---
 = 데이터 마이그레이션 프로그램 개요
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

@@ -5,6 +5,7 @@ keywords: prepare, hosts, fli, online, migration
 summary: FLI 온라인 실행 단계에서는 지원되는 구성에 따라 마이그레이션 호스트를 준비합니다. 
 ---
 = FLI 온라인 마이그레이션을 위한 호스트 준비
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

@@ -5,6 +5,7 @@ keywords: offline, migration, workflow
 summary: 오프라인 마이그레이션 워크플로는 마이그레이션 프로세스의 실행 단계에서 수행됩니다. 오프라인 워크플로우 다이어그램에서는 호스트, 패브릭, 대상 스토리지 및 소스 스토리지에서 수행되는 작업을 보여 줍니다. 
 ---
 = 오프라인 마이그레이션 워크플로
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

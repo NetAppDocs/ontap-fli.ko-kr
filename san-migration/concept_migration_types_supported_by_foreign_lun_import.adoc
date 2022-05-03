@@ -5,6 +5,7 @@ keywords: migration, types, supported, foreign, lun, import
 summary: FLI는 온라인, 오프라인, 전환 및 자동화의 4가지 주요 마이그레이션 워크플로 유형을 지원합니다. 사용할 워크플로는 구성 및 기타 요소에 따라 다릅니다. 
 ---
 = 외부 LUN 가져오기에서 지원되는 마이그레이션 유형입니다
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

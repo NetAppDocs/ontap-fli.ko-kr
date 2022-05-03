@@ -5,6 +5,7 @@ keywords: supported, host, operating, systems, fli, online
 summary: FLI 온라인 워크플로는 다음 운영 체제 중 하나를 실행하는 호스트에 연결된 LUN에 사용할 수 있습니다. 
 ---
 = FLI 온라인 FLI에 대해 지원되는 호스트 운영 체제
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

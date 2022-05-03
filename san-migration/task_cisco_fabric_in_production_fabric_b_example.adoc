@@ -5,6 +5,7 @@ keywords: cisco, fabric, production, fabric b, example
 summary: 다음은 프로덕션 패브릭 B에 있는 Cisco 패브릭의 예입니다 
 ---
 = 운영 패브릭 B의 Cisco 패브릭
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

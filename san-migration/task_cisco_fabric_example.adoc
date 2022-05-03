@@ -5,6 +5,7 @@ keywords: cisco, fabric, example
 summary: 이 절차에서는 Cisco Fabric zoneset에서 소스 스토리지 및 호스트 영역을 제거하는 방법을 보여 줍니다. 
 ---
 = Cisco 패브릭의 예
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

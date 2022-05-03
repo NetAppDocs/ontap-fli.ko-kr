@@ -5,6 +5,7 @@ keywords: professional, services, san, migration, solutions
 summary: NetApp 및 파트너 프로페셔널 서비스는 시간 테스트를 거친 방법론을 사용하여 모든 주요 단계에서 SAN 마이그레이션을 지원합니다. 
 ---
 = SAN 마이그레이션 솔루션을 위한 프로페셔널 서비스
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

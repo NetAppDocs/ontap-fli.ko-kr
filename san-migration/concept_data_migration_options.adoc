@@ -5,6 +5,7 @@ keywords: data, migration, options
 summary: 데이터 마이그레이션 옵션을 선택할 때 고려해야 할 사항은 데이터 전송 어플라이언스 또는 애플리케이션 기반 마이그레이션의 사용입니다. 
 ---
 = 데이터 마이그레이션 옵션
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

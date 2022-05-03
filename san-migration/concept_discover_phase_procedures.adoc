@@ -5,6 +5,7 @@ keywords: discover, phase, data, collection, procedures
 summary: 검색 단계에서는 성공적인 마이그레이션 계획 및 실행에 필요한 고객 환경 정보를 수집합니다. 
 ---
 = 위상 데이터 수집 절차를 검색합니다
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

@@ -5,6 +5,7 @@ keywords: fli, interoperability, support, criteria
 summary: 'FLI 상호 운용성 매트릭스(IMT)는 FlexArray IMT와 매우 유사하나, FLI에서 작동하는 NetApp 공인 소스 어레이를 더 잘 지원하기 위해 명백히 다른 상호 운용성 툴로 추가되었습니다.' 
 ---
 = FLI 상호 운용성 및 지원 기준
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

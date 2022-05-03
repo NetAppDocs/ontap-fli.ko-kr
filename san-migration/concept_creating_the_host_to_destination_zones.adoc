@@ -5,6 +5,7 @@ keywords: create, host, destination, zones
 summary: 대상 존에 대한 호스트를 생성해야 합니다. 운영 Fabric에는 패브릭 A와 패브릭 B라는 두 가지 유형이 있습니다 
 ---
 = 대상 영역에 호스트 생성
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

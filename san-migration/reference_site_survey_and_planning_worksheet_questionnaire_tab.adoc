@@ -5,6 +5,7 @@ keywords: site, survey and planning worksheet, questionnaire tab
 summary: 사이트 조사 및 계획 워크시트의 일부로, 초기 마이그레이션 설문지의 마이그레이션 프로젝트 정보가 포함된 탭이 있어야 합니다. 
 ---
 = 사이트 조사 및 계획 워크시트 질의 응답서 탭
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

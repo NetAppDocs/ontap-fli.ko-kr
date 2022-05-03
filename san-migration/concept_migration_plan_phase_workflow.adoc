@@ -5,6 +5,7 @@ keywords: plan, phase, workflow
 summary: 데이터 마이그레이션 프로세스의 계획 단계에서는 세부적인 마이그레이션 계획을 수립하고 모든 작업이 실제 마이그레이션에 준비되도록 하는 데 필요한 작업에 중점을 둡니다. 대부분의 마이그레이션 작업은 이 단계에서 수행되는 계획입니다. 
 ---
 = 계획 단계 워크플로
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

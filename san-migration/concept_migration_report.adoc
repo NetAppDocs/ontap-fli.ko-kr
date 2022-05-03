@@ -5,6 +5,7 @@ keywords: migration, report
 summary: 가져오기 로그는 클러스터 이벤트 로그 파일에 저장됩니다. 마이그레이션에 성공했는지 확인하려면 로그에서 오류를 검토해야 합니다. 
 ---
 = 마이그레이션 보고서
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

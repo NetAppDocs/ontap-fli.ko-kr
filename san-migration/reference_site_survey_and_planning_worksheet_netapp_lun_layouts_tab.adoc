@@ -5,6 +5,7 @@ keywords: site, survey and planning worksheet, netapp lun layouts tab
 summary: 사이트 조사 및 계획 워크시트의 일부로 LUN 레이아웃에 대한 정보가 포함된 탭을 설정해야 합니다. 
 ---
 = 사이트 설문조사 및 계획 워크시트 NetApp LUN 레이아웃 탭
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

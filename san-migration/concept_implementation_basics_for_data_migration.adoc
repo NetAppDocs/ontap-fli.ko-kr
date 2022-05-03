@@ -6,6 +6,7 @@ keywords: implementation, basics, data, migration
 summary: 'FLI(Foreign LUN Import) 구현에는 물리적 배선, 조닝 및 이니시에이터 레코드 작성 단계가 포함됩니다. NetApp 스토리지 이니시에이터 포트 및 소스 스토리지의 초기 구성을 통해 마이그레이션 환경을 준비합니다.' 
 ---
 = 데이터 마이그레이션을 위한 구축 기본 사항
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

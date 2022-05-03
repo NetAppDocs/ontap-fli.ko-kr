@@ -5,6 +5,7 @@ keywords: esxi, caw/ats, remediation
 summary: '온라인 FLI는 VMware Atomic Test and Set(ATS)/SCSI Compare and Write(caw)를 지원하지 않습니다. VMFS5를 사용하고 소스 스토리지에서 caw를 지원하는 경우 이 기능이 중요합니다. 호스트를 교정하려면 이 섹션에 설명된 프로세스를 따라야 합니다.' 
 ---
 = ESXi caw/ATS 개선
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

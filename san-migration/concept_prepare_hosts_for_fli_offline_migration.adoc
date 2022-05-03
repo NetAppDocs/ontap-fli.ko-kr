@@ -5,6 +5,7 @@ keywords: prepare, hosts, fli, offline, migration
 summary: FLI 오프라인 실행 단계에서는 마이그레이션 호스트 준비를 포함합니다. 
 ---
 = FLI 오프라인 마이그레이션을 위한 호스트 준비
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

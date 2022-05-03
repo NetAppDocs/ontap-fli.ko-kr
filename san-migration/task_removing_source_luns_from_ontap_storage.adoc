@@ -5,6 +5,7 @@ keywords: remove, source, luns, ontap, storage
 summary: 다음 단계에서는 마이그레이션이 완료된 후 ONTAP 스토리지에서 소스 LUN을 제거하는 방법을 설명합니다. 
 ---
 = ONTAP 스토리지에서 소스 LUN을 제거하는 중입니다
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

@@ -5,6 +5,7 @@ keywords: check, supported configurations, fli, using, san lun migrate app
 summary: ONTAP 9.9.1부터 SAN LUN 마이그레이션 앱을 사용하여 FLI에 대한 외부 소스 어레이를 검증할 수 있습니다. 원하는 외부 어레이가 FLI IMT에 나열되지 않은 경우 SAN LUN 마이그레이션 앱을 사용할 수 있습니다. 
 ---
 = SAN LUN 마이그레이션 앱을 사용하여 FLI에 대해 지원되는 구성 확인
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

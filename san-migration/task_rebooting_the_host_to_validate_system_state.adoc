@@ -5,6 +5,7 @@ keywords: reboot, host, validate, system state
 summary: 마이그레이션 호스트는 구성을 변경하기 전에 재부팅됩니다. 마이그레이션을 진행하기 전에 시스템이 정상 작동이 확인된 상태인지 확인합니다. 
 ---
 = 호스트를 재부팅하여 시스템 상태를 확인합니다
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

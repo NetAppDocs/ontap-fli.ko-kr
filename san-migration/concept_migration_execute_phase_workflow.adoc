@@ -5,6 +5,7 @@ keywords: execute, phase, workflows
 summary: 실행 단계에서는 FLI 오프라인 또는 온라인 마이그레이션을 수행하기 위한 LUN 마이그레이션 작업에 중점을 둡니다. 
 ---
 = 단계 워크플로 실행
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

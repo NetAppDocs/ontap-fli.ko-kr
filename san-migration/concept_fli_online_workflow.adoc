@@ -5,6 +5,7 @@ keywords: fli, online, workflow
 summary: FLI 온라인 마이그레이션을 다룬 4개의 FLI 워크플로우 예시 중 두 번째 예시입니다. 
 ---
 = FLI 온라인 워크플로우
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

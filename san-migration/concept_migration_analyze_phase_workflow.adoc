@@ -5,6 +5,7 @@ keywords: analyze, phase, workflow
 summary: 분석 단계에서는 마이그레이션 계획 전에 해결해야 하는 항목을 중점적으로 다룹니다. 상호 운용성 매트릭스를 벗어나는 호스트 구성 세부 사항을 식별해야 합니다. 
 ---
 = 단계 워크플로 분석
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

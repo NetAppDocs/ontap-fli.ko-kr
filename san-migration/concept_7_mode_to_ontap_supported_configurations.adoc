@@ -5,6 +5,7 @@ keywords: 7-mode, ontap, fli, supported, configurations
 summary: 궁극적으로 전환 중인 호스트 OS, HBA, 스위치 및 ONTAP 스토리지가 지원되는지 확인해야 합니다. 
 ---
 = 7-Mode에서 ONTAP FLI로 지원되는 구성
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

@@ -5,6 +5,7 @@ keywords: prepare, source, destination, arrays, migration
 summary: FLI 7-Mode에서 ONTAP로의 마이그레이션을 준비하려면 호스트 및 소스 LUN 경로와 기타 세부 정보를 확인하십시오. 
 ---
 = 마이그레이션을 위한 소스 및 타겟 스토리지 준비
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

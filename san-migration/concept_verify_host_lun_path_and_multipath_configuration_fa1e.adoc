@@ -5,6 +5,7 @@ keywords: verify, host lun path, multipath, configuration
 summary: 마이그레이션을 시작하기 전에 다중 경로가 올바르게 구성되고 제대로 작동하는지 확인해야 합니다. LUN에 대해 사용 가능한 모든 경로가 활성 상태여야 합니다. 
 ---
 = 호스트 LUN 경로 및 다중 경로 구성을 확인합니다
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

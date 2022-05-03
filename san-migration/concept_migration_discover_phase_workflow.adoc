@@ -5,6 +5,7 @@ keywords: discover phase workflow
 summary: 마이그레이션 프로세스의 검색 단계에서는 호스트 조정에 사용되는 정보를 수집하고 마이그레이션 계획을 이후 단계에서 생성하는 데 중점을 둡니다. 대부분의 정보 수집은 OneCollect와 같은 데이터 수집 도구를 사용하여 자동화됩니다. 
 ---
 = 위상 워크플로를 검색합니다
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

@@ -5,6 +5,7 @@ keywords: brocade, fabric, example
 summary: 이 절차는 Brocade 패브릭 zoneset에서 소스 스토리지 및 호스트 영역 제거를 보여 줍니다. 
 ---
 = Brocade 패브릭의 예
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

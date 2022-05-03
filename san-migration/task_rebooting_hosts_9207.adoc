@@ -5,6 +5,7 @@ keywords: reboot, hosts
 summary: 호스트가 정상 작동이 확인된 상태인지 확인하기 위해 이 워크플로우를 시작하기 전에 호스트를 재부팅할 수 있습니다. 
 ---
 = 호스트를 재부팅합니다
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

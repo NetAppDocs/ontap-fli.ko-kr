@@ -5,6 +5,7 @@ keywords: wire, best practices, fli migration
 summary: FLI 마이그레이션을 위한 ONTAP 스토리지를 구성하려면 계획 정보와 권장 모범 사례에 따라 소스 스토리지를 패브릭에 배선해야 합니다. 
 ---
 = FLI 마이그레이션에 대한 배선 모범 사례
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

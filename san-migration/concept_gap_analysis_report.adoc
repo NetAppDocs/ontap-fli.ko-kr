@@ -5,6 +5,7 @@ keywords: gap, analysis, report
 summary: 차이 분석은 고객의 현재 및 NetApp 권장 환경에 대한 보고서입니다. 마이그레이션 후 수행해야 하는 고객 환경에 대한 모든 권장 업그레이드를 제공합니다. 
 ---
 = 차이 분석 보고서
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

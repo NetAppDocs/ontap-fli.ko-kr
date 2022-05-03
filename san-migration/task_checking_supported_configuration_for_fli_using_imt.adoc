@@ -5,6 +5,7 @@ keywords: check, supported configurations, fli using imt
 summary: '상호 운용성 매트릭스 툴(IMT) 을 통해 NetApp에서 검증한 타사 제품 및 구성 요소와 함께 작동하는 NetApp 제품의 구성에 대한 정보를 찾아야 합니다.' 
 ---
 = IMT를 사용하여 FLI에 대해 지원되는 구성 확인
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

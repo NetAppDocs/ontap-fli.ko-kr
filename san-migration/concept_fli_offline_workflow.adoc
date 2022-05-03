@@ -6,6 +6,7 @@ keywords: fli, offline, workflow
 summary: 이 섹션에서는 FLI 오프라인 워크플로우의 예를 들어, 4개의 FLI 워크플로우 중 하나를 제공합니다. 
 ---
 = FLI 오프라인 워크플로우
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

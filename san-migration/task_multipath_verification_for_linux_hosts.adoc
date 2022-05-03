@@ -5,6 +5,7 @@ keywords: multipath, verification, linux, hosts
 summary: 'FLI(Foreign LUN Import) 프로세스의 일환으로 다중 경로가 호스트에서 올바르게 구성되고 작동하는지 확인해야 합니다.' 
 ---
 = Linux 호스트에 대한 다중 경로 검증
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

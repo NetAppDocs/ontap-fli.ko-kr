@@ -6,6 +6,7 @@ keywords: migration, process, overview
 summary: FLI 마이그레이션 프로세스는 데이터 마이그레이션의 발견, 분석, 계획, 실행 및 검증과 같은 5단계 방법론입니다. 
 ---
 = 마이그레이션 프로세스 개요
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 

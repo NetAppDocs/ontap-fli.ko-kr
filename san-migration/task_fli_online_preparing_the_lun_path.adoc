@@ -5,6 +5,7 @@ keywords: fli online, prepare, lun path
 summary: FLI 온라인 마이그레이션을 준비하기 위해 호스트 및 소스 LUN 경로와 기타 세부 정보를 확인합니다. 
 ---
 = FLI 온라인: LUN 경로 준비
+:allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 
