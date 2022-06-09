@@ -11,24 +11,24 @@ summary: FLI 온라인 워크플로는 다음 운영 체제 중 하나를 실행
 
 
 [role="lead"]
-FLI 온라인 워크플로는 다음 운영 체제 중 하나를 실행하는 호스트에 연결된 LUN에 사용할 수 있습니다.
+FLI 온라인 워크플로는 나열된 버전부터 다음 운영 체제 중 하나를 실행하는 호스트에 연결된 LUN에 사용할 수 있습니다.
 
 . Microsoft(나열된 모든 서버 버전이 지원됨):
 +
-** Windows Server 2008(Windows Server 장애 조치 클러스터 포함)
-** Microsoft Hyper-V Server 2008을 참조하십시오
-** Windows Server 2012(Windows Server 2012 클러스터 포함)
-** Microsoft Hyper-V Server 2012 를 참조하십시오
+** Windows Server 2008 이상(Windows Server 장애 조치 클러스터 포함)
+** Microsoft Hyper-V Server 2008 이상
+** Windows Server 2012 이상(Windows Server 2012 클러스터 포함)
+** Microsoft Hyper-V Server 2012 이상
 
 
 . VMware:
 +
-** 모든 ESXi 5.x 릴리스
+** 모든 ESXi 5.x 이상 릴리스
 
 
 . Linux:
 +
-** Red Hat Enterprise Linux(RHEL) 5.x/6.x
+** Red Hat Enterprise Linux(RHEL) 5.x 이상
 
 
 
