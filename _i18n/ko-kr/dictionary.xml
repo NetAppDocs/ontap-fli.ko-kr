@@ -1332,12 +1332,11 @@
   <block id="d1b92a4930d50c6ed1038655db0d2684" category="sidebar">모든 ONTAP 제품 설명서</block>
   <block id="ea55df179f5c8f2dc6d72bdcb7fe2e57" category="summary">이 콘텐츠를 사용하면 외부 어레이에서 ONTAP로 데이터를 마이그레이션하거나 NetApp 7-Mode 어레이에서 ONTAP로 LUN을 전환하는 데 도움이 됩니다.</block>
   <block id="401497503074d7ec7406c3ce5a48dbc8" category="paragraph">조닝, LUN 마스킹, LUN을 마이그레이션해야 하는 호스트 운영 체제, ONTAP 및 타사 소스 스토리지를 비롯한 일반적인 SAN 개념 및 프로세스를 숙지해야 합니다.</block>
-  <block id="bccfda2dd766fcf9db897075f70d113a" category="inline-link">FlexArray 가상화 설치 요구 사항</block>
-  <block id="8899c4f28badd5881e532a34f2c0d2d7" category="list-text">에 설명된 대로 소스 및 타겟 스토리지의 와이어링: NetApp FlexArray 모범 사례를 사용하십시오<block ref="af4972f8b97e166c7432d033e734d43e" category="inline-link-rx"></block>.</block>
   <block id="b0f36dbc8cbf7c56840f51534500c27b" category="inline-link">데이터 마이그레이션 툴 빠른 참조</block>
   <block id="baca4f7d8c0223a33622dbfb8e5e38de" category="paragraph">모든 FLI 마이그레이션은 LUN 레벨에서 작동합니다. FLI는 엄격한 블록 기반 툴이며, 파일, 기록, NFS 및 CIFS 기반 마이그레이션은 지원되지 않습니다. NFS 및 CIFS/SMB와 같은 파일 레벨 프로토콜에 대한 다른 마이그레이션 방법론에 대한 자세한 내용은 을 참조하십시오<block ref="e415da1b4972963be10dbe349c4850a6" category="inline-link-rx"></block>.</block>
   <block id="e0a83b8c461db09706d982eeea30d1df" category="paragraph">FLI는 각 컨트롤러에서 최소 1개의 물리적 FC 포트를 필요로 하며 LUN이 이니시에이터 모드에서 직접 마이그레이션하도록 합니다. 각 패브릭에 하나씩 두 개의 포트를 사용하는 것이 좋지만, 단일 포트를 사용할 수 있습니다. 이러한 포트는 소스 스토리지에 접속하는 데 사용되며 소스 LUN을 보고 마운트하려면 조닝 및 마스킹되어야 합니다. 포트를 타겟에서 이니시에이터로 변경해야 하는 경우 를 참조하십시오<block ref="66f8c243fef55cbf3f49d4ec76027b8d" category="inline-link-rx"></block> FC 포트를 타겟에서 이니시에이터로 변환하는 프로세스를 검토합니다.</block>
   <block id="7a6d059da8a56b5bb032ab555e452fb8" category="paragraph">FLI 온라인 마이그레이션을 다룬 4개의 FLI 워크플로우 예시 중 두 번째 예시입니다. 이 예의 소스 스토리지는 EMC VNX5500입니다.</block>
   <block id="b107b92b08e1507c6d61c65a86b28086" category="paragraph">온라인 워크플로에는 다음과 같은 작업이 있습니다.</block>
-  <block id="0acd87400826433082ab90260e9cc109" category="paragraph">이니시에이터 그룹을 정의하려면 스토리지 설명서에서 LUN 마스킹(igroup/호스트 그룹/스토리지 그룹 등)을 설정하는 방법을 검토합니다. 을 검토할 수도 있습니다<block ref="737823659babb212ffbc8948b616644f" category="inline-link-rx"></block> 타사 스토리지 구성 요구 사항</block>
+  <block id="d65237d15ed3f23354581867591cc773" category="list-text">에 설명된 대로 소스 및 타겟 스토리지의 와이어링: NetApp FlexArray 모범 사례를 사용하십시오<block ref="66f8c243fef55cbf3f49d4ec76027b8d" category="inline-link-rx"></block>.</block>
+  <block id="6c98897f95672b5dde701dffbd4b05a0" category="paragraph">이니시에이터 그룹을 정의하려면 스토리지 설명서에서 LUN 마스킹(igroup/호스트 그룹/스토리지 그룹 등)을 설정하는 방법을 검토합니다. 을 검토할 수도 있습니다<block ref="737823659babb212ffbc8948b616644f" category="inline-link-rx"></block> 타사 스토리지 구성 요구 사항</block>
 </blocks>

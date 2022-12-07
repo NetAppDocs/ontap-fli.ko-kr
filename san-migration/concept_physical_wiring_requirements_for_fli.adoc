@@ -21,6 +21,6 @@ image::../media/physical_wiring_1.png[물리적 배선 1]
 
 다음 배선 모범 사례를 따르십시오.
 
-* 에 설명된 대로 소스 및 타겟 스토리지의 와이어링: NetApp FlexArray 모범 사례를 사용하십시오 https://docs.netapp.com/us-en/ontap-flexarray/install/index.html["FlexArray 가상화 설치 요구 사항"].
+* 에 설명된 대로 소스 및 타겟 스토리지의 와이어링: NetApp FlexArray 모범 사례를 사용하십시오 https://docs.netapp.com/us-en/ontap-flexarray/install/index.html["FlexArray 가상화 설치 요구 사항 및 참조 자료"].
 * ONTAP 스토리지를 사용하려면 Fabric에 연결할 수 있는 무료 이니시에이터 포트가 필요합니다. 사용 가능한 포트가 없는 경우 이니시에이터 포트를 구성합니다.
 
