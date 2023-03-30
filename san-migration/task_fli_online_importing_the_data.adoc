@@ -18,12 +18,12 @@ summary: 다음은 소스 LUN에서 대상 LUN으로 데이터를 가져오는 �
 +
 [listing]
 ----
-cluster::*> lun import start -vserver fli_72C -path /vol/flivol/72Clun1
+cluster::*> lun import start -vserver fli -path /vol/fli_vol/OnlineFLI_LUN
 ----
 . FLI 상태를 표시합니다.
 +
 [listing]
 ----
-cluster::*> lun import show -vserver fli_72C -path /vol/flivol/72Clun1
+cluster::*> lun import start -vserver fli -path /vol/fli_vol/OnlineFLI_LUN
 ----
 
