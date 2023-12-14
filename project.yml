@@ -26,3 +26,6 @@ homepage:
       url: "/san-migration/concept_fli_7_mode_to_ontap_transition_workflow.html"
     - title: WFA(워크플로우 자동화)를 사용하는 FLI
       url: "/san-migration/concept_fli_using_workflow_automation_wfa.html"
+product-family:
+  name: ONTAP
+  repo: ontap-family
