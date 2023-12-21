@@ -14,18 +14,6 @@ sidebar:
   - section: san-migration
   - title: 법적 고지
     url: "/reference_legal_notices.html"
-homepage:
-  tiles:
-  - title: FLI 워크플로우
-    links:
-    - title: 오프라인 워크플로
-      url: "/san-migration/concept_fli_offline_workflow.html"
-    - title: 온라인 워크플로
-      url: "/san-migration/concept_fli_online_workflow.html"
-    - title: FLI 7-Mode에서 ONTAP로의 전환 워크플로우
-      url: "/san-migration/concept_fli_7_mode_to_ontap_transition_workflow.html"
-    - title: WFA(워크플로우 자동화)를 사용하는 FLI
-      url: "/san-migration/concept_fli_using_workflow_automation_wfa.html"
 product-family:
   name: ONTAP
   repo: ontap-family
