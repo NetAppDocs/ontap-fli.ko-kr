@@ -1326,4 +1326,7 @@
   <block id="6c98897f95672b5dde701dffbd4b05a0" category="paragraph">이니시에이터 그룹을 정의하려면 스토리지 설명서에서 LUN 마스킹(igroup/호스트 그룹/스토리지 그룹 등)을 설정하는 방법을 검토합니다. 을 검토할 수도 있습니다<block ref="737823659babb212ffbc8948b616644f" category="inline-link-rx"></block> 타사 스토리지 구성 요구 사항</block>
   <block id="29b512fbc4379581cd2fd8694ca529c4" category="inline-link-macro">ONTAP에 Windows Server 2022 사용</block>
   <block id="82e292bca3bfc1c57dd6f3dc796412a0" category="paragraph">Windows 호스트에 대한 단계별 지침은 의 Multipathing 섹션에서 찾을 수 있습니다 <block ref="cce832a1ed6f79df8eb06042aeeb6d79" category="inline-link-macro-rx"></block>.</block>
+  <block id="9a4c1be88c2720ce2a1f8a5fd2b27a5c" category="sidebar">FLI 워크플로</block>
+  <block id="9661e4f0a38203cee0d0ec82dcba896f" category="sidebar">오프라인 워크플로</block>
+  <block id="afec4ed45e968a4fe6c00ed1c1e83691" category="sidebar">온라인 워크플로</block>
 </blocks>
