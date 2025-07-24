@@ -417,4 +417,4 @@ lun import create -vserver <SVM_name> -path <volume_path|storage_unit_path> -for
 link:map-source-lun-to-destination-online-migration.html["소스 LUN을 ONTAP 대상 LUN에 매핑합니다."] .
 
 .관련 정보
-https://kb.netapp.com/Advice_and_Troubleshooting/Data_Storage_Software/ONTAP_OS/What_is_an_unaligned_I%2F%2FO%3F["정렬되지 않은 I/O에 대해 자세히 알아보세요"^] .
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Storage_Software/ONTAP_OS/What_is_an_unaligned_I%2F%2FO%3F["정렬되지 않은 I/O에 대해 자세히 알아보세요"] .
