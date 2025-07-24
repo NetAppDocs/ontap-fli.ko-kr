@@ -2,29 +2,71 @@
 permalink: san-migration/concept_fli_online_workflow.html 
 sidebar: sidebar 
 keywords: fli, online, workflow 
-summary: FLI 온라인 마이그레이션을 다룬 4개의 FLI 워크플로우 예시 중 두 번째 예시입니다. 
+summary: FLI 온라인 마이그레이션에서는 클라이언트 시스템이 타사 외부 스토리지 어레이에서 NetApp 스토리지 시스템으로 데이터를 마이그레이션하는 동안 온라인 상태를 유지합니다. 
 ---
-= FLI 온라인 워크플로우
+= ONTAP FLI 온라인 마이그레이션 워크플로 요약
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 
 
 [role="lead"]
-FLI 온라인 마이그레이션을 다룬 4개의 FLI 워크플로우 예시 중 두 번째 예시입니다. 이 예의 소스 스토리지는 EMC VNX5500입니다.
+FLI(Foreign LUN Import) 데이터 마이그레이션은 타사 스토리지 어레이에서 NetApp 스토리지 시스템으로 데이터를 성공적으로 마이그레이션하기 위한 몇 가지 핵심 단계로 구성된 프로세스입니다. FLI는 오프라인 및 온라인 마이그레이션을 지원합니다. FLI(Foreign LUN Import) 온라인 마이그레이션에서는 타사 외부 스토리지 어레이에서 NetApp 스토리지 시스템으로 데이터를 마이그레이션하는 동안 클라이언트 시스템이 온라인 상태를 유지합니다.
 
-온라인 워크플로에는 다음과 같은 작업이 있습니다.
+.시작하기 전에:
+* 당신은 완료해야합니다 link:concept_migration_discover_phase_workflow.html["발견"] , link:concept_migration_analyze_phase_workflow.html["분석"] , 그리고 link:concept_migration_plan_phase_workflow.html["계획"] 마이그레이션 프로세스의 단계.
+* 호스트 유형과 NetApp 대상 스토리지 어레이 구성에 대해 온라인 마이그레이션이 지원되는지 확인해야 합니다.
++
+MetroCluster 구성에서는 온라인 마이그레이션이 지원되지 않습니다. 활성 온라인 가져오기 중에 사이트 장애 조치가 발생하면 소스 어레이에 대한 쓰기 패스스루가 실패하여 검증 실패 및 잠재적인 데이터 손실로 이어질 수 있습니다. NetApp 대상 컨트롤러가 MetroCluster 구성에 있는 경우 다음을 사용해야 합니다. link:prepare-host-offline-migration.html["FLI 오프라인 마이그레이션 프로세스"] .
 
-. LUN 경로 준비 중
-. 운영 중단 컷오버 수행
-. 소스 LUN 데이터를 가져오는 중입니다
-. 마이그레이션 결과를 확인하는 중입니다
-. FLI 온라인 마이그레이션 정리
-. FLI 온라인 마이그레이션 후 작업
++
+온라인 마이그레이션은 다음 버전의 Windows, Linux 또는 ESXi 호스트 운영 체제에서 지원됩니다. 다른 호스트 운영 체제의 경우 link:prepare-host-offline-migration.html["FLI 오프라인 마이그레이션 프로세스"] .
+
++
+** Microsoft(나열된 모든 서버 버전이 지원됨):
++
+*** Windows Server 2008 R2 이상(Windows Server 장애 조치 클러스터 포함)
+*** Microsoft Hyper-V Server 2008 이상
+*** Windows Server 2012 이상(Windows Server 2012 클러스터 포함)
+*** Microsoft Hyper-V Server 2012 이상
 
 
-[NOTE]
-====
-NetApp 컨트롤러 대상이 MetroCluster인 경우 온라인 워크플로우를 사용하지 마십시오. 활성 온라인 가져오기 중에 사이트 페일오버가 발생한 경우 소스 어레이에 대한 쓰기 패스스루가 실패할 수 있으며 이로 인해 검증 실패와 잠재적인 데이터 손실이 발생할 수 있습니다. 대상이 MetroCluster인 경우 FLI 오프라인 프로세스를 사용합니다.
+** VMware ESXi 5.x 이상
+** Red Had Enterprise Linux(RHEL) 5.x 이상
 
-====
+
+* 호스트 다중 경로가 올바르게 구성되고 제대로 작동하는지 확인해야 합니다. LUN에 대한 사용 가능한 모든 경로가 활성화되어 있어야 합니다.
+* 당신은해야합니다 link:configure-fc-adapter-initiator.html["FC 어댑터를 이니시에이터 모드로 구성하세요"] .
+* 당신은해야합니다 link:concept_target_and_initiator_port_zoning.html["ONTAP 스토리지 이니시에이터 포트로 외부 어레이 대상 포트를 구역화합니다."] .
+
+
+.이 작업에 관하여
+FLI 온라인 마이그레이션을 수행하려면 호스트를 준비하고, LUN 가져오기 관계를 만들고, 외부 LUN을 ONTAP 스토리지 시스템에 매핑하고, 외부 LUN에서 데이터를 가져오고, 마이그레이션 결과를 확인하고, LUN 가져오기 관계를 제거하고, 마지막으로 마이그레이션 후 작업을 수행해야 합니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["하나"]link:prepare-host-online-migration.html["호스트를 준비하세요"] .
+[role="quick-margin-para"]
+필요한 호스트 치료 단계를 수행하고 호스트를 재부팅합니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-2.png["둘"]link:create-lun-import-relationship-online.html["LUN 가져오기 관계 생성"] .
+[role="quick-margin-para"]
+LUN 가져오기 관계를 만드는 과정에는 소스 어레이에서 가져올 외부 LUN을 식별하고, 외부 LUN을 포함할 대상 볼륨을 만들고, ONTAP 스토리지 시스템에 대상 LUN을 만들고, 마지막으로 가져오기 관계를 설정하는 작업이 포함됩니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["삼"]link:map-source-lun-to-destination-online-migration.html["ONTAP 스토리지 시스템에 외부 LUN 매핑"] .
+[role="quick-margin-para"]
+외부 어레이에서 마이그레이션할 LUN의 매핑을 해제하고 ONTAP 스토리지 시스템에 다시 매핑합니다. 이 프로세스는 시스템 중단을 초래할 수 있습니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-4.png["네"]link:task_fli_online_importing_the_data.html["외부 LUN에서 데이터 가져오기"] .
+[role="quick-margin-para"]
+외부 어레이 소스 LUN에서 ONTAP 대상 LUN으로 데이터를 가져옵니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-5.png["다섯"]link:task_fli_online_verifying_migration_results.html["마이그레이션 결과 확인"] .
+[role="quick-margin-para"]
+FLI를 사용하여 소스 및 대상 LUN의 블록별 비교를 수행하여 마이그레이션이 완료되고 정확한지 확인합니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-6.png["육"]link:remove-lun-import-relationship-online.html["LUN 가져오기 관계 제거"] .
+[role="quick-margin-para"]
+FLI 온라인 마이그레이션이 완료되면 LUN 가져오기 관계를 안전하게 제거할 수 있습니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-7.png["일곱"]link:concept_fli_online_post_migration_tasks.html["마이그레이션 후 작업 수행"] .
+[role="quick-margin-para"]
+오류가 있는지 로그를 검토하고, 호스트 다중 경로 구성을 검증하고, 애플리케이션 테스트를 수행하여 마이그레이션이 성공적으로 완료되었는지 확인하세요.

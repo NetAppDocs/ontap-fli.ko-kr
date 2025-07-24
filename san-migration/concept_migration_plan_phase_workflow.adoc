@@ -17,7 +17,7 @@ summary: 데이터 마이그레이션 프로세스의 계획 단계에서는 세
 
 다음 그림에서는 계획 워크플로를 보여 줍니다.
 
-image::../media/plan_and_prepare_phase_1.png[1단계 계획 및 준비]
+image::../media/plan_and_prepare_phase_1.png[마이그레이션 계획 워크플로]
 
 계획 단계 작업은 다음 표에 나열되어 있습니다.
 

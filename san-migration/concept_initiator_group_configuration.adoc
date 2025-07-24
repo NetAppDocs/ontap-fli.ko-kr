@@ -30,4 +30,4 @@ NetApp 어레이의 이니시에이터 그룹에 항상 ALUA(Asymmetric Logical 
 
 명명법에 관계없이 이니시에이터 그룹은 동일한 LUN 매핑을 공유하는 WWPN을 통해 이니시에이터를 식별하는 데 사용됩니다.
 
-이니시에이터 그룹을 정의하려면 스토리지 설명서에서 LUN 마스킹(igroup/호스트 그룹/스토리지 그룹 등)을 설정하는 방법을 검토합니다. 을 검토할 수도 있습니다 https://docs.netapp.com/us-en/ontap-flexarray/implement-third-party/index.html["타사 스토리지를 위한 FlexArray 가상화 구축"] 타사 스토리지 구성 요구 사항
+이니시에이터 그룹을 정의하려면 LUN 마스킹(igroups/호스트 그룹/스토리지 그룹 등)을 설정하는 방법에 대한 어레이 설명서를 검토하세요.

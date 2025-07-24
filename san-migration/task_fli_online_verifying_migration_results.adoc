@@ -4,29 +4,32 @@ sidebar: sidebar
 keywords: fli online, verify, migration, results 
 summary: 검증 작업은 선택 사항이지만 권장됩니다. 소스 LUN과 대상 LUN의 블록별 비교입니다. 마이그레이션 시간보다 작업이 거의 비슷하거나 약간 더 오래 걸리는지 확인합니다. 
 ---
-= FLI 온라인: 마이그레이션 결과 확인
+= ONTAP FLI 온라인 마이그레이션 결과 확인
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 
 
 [role="lead"]
-검증 작업은 선택 사항이지만 권장됩니다. 소스 LUN과 대상 LUN의 블록별 비교입니다. 마이그레이션 시간보다 작업이 거의 비슷하거나 약간 더 오래 걸리는지 확인합니다.
+LUN이 외부 어레이에서 ONTAP 어레이로 마이그레이션된 후, 외부 LUN 가져오기(FLI)는 소스 LUN과 대상 LUN을 블록 단위로 비교하여 마이그레이션이 완료되고 정확한지 확인합니다. 마이그레이션 확인에는 마이그레이션과 거의 같은 시간(또는 약간 더 긴 시간)이 소요됩니다.
 
-소스 LUN과 대상 LUN을 비교하려면 검증 작업을 시작합니다. 검증 과정을 모니터링합니다. 검증 중인 LUN은 검증 세션 동안 오프라인 상태여야 합니다. 검증 세션은 소스 LUN과 대상 LUN 간의 블록별 비교이므로 시간이 오래 걸릴 수 있습니다. 검증이 필요하지 않더라도 가져오기 프로세스를 편안하게 하기 위해 가져오기/마이그레이션된 LUN의 하위 집합을 확인하는 것이 좋습니다. 이러한 검증은 테스트/파일럿 마이그레이션 중에 수행된 검증과 함께 수행됩니다.
+마이그레이션 확인은 필수는 아니지만 적극 권장됩니다.
 
-[NOTE]
-====
-이 프로세스는 중단을 야기합니다.
+.이 작업에 관하여
+* ONTAP 9.17.1부터 FLI 오프라인 마이그레이션을 사용하여 외부 LUN의 데이터 마이그레이션이 지원됩니다 link:https://docs.netapp.com/us-en/asa-r2/get-started/learn-about.html["ASA r2 시스템"^]. ASA r2 시스템은 스토리지 계층 구현 방식에서 다른 ONTAP 시스템(ASA, AFF, FAS)과 다릅니다. ASA 시스템에서는 스토리지 유닛(LUN 또는 네임스페이스)이 생성될 때 볼륨이 자동으로 생성됩니다. 각 볼륨에는 스토리지 유닛이 하나만 포함됩니다. 따라서 ASA r2 시스템의 경우 볼륨 이름을 지정할 필요가 없습니다.  `-path` LUN을 생성할 때 옵션을 사용하는 대신 저장 장치 경로를 포함해야 합니다.
+* 마이그레이션 검증은 중단을 초래할 수 있습니다. 검증 중인 LUN은 검증 기간 동안 오프라인 상태여야 합니다.
 
-====
-[NOTE]
-====
-LUN을 다시 온라인 상태로 전환하기 전에 LUN 임포트 검증을 명시적으로 중지해야 합니다. 그렇지 않으면 LUN이 온라인 상태로 실패합니다. 다음 CLI 출력을 참조하십시오.
 
-====
 .단계
-. 확인할 LUN을 오프라인 상태로 설정합니다. 여기서 중단 기간은 >입니다
+. 확인할 LUN을 오프라인 상태로 설정합니다.
++
+[source, cli]
+----
+lun offline -vserver <SVM_name> -path <volume_path|storage_unit_path>
+----
++
+이 예에서는 *flivol* 볼륨과 *fli_72C* SVM에 있는 *72Clun1*이라는 LUN을 오프라인으로 설정하는 명령을 보여줍니다.
+
 +
 [listing]
 ----
@@ -34,13 +37,24 @@ cluster::*> lun offline -vserver fli_72C -path /vol/flivol/72Clun1
 Warning: This command will take LUN "/vol/flivol/72Clun1" in Vserver "fli_72C" offline.
 Do you want to continue? {y|n}: y
 ----
-. LUN 확인을 시작합니다.
 +
-[listing]
+여기서 중단 기간이 시작됩니다.
+
+. LUN 마이그레이션 검증을 시작합니다.
++
+[source, cli]
 ----
-lun import verify start -vserver fli_72C -path /vol/flivol/72Clun1
+lun import verify start -vserver <SVM_name> -path <volume_path|storage_unit_path>
 ----
-. LUN 확인 상태를 표시합니다.
+. 검증 상태를 모니터링합니다.
++
+[source, cli]
+----
+lun import show -vserver <SVM_name> -path <volume_path|storage_unit_path>
+----
++
+이 예에서는 *flivol* 볼륨과 *fli_72C* SVM에 있는 *72Clun1*이라는 LUN의 검증 상태를 모니터링하는 명령을 보여줍니다.
+
 +
 [listing]
 ----
@@ -51,16 +65,25 @@ vserver foreign-disk   path                operation admin operational percent
 fli_72C D0i1E+G8Wg6m   /vol/flivol/72Clun1 verify    started
                                                                         9
 ----
-. LUN 검증을 중지합니다. 상태가 Verify is complete(검증 완료)로 표시되더라도 이 단계를 수동으로 수행해야 합니다.
+. LUN 검증을 중지합니다.
 +
-[listing]
+[source, cli]
 ----
-lun import verify stop -vserver fli_72C -path /vol/flivol/72Clun1
+lun import verify stop -vserver <SVM_name> -path <volume_path|storage_unit_path>
 ----
-. 검증 완료 후 LUN을 온라인 상태로 전환합니다. 작업 중단 기간은 여기서 > 로 끝납니다
 +
-[listing]
-----
-lun online -vserver fli_72C -path /vol/flivol/72Clun1
-----
+LUN 가져오기 검증을 명시적으로 중지한 후에만 LUN을 다시 온라인으로 전환할 수 있습니다. 그렇지 않으면 LUN 온라인이 실패합니다. 검증이 완료되었다고 표시되더라도 이 단계는 수동으로 수행해야 합니다.
 
+. LUN을 온라인 상태로 만듭니다.
++
+[source, cli]
+----
+lun online -vserver <SVM_name> -path <volume_path|storage_unit_path>
+----
++
+여기서 중단 기간이 종료됩니다.
+
+
+
+.다음은 무엇인가요?
+link:remove-lun-import-relationship-online.html["LUN 가져오기 관계 제거"] .

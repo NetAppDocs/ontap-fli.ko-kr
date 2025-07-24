@@ -15,7 +15,7 @@ summary: 마이그레이션 프로세스의 검색 단계에서는 호스트 조
 
 다음 그림은 검색 단계 워크플로를 보여 줍니다.
 
-image::../media/discover_phase_1.png[1단계를 알아보십시오]
+image::../media/discover_phase_1.png[발견 단계 워크플로]
 
 검색 단계 작업은 다음 표에 나열되어 있습니다.
 

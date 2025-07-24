@@ -1,23 +1,50 @@
 ---
 permalink: san-migration/concept_fli_offline_workflow.html 
-redirect: ontap-fli/san-migration/task_rebooting_the_host_to_validate_system_state.html 
 sidebar: sidebar 
 keywords: fli, offline, workflow 
-summary: 이 섹션에서는 FLI 오프라인 워크플로우의 예를 들어, 4개의 FLI 워크플로우 중 하나를 제공합니다. 
+summary: FLI 오프라인 마이그레이션에서는 타사 외부 스토리지 어레이에서 NetApp 스토리지 시스템으로 데이터를 마이그레이션하는 동안 클라이언트 시스템이 오프라인 상태가 됩니다. 
 ---
-= FLI 오프라인 워크플로우
+= ONTAP FLI 오프라인 마이그레이션 워크플로 요약
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 
 
 [role="lead"]
-이 섹션에서는 FLI 오프라인 워크플로우의 예를 들어, 4개의 FLI 워크플로우 중 하나를 제공합니다.
+FLI(Foreign LUN Import) 데이터 마이그레이션은 타사 스토리지 어레이에서 NetApp 스토리지 시스템으로 데이터를 성공적으로 마이그레이션하기 위한 몇 가지 핵심 단계로 구성된 프로세스입니다. FLI는 오프라인 및 온라인 마이그레이션을 지원합니다. FLI 오프라인 마이그레이션에서는 타사 외부 스토리지 어레이에서 NetApp 스토리지 시스템으로 데이터를 마이그레이션하는 동안 클라이언트 시스템이 오프라인 상태로 전환됩니다.
 
-이 워크플로우에서는 HDS AMS2100 어레이를 소스 스토리지로 사용합니다. 오프라인 워크플로에는 다음과 같은 작업이 있습니다.
+.시작하기 전에
+* 당신은 완료해야합니다 link:concept_migration_discover_phase_workflow.html["발견"] , link:concept_migration_analyze_phase_workflow.html["분석"] , 그리고 link:concept_migration_plan_phase_workflow.html["계획"] 마이그레이션 프로세스의 단계.
+* 당신은해야합니다 link:configure-fc-adapter-initiator.html["FC 어댑터를 이니시에이터 모드로 구성하세요"] .
+* 당신은해야합니다 link:concept_target_and_initiator_port_zoning.html["ONTAP 스토리지 이니시에이터 포트로 외부 어레이 대상 포트를 구역화합니다."] .
 
-. 컷오버 준비
-. 데이터를 가져오는 중입니다
-. 마이그레이션 결과 확인(선택 사항)
-. FLI 오프라인 마이그레이션 후 작업
 
+FLI 오프라인 워크플로에는 가져오기 위한 호스트와 외부 LUN 준비, LUN 가져오기 관계 생성, 데이터 가져오기가 포함됩니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-1.png["하나"]link:prepare-host-offline-migration.html["호스트를 준비하세요"] .
+[role="quick-margin-para"]
+FLI 오프라인 마이그레이션을 수행하기 전에 호스트를 재부팅하고 호스트 다중 경로 구성을 확인해야 합니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-2.png["둘"]link:prepare-foreign-lun-offline.html["외국 LUN을 준비하세요"] .
+[role="quick-margin-para"]
+FLI 오프라인 마이그레이션 프로세스에서는 외부 어레이에서 수동 단계를 수행하여 외부 소스 LUN을 ONTAP 스토리지 시스템에 제공해야 합니다. 그런 다음 추가 수동 단계를 수행하여 ONTAP 스토리지 시스템에서 외부 소스 LUN을 검색해야 합니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-3.png["삼"]link:create-lun-import-relationship-offline.html["LUN 가져오기 관계 생성"] .
+[role="quick-margin-para"]
+FLI 오프라인 마이그레이션에 대한 LUN 가져오기 관계를 생성하려면 ONTAP 에서 소스 어레이 LUN을 외부로 식별하고, 외부 LUN을 포함할 대상 볼륨을 생성 및 구성하고, 대상 LUN을 생성하고, 마지막으로 가져오기 관계를 설정해야 합니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-4.png["네"]link:task_fli_offline_importing_the_data.html["외부 어레이에서 LUN 데이터 가져오기"] .
+[role="quick-margin-para"]
+FLI를 사용하여 외부 어레이에서 LUN 데이터를 가져옵니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-5.png["다섯"]link:task_fli_offline_verifying_migration_results.html["마이그레이션 결과 확인"] .
+[role="quick-margin-para"]
+마이그레이션이 완료되고 정확한지 확인하기 위해 소스 및 대상 LUN을 블록별로 비교합니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-6.png["육"]link:remove-lun-import-relationship-offline.html["LUN 가져오기 관계 제거"] .
+[role="quick-margin-para"]
+FLI 오프라인 마이그레이션이 완료되면 LUN 가져오기 관계를 안전하게 제거할 수 있습니다.
+
+.image:https://raw.githubusercontent.com/NetAppDocs/common/main/media/number-7.png["일곱"]link:concept_fli_offline_post_migration_tasks.html["마이그레이션 후 작업 수행"] .
+[role="quick-margin-para"]
+오류가 있는지 로그를 검토하고, 호스트 다중 경로 구성을 확인하고, 애플리케이션 테스트를 수행하여 마이그레이션이 성공적으로 완료되었는지 확인하세요.

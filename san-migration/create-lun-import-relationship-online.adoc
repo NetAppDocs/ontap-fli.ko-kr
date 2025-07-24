@@ -1,0 +1,420 @@
+---
+permalink: san-migration/create-lun-import-relationship-online.html 
+sidebar: sidebar 
+keywords: fli online, prepare, lun path 
+summary: 외부 어레이에서 ONTAP 스토리지로 LUN을 마이그레이션하려면 먼저 LUN 가져오기 관계를 생성해야 합니다. LUN 가져오기 관계는 데이터 가져오기를 위해 소스 스토리지와 대상 스토리지 간에 영구적으로 연결되는 관계입니다. 
+---
+= ONTAP FLI 온라인 마이그레이션을 위한 LUN 가져오기 관계 생성
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+외부 어레이에서 ONTAP 스토리지로 LUN을 마이그레이션하려면 먼저 LUN 가져오기 관계를 생성해야 합니다. LUN 가져오기 관계는 데이터 가져오기를 위해 소스 스토리지와 대상 스토리지 간에 영구적으로 연결된 관계입니다. 소스 및 대상 엔드포인트는 LUN입니다.
+
+FLI(Foreign LUN Import) 온라인 마이그레이션을 위한 LUN 가져오기 관계를 생성하는 작업에는 소스 어레이에서 가져올 외래 LUN을 식별하고, 외래 LUN을 포함할 대상 볼륨을 생성 및 구성하고, 대상 LUN을 생성하고, 마지막으로 가져오기 관계를 설정하는 작업이 포함됩니다.
+
+
+
+== 1단계: ONTAP 에서 소스 어레이 LUN을 외부 LUN으로 식별합니다.
+
+FLI 온라인 마이그레이션을 시작하기 전에 소스 어레이 LUN을 외부 LUN으로 식별해야 합니다.
+
+.단계
+. ONTAP 에서 권한 수준을 고급으로 변경합니다.
++
+[source, cli]
+----
+set -privilege advanced
+----
+. 계속 진행할지 묻는 메시지가 나타나면 y를 입력합니다.
+. 소스 어레이가 대상 컨트롤러에서 표시되는지 확인합니다.
++
+[source, cli]
+----
+storage array show
+----
++
+다음 예에서는 DGC LUNZ 어레이의 검색을 보여줍니다.
+
++
+[listing]
+----
+cluster::*> storage array show
+Prefix                         Name   Vendor            Model Options
+-------- ---------------------------- -------- ---------------- ----------
+DGC-1                      DGC_LUNZ_1      DGC             LUNZ
+1 entries were displayed.
+----
+. 소스 LUN 세부 정보를 표시합니다.
++
+[source, cli]
+----
+storage array config show -array-name <array_name> -instance
+----
++
+다음 예에서는 DGC LUNZ 배열 세부 정보를 보여줍니다.
+
++
+[listing]
+----
+cluster::*> storage array config show -array-name DGC_LUNZ_1 -instance
+
+           Controller Name: ontaptme-fc-cluster-01
+                 LUN Group: 0
+        Array Target Ports: 500601643ea067da
+                 Initiator: 0c
+                Array Name: DGC_LUNZ_1
+   Target Side Switch Port: stme-5010-3:2-1
+Initiator Side Switch Port: stme-5010-3:2-3
+      Number of array LUNs: 1
+
+           Controller Name: ontaptme-fc-cluster-01
+                 LUN Group: 0
+        Array Target Ports: 500601653ea067da
+                 Initiator: 0d
+                Array Name: DGC_LUNZ_1
+   Target Side Switch Port: stme-5010-4:2-1
+Initiator Side Switch Port: stme-5010-4:2-3
+      Number of array LUNs: 1
+~~~~~~~~~~~ output truncated for readability ~~~~~~~~~~~~~~~~~
+8 entries were displayed.
+----
+. 소스 스토리지가 모든 이니시에이터 포트를 통해 검색되는지 확인합니다.
++
+[source, cli]
+----
+storage array config show -array-name <array_name>
+----
++
+다음 예에서는 모든 이니시에이터 포트를 통해 검색된 DGC LUNZ 어레이를 보여줍니다.
+
++
+[listing]
+----
+cluster::*> storage array config show -array-name DGC_LUNZ_1
+             LUN   LUN
+Node         Group Count                   Array Name       Array Target Port Initiator
+------------ ----- ----- ---------------------------- ----------------------- ---------
+ontaptme-fc-cluster-01
+                 0     1                   DGC_LUNZ_1        500601643ea067da        0c
+                                                             500601653ea067da        0d
+                                                             5006016c3ea067da        0c
+                                                             5006016d3ea067da        0d
+ontaptme-fc-cluster-02
+                 0     1                   DGC_LUNZ_1        500601643ea067da        0c
+                                                             500601653ea067da        0d
+                                                             5006016c3ea067da        0c
+                                                             5006016d3ea067da        0d
+8 entries were displayed.
+----
+. 소스 스토리지에서 매핑된 LUN을 나열한 다음 디스크 속성과 경로를 확인합니다.
++
+[source, cli]
+----
+storage disk show -array-name <array_name> -container-type lun
+----
++
+다음 예에서는 소스 스토리지에서 매핑된 LUN을 보여줍니다.
+
++
+[listing]
+----
+cluster::*> storage disk show -array-name DGC_LUNZ_1 -instance
+                  Disk: DGC-1.9
+        Container Type: unassigned
+            Owner/Home: -  / -
+               DR Home: -
+    Stack ID/Shelf/Bay: -  / -  / -
+                   LUN: 0
+                 Array: DGC_LUNZ_1
+                Vendor: DGC
+                 Model: VRAID
+         Serial Number: 600601603F103100662E70861000E511
+                   UID: 60060160:3F103100:662E7086:1000E511:00000000:00000000:00000000:00000000:00000000:00000000
+                   BPS: 512
+         Physical Size: -
+              Position: present
+Checksum Compatibility: block
+             Aggregate: -
+                  Plex: -
+Paths:
+                               LUN  Initiator Side        Target Side                                                        Link
+Controller         Initiator     ID  Switch Port           Switch Port           Acc Use  Target Port                TPGN    Speed      I/O KB/s          IOPS
+------------------ ---------  -----  --------------------  --------------------  --- ---  -----------------------  ------  -------  ------------  ------------
+ontaptme-fc-cluster-02
+                   0c             0  stme-5010-3:2-4       stme-5010-3:2-2       AO  INU  5006016c3ea067da              2   4 Gb/S             0             0
+ontaptme-fc-cluster-02
+                   0d             0  stme-5010-4:2-4       stme-5010-4:2-2       AO  INU  5006016d3ea067da              2   4 Gb/S             0             0
+ontaptme-fc-cluster-02
+                   0d             0  stme-5010-4:2-4       stme-5010-4:2-1       ANO RDY  500601653ea067da              1   4 Gb/S             0             0
+
+Errors:
+-
+----
+. 소스 LUN을 봅니다.
++
+[source, cli]
+----
+storage disk show -array-name <array_name>
+----
++
+다음 예에서는 소스 LUN을 보여줍니다.
+
++
+[listing]
+----
+cluster::*> storage disk show -array-name DGC_LUNZ_1
+                     Usable           Disk    Container   Container
+Disk                   Size Shelf Bay Type    Type        Name      Owner
+---------------- ---------- ----- --- ------- ----------- --------- --------
+DGC-1.9                   -     -   - LUN     unassigned  -         -
+----
+. 소스 LUN을 외부 LUN으로 표시합니다.
++
+[source, cli]
+----
+storage disk set-foreign-lun -is-foreign true -disk <disk_name>
+----
++
+다음 예에서는 소스 LUN을 외부로 표시하는 명령을 보여줍니다.
+
++
+[listing]
+----
+cluster::*> storage disk set-foreign-lun -is-foreign true -disk DGC-1.9
+----
+. 소스 LUN이 외부 LUN으로 표시되어 있는지 확인합니다.
++
+[source, cli]
+----
+storage disk show -array-name <array_name>
+----
++
+다음 예에서는 소스 LUN이 외부로 표시된 것을 보여줍니다.
+
++
+[listing]
+----
+cluster::*> storage disk show -array-name DGC_LUNZ_1
+                     Usable           Disk    Container   Container
+Disk                   Size Shelf Bay Type    Type        Name      Owner
+---------------- ---------- ----- --- ------- ----------- --------- --------
+DGC-1.9
+----
+. 모든 외부 LUN과 일련번호를 나열합니다.
++
+[source, cli]
+----
+storage disk show -container-type foreign -fields serial-number
+----
++
+일련 번호는 FLI LUN 가져오기 명령에 사용됩니다.
+
++
+다음 예에서는 외부 LUN과 해당 일련 번호를 보여줍니다.
+
++
+[listing]
+----
+disk    serial-number
+------- --------------------------------
+DGC-1.9 600601603F103100662E70861000E511
+----
+
+
+
+
+== 2단계: 대상 볼륨 생성 및 구성
+
+FLI 온라인 마이그레이션에 대한 LUN 가져오기 관계를 생성하기 전에 외부 어레이에서 가져올 LUN을 포함할 볼륨을 ONTAP 스토리지 시스템에 생성해야 합니다.
+
+.이 작업에 관하여
+ONTAP 9.17.1부터 ASA r2 시스템에서 FLI 오프라인 마이그레이션을 사용한 외부 LUN 데이터 마이그레이션이 지원됩니다. ASA r2 시스템은 스토리지 계층 구현 방식에서 다른 ONTAP 시스템(ASA, AFF, FAS)과 다릅니다. ASA r2 시스템에서는 스토리지 유닛(LUN 또는 네임스페이스)이 생성될 때 볼륨이 자동으로 생성됩니다. 따라서 LUN 가져오기 관계를 생성하기 전에 볼륨을 생성할 필요가 없습니다. ASA r2 시스템을 사용하는 경우 이 단계를 건너뛸 수 있습니다.
+
+자세히 알아보세요 link:https://docs.netapp.com/us-en/asa-r2/get-started/learn-about.html["ASA r2 시스템"^] .
+
+.단계
+. 대상 볼륨을 생성합니다.
++
+[source, cli]
+----
+volume create -vserver <SVM_name> -volume <volume_name> -aggregate <aggregate_name> -size <size>
+----
+. 볼륨이 생성되었는지 확인하세요.
++
+[source, cli]
+----
+volume show -vserver <SVM_name>
+----
++
+다음 예에서는 *fli* SVM에서 생성된 *fli_vol* 볼륨을 보여줍니다.
+
++
+[listing]
+----
+cluster::*> vol show -vserver fli
+Vserver   Volume       Aggregate    State      Type       Size  Available Used%
+--------- ------------ ------------ ---------- ---- ---------- ---------- -----
+fli       fli_root     aggr1        online     RW          1GB    972.6MB    5%
+fli       fli_vol      aggr1        online     RW          2TB     1.90TB    5%
+2 entries were displayed.
+----
+. 각 볼륨에 fraction_reserveoption을 "0"으로 설정하고 스냅샷 정책을 "없음"으로 설정합니다.
++
+[source, cli]
+----
+volume modify -vserver <SVM_name> -volume * -fractional-reserve 0 -snapshot-policy none
+----
+. 볼륨 설정을 확인하세요.
++
+[source, cli]
+----
+volume show -vserver <SVM_name> -volume * -fields fractional-reserve,snapshot-policy
+----
++
+다음 예에서는 *분수 준비금*이 다음과 같이 설정됨을 보여줍니다.  `0` 그리고 *스냅샷 정책*이 설정됨  `none` *fli* SVM의 *fli_vol* 볼륨에 대해서.
+
++
+[listing]
+----
+cluster::*> vol show -vserver datamig -volume * -fields fractional-reserve,snapshot-policy
+vservervolumesnapshot-policyfractional-reserve
+-----------------------------------------------
+datamigdatamig_rootnone0%
+datamigwinvolnone0%
+Volume modify successful on volume winvol of Vserver datamig.
+----
+. 기존 스냅샷 복사본을 삭제합니다
++
+[source, cli]
+----
+set advanced; snap delete –vserver <SVM_name> –vol <volume_name> –snapshot * -force true
+----
++
+[NOTE]
+====
+FLI 마이그레이션은 대상 LUN의 모든 블록을 수정합니다. FLI 마이그레이션 전에 볼륨에 기본 또는 기타 Snapshot 복사본이 있으면 볼륨이 가득 차게 됩니다. FLI 마이그레이션이 필요하기 전에 정책을 변경하고 기존 Snapshot 복사본을 제거합니다. 마이그레이션 후 스냅샷 정책을 다시 설정할 수 있습니다.
+
+====
+
+
+
+
+== 3단계: 대상 LUN 및 LUN 가져오기 관계 생성
+
+외부 LUN 가져오기를 준비하려면 대상 LUN과 igroup을 만들고, LUN을 igroup에 매핑하고, LUN 가져오기 관계를 만듭니다.
+
+ONTAP 9.17.1부터 FLI 오프라인 마이그레이션을 사용하여 외부 LUN의 데이터 마이그레이션이 지원됩니다 link:https://docs.netapp.com/us-en/asa-r2/get-started/learn-about.html["ASA r2 시스템"^]. ASA r2 시스템은 스토리지 계층 구현 방식에서 다른 ONTAP 시스템(ASA, AFF, FAS)과 다릅니다. ASA 시스템에서는 스토리지 유닛(LUN 또는 네임스페이스)이 생성될 때 볼륨이 자동으로 생성됩니다. 각 볼륨에는 스토리지 유닛이 하나만 포함됩니다. 따라서 ASA r2 시스템의 경우 볼륨 이름을 지정할 필요가 없습니다.  `-path` LUN을 생성할 때 옵션을 사용하는 대신 저장 장치 경로를 포함해야 합니다.
+
+.단계
+. 대상 LUN을 생성합니다.
++
+[source, cli]
+----
+lun create -vserver <SVM_name> -path <volume_path|storage_unit_path> -ostype <os_type> -foreign-disk <serial_number>
+----
++
+[NOTE]
+====
+그만큼  `lun create` 이 명령은 파티션 오프셋을 기반으로 LUN 크기와 정렬을 감지하고, foreign-disk 옵션을 사용하여 LUN을 생성합니다. 일부 I/O는 항상 부분 쓰기로 나타나 정렬이 잘못되어 보일 수 있습니다. 이러한 예로는 데이터베이스 로그가 있습니다.
+
+====
+. 새로운 LUN이 생성되었는지 확인하세요.
++
+[source, cli]
+----
+lun show -vserver <SVM_name>
+----
++
+다음 예에서는 *fli* SVM에서 생성된 새 LUN을 보여줍니다.
+
++
+[listing]
+----
+cluster::*> lun show -vserver fli
+Vserver   Path                            State   Mapped   Type        Size
+--------- ------------------------------- ------- -------- -------- --------
+fli       /vol/fli_vol/OnlineFLI_LUN      online  unmapped windows_2008  1TB
+----
+. ONTAP 9.15.1 이상을 실행하는 경우 새로 생성된 LUN에 대한 공간 할당을 비활성화합니다.
++
+ONTAP 9.15.1 이상에서는 새로 생성된 LUN에 대해 기본적으로 공간 할당이 활성화됩니다.
+
++
+[source, cli]
+----
+lun modify -vserver <vserver_name> -volume <volume_name> -lun <lun_name> -space-allocation disabled
+----
+. 공간 할당이 비활성화되었는지 확인하세요.
++
+[source, cli]
+----
+lun show -vserver <vserver_name> -volume <volume_name> -lun <lun_name> -fields space-allocation
+----
+. 호스트 이니시에이터가 있는 프로토콜 FCP의 igroup을 생성합니다.
++
+[source, cli]
+----
+igroup create -vserver <SVM_name> -igroup <igroup_name> -protocol fcp -ostype <os_type> -initiator <initiator_name>
+----
+. 호스트가 새 igroup에 대한 모든 경로에 액세스할 수 있는지 확인합니다.
++
+[source, cli]
+----
+igroup show -vserver <SVM_name> -igroup <igroup_name>
+----
++
+다음 예에서는 두 명의 개시자가 로그인한 *fli* SVM의 *FLI* igroup을 보여줍니다.
+
++
+[listing]
+----
+cluster::*> igroup show –vserver fli –igroup FLI
+   Vserver name: fli
+    Igroup name: FLI
+       Protocol: fcp
+     OS Type: Windows
+Portset Binding Igroup: -
+   Igroup UUID: 5c664f48-0017-11e5-877f-00a0981cc318
+          ALUA: true
+    Initiators: 10:00:00:00:c9:e6:e2:77 (logged in)
+10:00:00:00:c9:e6:e2:79 (logged in)
+----
+. 대상 LUN을 오프라인 상태로 전환합니다.
++
+[source, cli]
+----
+lun offline -vserver <SVM_name> -path <volume_path|storage_unit_path>
+----
++
+다음 예에서는 *fli* SVM에서 새 LUN을 오프라인으로 전환하는 명령을 보여줍니다.
+
++
+[listing]
+----
+cluster::*> lun offline -vserver fli -path /vol/fli_vol/OnlineFLI_LUN
+
+Warning: This command will take LUN "/vol/fli_vol/OnlineFLI_LUN" in Vserver "fli" offline.
+Do you want to continue? {y|n}: y
+----
+. 대상 LUN을 igroup에 매핑합니다.
++
+[source, cli]
+----
+lun map -vserver <SVM_name> -path <volume_path|storage_unit_path> -igroup <igroup_name>
+----
+. 새 LUN과 외부 LUN 간의 가져오기 관계를 생성합니다.
++
+[source, cli]
+----
+lun import create -vserver <SVM_name> -path <volume_path|storage_unit_path> -foreign-disk <disk_serial_number>
+----
+
+
+.다음은 무엇인가요?
+link:map-source-lun-to-destination-online-migration.html["소스 LUN을 ONTAP 대상 LUN에 매핑합니다."] .
+
+.관련 정보
+https://kb.netapp.com/Advice_and_Troubleshooting/Data_Storage_Software/ONTAP_OS/What_is_an_unaligned_I%2F%2FO%3F["정렬되지 않은 I/O에 대해 자세히 알아보세요"^] .

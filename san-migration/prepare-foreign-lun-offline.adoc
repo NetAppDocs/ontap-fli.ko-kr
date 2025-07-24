@@ -1,0 +1,98 @@
+---
+permalink: san-migration/prepare-foreign-lun-offline.html 
+sidebar: sidebar 
+keywords: present, source luns, ontap storage, fli 
+summary: FLI 오프라인 마이그레이션 프로세스에서는 외부 소스 LUN을 ONTAP 스토리지에 제시해야 합니다. 그런 다음 ONTAP 스토리지에서 외부 소스 LUN을 검색해야 합니다. 
+---
+= ONTAP FLI 오프라인 마이그레이션을 위한 외부 스토리지 어레이 LUN 준비
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+FLI(외부 LUN 가져오기) 오프라인 마이그레이션에서는 외부 스토리지 배열에서 수동 단계를 수행하여 외부 소스 LUN을 ONTAP 스토리지 시스템에 제공해야 합니다. 그런 다음 ONTAP 스토리지 시스템에서 단계를 수행하여 외부 LUN을 검색해야 합니다.
+
+
+
+== 1단계: ONTAP 스토리지에 외부 어레이 소스 LUN 제공
+
+FLI 오프라인 마이그레이션을 사용하여 외부 스토리지 어레이 LUN에서 데이터를 가져오려면 먼저 외부 스토리지 어레이의 소스 LUN을 ONTAP 스토리지 시스템에 제공해야 합니다.
+
+.단계
+. 소스 스토리지에 로그인합니다.
+. 계획 단계에서 생성한 호스트 그룹에 NetApp 이니시에이터를 추가합니다.
+. 사용 가능한 논리적 LUN에서 마이그레이션해야 할 호스트 LUN을 선택합니다.
++
+소스 LUN 섹션에 언급된 각 호스트에 대해 LUN 이름을 사용하세요. link:reference_site_survey_and_planning_worksheet_source_luns_tab.html["현장 조사 및 계획 워크시트"] .
+
+
+
+
+
+== 2단계: ONTAP 에서 외부 어레이 소스 LUN 검색
+
+ONTAP 스토리지 시스템에 외부 어레이 소스 LUN을 제공한 후에는 LUN 가져오기 관계를 생성하기 전에 ONTAP 에서 LUN을 검색해야 합니다.
+
+.단계
+. 소스 LUN과 소스 스토리지에서 대상 스토리지로의 매핑을 확인합니다.
+. 관리자 사용자로 SSH를 통해 ONTAP 스토리지 시스템에 로그인합니다.
+. 모드를 고급으로 변경하세요.
++
+[source, cli]
+----
+set -privilege advanced
+----
+. 계속 진행할지 묻는 메시지가 나타나면 y를 입력합니다.
+. ONTAP 에서 소스 배열을 검색하세요. 몇 분 정도 기다린 후 소스 배열 검색을 다시 시도하세요.
++
+[source, cli]
+----
+storage array show
+----
++
+다음 예는 Hitachi DF600F 어레이의 발견을 보여줍니다.
+
++
+[listing]
+----
+DataMig-ontap::*> storage array show
+Prefix                         Name   Vendor            Model Options
+-------- ---------------------------- -------- ---------------- ----------
+HIT-1                HITACHI_DF600F_1  HITACHI           DF600F
+----
++
+[NOTE]
+====
+스토리지 배열이 처음 검색되면 ONTAP가 자동으로 검색하여 배열을 표시하지 않을 수 있습니다. 다음 지침에 따라 ONTAP 이니시에이터 포트가 연결된 스위치 포트를 재설정합니다.
+
+====
+. 소스 스토리지가 모든 이니시에이터 포트를 통해 검색되는지 확인합니다.
++
+[source, cli]
+----
+storage array config show -array-name <array_name>
+----
++
+다음 예는 모든 이니시에이터 포트를 통해 검색된 Hitachi DF600F 어레이를 보여줍니다.
+
++
+[listing]
+----
+DataMig-ontap::*> storage array config show -array-name HITACHI_DF600F_1
+             LUN   LUN
+Node         Group Count     Array Name       Array Target Port Initiator
+------------ ----- ----- ---------------------------- -----------------------
+DataMig-ontap-01 0     1    HITACHI_DF600F_1     50060e801046b960        0a
+                                                 50060e801046b964        0b
+                                                 50060e801046b968        0a
+                                                 50060e801046b96c        0b
+DataMig-ontap-02 0     1    HITACHI_DF600F_1     50060e801046b960        0a
+                                                 50060e801046b964        0b
+                                                 50060e801046b968        0a
+                                                 50060e801046b96c        0b
+----
+
+
+.다음은 무엇인가요?
+link:create-lun-import-relationship-offline.html["LUN 가져오기 관계 생성"] .

@@ -1,0 +1,6 @@
+---
+section: release-notes
+title: 릴리스 노트
+entries:
+- title: ONTAP 9.17.1의 새로운 기능
+  url: "/release-notes/whats-new-9171.html"

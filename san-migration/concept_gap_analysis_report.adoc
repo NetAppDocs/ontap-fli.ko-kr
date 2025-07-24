@@ -21,4 +21,4 @@ summary: 차이 분석은 고객의 현재 및 NetApp 권장 환경에 대한 �
 
 다음은 Gap 분석 보고서의 예입니다.
 
-image::../media/create_the_gap_analysis_report_1.png[차이 분석 보고서 1을 작성합니다]
+image::../media/create_the_gap_analysis_report_1.png[갭 분석 보고서의 예]

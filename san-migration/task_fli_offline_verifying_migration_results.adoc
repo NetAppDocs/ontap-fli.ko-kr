@@ -4,31 +4,53 @@ sidebar: sidebar
 keywords: fli offline, verify, migration, results 
 summary: 검증 작업은 선택 사항이지만 권장됩니다. 소스 LUN과 대상 LUN의 블록별 비교입니다. 마이그레이션 시간보다 작업이 거의 비슷하거나 약간 더 오래 걸리는지 확인합니다. 
 ---
-= FLI 오프라인: 마이그레이션 결과 확인
+= ONTAP FLI 오프라인 마이그레이션 결과 확인
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 
 
 [role="lead"]
-검증 작업은 선택 사항이지만 권장됩니다. 소스 LUN과 대상 LUN의 블록별 비교입니다. 마이그레이션 시간보다 작업이 거의 비슷하거나 약간 더 오래 걸리는지 확인합니다.
+LUN이 외부 어레이에서 ONTAP 스토리지 시스템으로 마이그레이션된 후, FLI는 소스 LUN과 대상 LUN을 블록 단위로 비교하여 마이그레이션이 완료되고 정확한지 확인할 수 있습니다. 마이그레이션 검증에는 마이그레이션과 거의 같은 시간(또는 약간 더 긴 시간)이 소요됩니다.
+
+마이그레이션 확인은 필수는 아니지만 적극 권장됩니다.
+
+.이 작업에 관하여
+ONTAP 9.17.1부터 FLI 오프라인 마이그레이션을 사용하여 외부 LUN의 데이터 마이그레이션이 지원됩니다 link:https://docs.netapp.com/us-en/asa-r2/get-started/learn-about.html["ASA r2 시스템"^]. ASA r2 시스템은 스토리지 계층 구현 방식에서 다른 ONTAP 시스템(ASA, AFF, FAS)과 다릅니다. ASA 시스템에서는 스토리지 유닛(LUN 또는 네임스페이스)이 생성될 때 볼륨이 자동으로 생성됩니다. 각 볼륨에는 스토리지 유닛이 하나만 포함됩니다. 따라서 ASA r2 시스템의 경우 볼륨 이름을 지정할 필요가 없습니다.  `-path` LUN을 생성할 때 옵션을 사용하는 대신 저장 장치 경로를 포함해야 합니다.
 
 .단계
-. 소스 LUN과 대상 LUN을 비교하려면 검증 작업을 시작합니다. 검증 과정을 모니터링합니다.
+. LUN 마이그레이션 검증을 시작합니다.
++
+[source, cli]
+----
+lun import verify start -vserver <SVM_name> -path <volume_path|storage_unit_path>
+----
++
+이 예제에서는 *winvol* 볼륨과 *datamig* SVM에서 *bootlun*, *fdrive*, *gdrive*라는 LUN에 대한 LUN 마이그레이션 검증을 시작하는 명령을 보여줍니다.
+
 +
 [listing]
 ----
-DataMig-cmode::*> lun import verify start -vserver datamig -path /vol/winvol/bootlun
+DataMig-ontap::*> lun import verify start -vserver datamig -path /vol/winvol/bootlun
 
-DataMig-cmode::*> lun import verify start -vserver datamig -path /vol/winvol/fdrive
+DataMig-ontap::*> lun import verify start -vserver datamig -path /vol/winvol/fdrive
 
-DataMig-cmode::*> lun import verify start -vserver datamig -path /vol/winvol/gdrive
+DataMig-ontap::*> lun import verify start -vserver datamig -path /vol/winvol/gdrive
 ----
-. 작업 상태 확인 을 모니터링합니다.
+. 검증 상태를 모니터링합니다.
++
+[source, cli]
+----
+lun import show -vserver <SVM_name> -fields vserver, foreign-disk, path, admin-state, operational-state, percent-complete, imported-blocks, total-blocks, estimated-remaining-duration
+----
++
+이 예에서는 *datamig* SVM의 검증 상태를 모니터링하는 명령을 보여줍니다.
+
 +
 [listing]
 ----
-DataMig-cmode::*> lun import show -vserver datamig -fields vserver, foreign-disk, path, admin-state, operational-state, percent-complete, imported-blocks, total-blocks, , estimated-remaining-duration
+DataMig-ontap::*> lun import show -vserver datamig -fields vserver, foreign-disk, path, admin-state, operational-state, percent-complete, imported-blocks, total-blocks, , estimated-remaining-duration
+
 vserver foreign-disk path               admin-state operational-state percent-complete imported-blocks total-blocks estimated-remaining-duration
 ------- ------------ ------------------ ----------- ----------------- ---------------- --------------- ------------ ----------------------------
 datamig 83017542000E /vol/winvol/fdrive started     in_progress       57               -               4194304      00:01:19
@@ -37,102 +59,27 @@ datamig 830175420010 /vol/linuxvol/bootlun
                                         started     in_progress       8                -               41943040     00:20:29
 3 entries were displayed.
 ----
-. 확인 작업이 완료되었는지 확인합니다.
++
+동일한 명령을 실행하여 검증 진행 상황을 추적할 수 있습니다. 검증 작업이 성공적으로 완료되면 *operational-state*가 *completed* 상태로 표시됩니다.
+
+. LUN 검증을 중지합니다.
++
+[source, cli]
+----
+lun import verify stop -vserver <SVM_name> -path <volume_path|storage_unit_path>
+----
++
+이 예에서는 *datamig* SVM에 대한 LUN 검증을 중지하는 명령을 보여줍니다.
+
 +
 [listing]
 ----
-DataMig-cmode::*> lun import show -vserver datamig -fields vserver, foreign-disk, path, admin-state, operational-state, percent-complete, imported-blocks, total-blocks, , estimated-remaining-duration
-vserver foreign-disk path               admin-state operational-state percent-complete imported-blocks total-blocks estimated-remaining-duration
-------- ------------ ------------------ ----------- ----------------- ---------------- --------------- ------------ ----------------------------
-datamig 83017542000E /vol/winvol/fdrive started     completed         100              -               4194304      -
-datamig 83017542000F /vol/winvol/gdrive started     completed         100              -               6291456      -
-datamig 830175420010 /vol/linuxvol/bootlun
-                                        started     completed         100              -               41943040     -
-3 entries were displayed.
-----
-. 확인이 완료된 후 확인 작업을 중지합니다.
-+
-[listing]
-----
-DataMig-cmode::*> lun import verify stop -vserver datamig -path /vol/esxvol/winrdmplun
-----
-. 가져오기 관계를 삭제하여 마이그레이션 작업을 제거합니다.
-+
-[listing]
-----
-DataMig-cmode::*> lun import delete -vserver datamig -path /vol/winvol/bootlun
-
-DataMig-cmode::*> lun import delete -vserver datamig -path /vol/winvol/fdrive
-
-DataMig-cmode::*> lun import delete -vserver datamig -path /vol/winvol/gdrive
-----
-. 가져오기 작업이 삭제되었는지 확인합니다.
-+
-[listing]
-----
-DataMig-cmode::*> lun import show -vserver datamig
-There are no entries matching your query.
-----
-. 외부 LUN 속성을 false로 표시합니다.
-+
-[listing]
-----
-
-DataMig-cmode::*> storage disk modify { -serial-number 83017542001E }
--is-foreign false
-
-DataMig-cmode::*> storage disk modify { -serial-number 83017542000E }
--is-foreign false
-
-DataMig-cmode::*> storage disk modify { -serial-number 83017542000F }
--is-foreign false
-----
-. 가져온 후 외부 LUN이 false로 표시되는지 확인합니다.
-+
-[listing]
-----
-DataMig-cmode::*> storage disk show -array-name HITACHI_DF600F_1 -fields disk, serial-number, container-type, owner,import-in-progress, is-foreign
-disk     owner is-foreign container-type import-in-progress serial-number
--------- ----- ---------- -------------- ------------------ -------------
-HIT-1.2  -     false      unassigned     false              83017542001E
-HIT-1.3  -     false      unassigned     false              83017542000E
-HIT-1.4  -     false      unassigned     false              83017542000F
-3 entries were displayed.
-----
-. lun online 명령을 사용하여 대상 LUN을 온라인 상태로 전환합니다.
-+
-[listing]
-----
-DataMig-cmode::*> lun online -vserver datamig -path /vol/winvol/bootlun
-
-DataMig-cmode::*> lun online -vserver datamig -path /vol/winvol/fdrive
-
-DataMig-cmode::*> lun online -vserver datamig -path /vol/winvol/gdrive
-----
-. LUN이 온라인 상태인지 확인합니다.
-+
-[listing]
-----
-DataMig-cmode::*> lun show -vserver datamig
-Vserver   Path                            State   Mapped   Type        Size
---------- ------------------------------- ------- -------- -------- --------
-datamig   /vol/esxvol/bootlun             online  mapped   vmware       20GB
-datamig   /vol/esxvol/linuxrdmvlun        online  mapped   linux         2GB
-datamig   /vol/esxvol/solrdmplun          online  mapped   solaris       2GB
-3 entries were displayed.
+DataMig-ontap::*> lun import verify stop -vserver datamig -path /vol/esxvol/winrdmplun
 ----
 +
-[NOTE]
-====
-가져오기 로그는 클러스터 이벤트 로그 파일에 저장됩니다.
+LUN을 다시 온라인으로 전환하기 전에 LUN 가져오기 검증을 명시적으로 중지해야 합니다. 그렇지 않으면  `lun online` 명령이 실패합니다. 상태가 검증 완료로 표시되더라도 이 단계는 수동으로 수행해야 합니다.
 
-====
-+
-[listing]
-----
-  DataMig-cmode::*> event log  show –event fli*
-  7/7/2014 18:37:21   DataMig-cmode-01 INFORMATIONAL fli.lun.verify.complete: Import verify of foreign LUN 83017542001E of size 42949672960 bytes from array model DF600F belonging to vendor HITACHI  with NetApp LUN QvChd+EUXoiS is successfully completed.
-  7/7/2014 18:37:15   DataMig-cmode-01 INFORMATIONAL fli.lun.verify.complete: Import verify of foreign LUN 830175420015 of size 42949672960 bytes from array model DF600F belonging to vendor HITACHI  with NetApp LUN QvChd+EUXoiX is successfully completed.
-  7/7/2014 18:02:21   DataMig-cmode-01 INFORMATIONAL fli.lun.import.complete: Import of foreign LUN 83017542000F of size 3221225472 bytes from array model DF600F belonging to vendor HITACHI  is successfully completed. Destination NetApp LUN is QvChd+EUXoiU.
-----
 
+
+.다음은 무엇인가요?
+link:remove-lun-import-relationship-offline.html["LUN 가져오기 관계 제거"] .

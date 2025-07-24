@@ -4,7 +4,7 @@ sidebar: sidebar
 keywords: fli, online, post-migration, tasks 
 summary: 마이그레이션 전에 수행되지 않은 모든 서버 개선 작업은 마이그레이션 후 수행됩니다. 
 ---
-= FLI 온라인 마이그레이션 후 작업
+= ONTAP FLI 온라인 마이그레이션 후 작업 수행
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/

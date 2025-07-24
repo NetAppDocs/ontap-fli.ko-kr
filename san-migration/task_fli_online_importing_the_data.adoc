@@ -2,28 +2,38 @@
 permalink: san-migration/task_fli_online_importing_the_data.html 
 sidebar: sidebar 
 keywords: fli online, import, data 
-summary: 다음은 소스 LUN에서 대상 LUN으로 데이터를 가져오는 단계입니다. 
+summary: LUN 가져오기 관계가 설정되고 호스트가 외부 어레이에서 ONTAP 어레이로 전환되면 외부 소스 LUN에서 ONTAP 대상 LUN으로 데이터를 가져올 수 있습니다. 
 ---
-= FLI 온라인: 데이터 가져오기
+= ONTAP FLI 온라인 마이그레이션을 사용하여 외부 어레이에서 데이터 가져오기
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
 
 
 [role="lead"]
-다음은 소스 LUN에서 대상 LUN으로 데이터를 가져오는 단계입니다.
+LUN 가져오기 관계가 설정되고 호스트 연결이 외부 어레이에서 ONTAP 어레이로 이동되면 외부 소스 LUN에서 ONTAP 대상 LUN으로 데이터를 가져올 수 있습니다.
 
 .단계
+. 권한 수준을 고급으로 설정합니다.
++
+[source, cli]
+----
+set -privilege advanced
+----
+. 계속 진행할지 묻는 메시지가 나타나면 y를 입력합니다.
 . 마이그레이션 가져오기를 시작합니다.
 +
-[listing]
+[source, cli]
 ----
-cluster::*> lun import start -vserver fli -path /vol/fli_vol/OnlineFLI_LUN
+lun import start -vserver <SVM_name> -path <volume_path|storage_unit_path>
 ----
 . FLI 상태를 표시합니다.
 +
-[listing]
+[source, cli]
 ----
-cluster::*> lun import start -vserver fli -path /vol/fli_vol/OnlineFLI_LUN
+lun import show -vserver <SVM_name> -path <volume_path|storage_unit_path>
 ----
 
+
+.다음은 무엇인가요?
+link:task_fli_online_verifying_migration_results.html["마이그레이션 결과 확인"] .

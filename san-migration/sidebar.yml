@@ -48,10 +48,10 @@ entries:
     url: "/san-migration/concept_implementation_basics_for_data_migration.html"
   - title: FLI의 물리적 배선 요구사항
     url: "/san-migration/concept_physical_wiring_requirements_for_fli.html"
-  - title: 타겟 및 이니시에이터 포트 조닝
+  - title: FC 어댑터를 이니시에이터 모드로 구성
+    url: san-migration/configure-fc-adapter-initiator.html
+  - title: FLI를 위한 대상 및 개시자 포트 구역 지정
     url: "/san-migration/concept_target_and_initiator_port_zoning.html"
-  - title: FLI 조닝 요구 사항
-    url: "/san-migration/concept_fli_zoning_requirements.html"
   - title: 이니시에이터 그룹 구성
     url: "/san-migration/concept_initiator_group_configuration.html"
   - title: 테스트 마이그레이션을 수행해야 하는 이유
@@ -112,63 +112,41 @@ entries:
       url: "/san-migration/concept_migration_tests.html"
     - title: Hitachi AMS2100을 사용하여 마이그레이션 예 테스트
       url: "/san-migration/task_test_migration_example_using_hitachi_ams2100.html"
-- title: FLI 오프라인 워크플로우
+- title: FLI 오프라인 마이그레이션
   entries:
-  - title: 개요
+  - title: 워크플로
     url: "/san-migration/concept_fli_offline_workflow.html"
-  - title: 'FLI 오프라인: 전환 준비'
-    entries:
-    - title: 개요
-      url: "/san-migration/concept_fli_offline_preparation_for_cutover.html"
-    - title: 호스트를 재부팅하여 시스템 상태를 확인합니다
-      url: "/san-migration/task_rebooting_the_host_to_validate_system_state.html"
-    - title: 호스트 LUN 경로 및 다중 경로 구성 검증 확인
-      entries:
-      - title: 개요
-        url: "/san-migration/concept_verifying_host_lun_path_and_multipath_configuration.html"
-      - title: Windows 호스트에 대한 다중 경로 검증
-        url: "/san-migration/task_multipath_verification_for_windows_hosts.html"
-      - title: Linux 호스트에 대한 다중 경로 검증
-        url: "/san-migration/task_multipath_verification_for_linux_hosts.html"
-      - title: ESXi 호스트에 대한 다중 경로 검증
-        url: "/san-migration/task_multipath_verification_for_esxi_hosts.html"
-    - title: FLI 오프라인 마이그레이션을 위한 호스트 준비
-      url: "/san-migration/concept_prepare_hosts_for_fli_offline_migration.html"
-    - title: FLI 중에 소스 LUN을 ONTAP 스토리지에 제공
-      url: "/san-migration/task_presenting_source_luns_to_ontap_storage_during_offline_fli.html"
-    - title: 오프라인 FLI를 위해 대상 스토리지의 소스 LUN 확인
-      url: "/san-migration/task_verifying_source_luns_on_destination_storage_for_offline_foreign_lun_import.html"
-    - title: 마이그레이션 작업 구성
-      url: "/san-migration/task_configuring_migration_jobs.html"
-  - title: 'FLI 오프라인: 데이터 가져오기'
+  - title: 호스트를 마이그레이션에 대비하세요
+    url: "/san-migration/prepare-host-offline-migration.html"
+  - title: 마이그레이션을 위한 외부 LUN 준비
+    url: "/san-migration/prepare-foreign-lun-offline.html"
+  - title: LUN 가져오기 관계 생성
+    url: "/san-migration/create-lun-import-relationship-offline.html"
+  - title: 데이터 가져오기
     url: "/san-migration/task_fli_offline_importing_the_data.html"
-  - title: 'FLI 오프라인: 마이그레이션 결과 확인'
+  - title: 마이그레이션 결과 확인
     url: "/san-migration/task_fli_offline_verifying_migration_results.html"
-  - title: FLI 오프라인 마이그레이션 후 작업
+  - title: LUN 가져오기 관계 제거
+    url: "/san-migration/remove-lun-import-relationship-offline.html"
+  - title: 마이그레이션 후 작업 수행
     url: "/san-migration/concept_fli_offline_post_migration_tasks.html"
-- title: FLI 온라인 워크플로우
+- title: FLI 온라인 마이그레이션
   entries:
-  - title: 개요
+  - title: 워크플로
     url: "/san-migration/concept_fli_online_workflow.html"
-  - title: 호스트를 재부팅합니다
-    url: "/san-migration/task_rebooting_hosts_f0f8.html"
-  - title: FLI 온라인 FLI에 대해 지원되는 호스트 운영 체제
-    url: "/san-migration/concept_supported_host_operating_systems_for_fli_online.html"
-  - title: 호스트 LUN 경로 및 다중 경로 구성을 확인합니다
-    url: "/san-migration/concept_verify_host_lun_path_and_multipath_configuration_fa1e.html"
-  - title: FLI 온라인 마이그레이션을 위한 호스트 준비
-    url: "/san-migration/concept_prepare_hosts_for_fli_online_migration.html"
-  - title: 'FLI 온라인: LUN 경로 준비'
-    url: "/san-migration/task_fli_online_preparing_the_lun_path.html"
-  - title: 'FLI 온라인: 운영 중단 컷오버 수행'
-    url: "/san-migration/task_fli_online_performing_a_disruptive_cutover.html"
-  - title: 'FLI 온라인: 데이터 가져오기'
+  - title: 마이그레이션을 위한 호스트 준비
+    url: "/san-migration/prepare-host-online-migration.html"
+  - title: LUN 가져오기 관계 생성
+    url: "/san-migration/create-lun-import-relationship-online.html"
+  - title: 소스 LUN을 대상 어레이에 매핑합니다.
+    url: "/san-migration/map-source-lun-to-destination-online-migration.html"
+  - title: 데이터 가져오기
     url: "/san-migration/task_fli_online_importing_the_data.html"
-  - title: 'FLI 온라인: 마이그레이션 결과 확인'
+  - title: 마이그레이션 결과 확인
     url: "/san-migration/task_fli_online_verifying_migration_results.html"
-  - title: FLI 온라인 마이그레이션 정리
-    url: "/san-migration/task_fli_online_cleanup.html"
-  - title: FLI 온라인 마이그레이션 후 작업
+  - title: LUN 가져오기 관계 제거
+    url: "/san-migration/remove-lun-import-relationship-online.html"
+  - title: 마이그레이션 후 작업 수행
     url: "/san-migration/concept_fli_online_post_migration_tasks.html"
 - title: FLI 7-Mode에서 ONTAP로의 전환 워크플로우
   entries:
@@ -196,8 +174,6 @@ entries:
   url: "/san-migration/concept_fli_using_workflow_automation_wfa.html"
 - title: FLI 마이그레이션 후 절차
   entries:
-  - title: 개요
-    url: "/san-migration/concept_fli_post_migration_procedures_all_workflows.html"
   - title: ONTAP 스토리지에서 소스 LUN을 제거하는 중입니다
     url: "/san-migration/task_removing_source_luns_from_ontap_storage.html"
   - title: 호스트에서 소스 LUN을 제거하는 중입니다
@@ -224,8 +200,6 @@ entries:
     url: "/san-migration/task_document_customer_environment.html"
 - title: 외부 LUN 가져오기 성능
   entries:
-  - title: 개요
-    url: "/san-migration/concept_performance.html"
   - title: ONTAP 8.3.1의 성능 향상
     url: "/san-migration/concept_performance_enhancements_in_clustered_data_ontap_8_3_1.html"
   - title: 외부 LUN 가져오기 마이그레이션 성능에 영향을 주는 변수
