@@ -1451,7 +1451,6 @@
   <block id="faa638e01a027f3e33ce873fec967f8a" category="paragraph">일련 번호는 FLI LUN 가져오기 명령에 사용됩니다.</block>
   <block id="6f6829770b4585c77f91df7632cfa37b" category="paragraph">다음 예에서는 외부 LUN과 해당 일련 번호를 보여줍니다.</block>
   <block id="501a07ad7efd92d4ab6857db010311d9" category="paragraph">FLI 온라인 마이그레이션에 대한 LUN 가져오기 관계를 생성하기 전에 외부 어레이에서 가져올 LUN을 포함할 볼륨을 ONTAP 스토리지 시스템에 생성해야 합니다.</block>
-  <block id="e206a420950b325cd731e287640847e1" category="paragraph">ONTAP 9.17.1부터 ASA r2 시스템에서 FLI 오프라인 마이그레이션을 사용한 외부 LUN 데이터 마이그레이션이 지원됩니다. ASA r2 시스템은 스토리지 계층 구현 방식에서 다른 ONTAP 시스템(ASA, AFF, FAS)과 다릅니다. ASA r2 시스템에서는 스토리지 유닛(LUN 또는 네임스페이스)이 생성될 때 볼륨이 자동으로 생성됩니다. 따라서 LUN 가져오기 관계를 생성하기 전에 볼륨을 생성할 필요가 없습니다. ASA r2 시스템을 사용하는 경우 이 단계를 건너뛸 수 있습니다.</block>
   <block id="36c24dd9dc232796178e694a76c5bb02" category="paragraph">자세히 알아보세요 <block ref="9f40590ca1185cea7261c2a60fc922ea" category="inline-link-macro-rx"></block> .</block>
   <block id="a08233060f61816c66576ecb8a6b108d" category="list-text">볼륨이 생성되었는지 확인하세요.</block>
   <block id="c9d18f8008099eef7df9f27c2445e7e7" category="paragraph">다음 예에서는 *fli* SVM에서 생성된 *fli_vol* 볼륨을 보여줍니다.</block>
@@ -1590,4 +1589,5 @@
   <block id="f93ebe1eaf4c78ebab1a110b95f655d8" category="sidebar">FLI 온라인 마이그레이션</block>
   <block id="a9fa02c73b0556989b39e0a09dc2fb37" category="sidebar">마이그레이션을 위한 호스트 준비</block>
   <block id="9cc66e684b29dae71b3873021ab5f900" category="sidebar">소스 LUN을 대상 어레이에 매핑합니다.</block>
+  <block id="3e06682f4f26baa39169365df5a4cbff" category="paragraph">ONTAP 9.17.1부터 FLI 온라인 마이그레이션을 사용한 외부 LUN의 데이터 마이그레이션이 ASA r2 시스템에서 지원됩니다. ASA r2 시스템은 스토리지 계층 구현 방식에서 다른 ONTAP 시스템(ASA, AFF, FAS)과 다릅니다. ASA r2 시스템에서는 스토리지 유닛(LUN 또는 네임스페이스)이 생성될 때 볼륨이 자동으로 생성됩니다. 따라서 LUN 가져오기 관계를 생성하기 전에 볼륨을 생성할 필요가 없습니다. ASA r2 시스템을 사용하는 경우 이 단계를 건너뛸 수 있습니다.</block>
 </blocks>

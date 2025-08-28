@@ -121,7 +121,7 @@ entries:
   - title: 마이그레이션을 위한 외부 LUN 준비
     url: "/san-migration/prepare-foreign-lun-offline.html"
   - title: LUN 가져오기 관계 생성
-    url: "/san-migration/create-lun-import-relationship-offline.adoc.html"
+    url: "/san-migration/create-lun-import-relationship-offline.html"
   - title: 데이터 가져오기
     url: "/san-migration/task_fli_offline_importing_the_data.html"
   - title: 마이그레이션 결과 확인
