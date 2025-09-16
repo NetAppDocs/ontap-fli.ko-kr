@@ -49,7 +49,7 @@ entries:
   - title: FLI의 물리적 배선 요구사항
     url: "/san-migration/concept_physical_wiring_requirements_for_fli.html"
   - title: FC 어댑터를 이니시에이터 모드로 구성
-    url: san-migration/configure-fc-adapter-initiator.html
+    url: "/san-migration/configure-fc-adapter-initiator.html"
   - title: FLI를 위한 대상 및 개시자 포트 구역 지정
     url: "/san-migration/concept_target_and_initiator_port_zoning.html"
   - title: 이니시에이터 그룹 구성
