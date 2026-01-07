@@ -2,7 +2,7 @@
 permalink: san-migration/task_importing_non_fc_luns.html 
 sidebar: sidebar 
 keywords: import, non-fc luns 
-summary: 'FLI(Foreign LUN Import)는 FlexArray 기술을 활용하여 외부 LUN을 마운트하므로 FCP를 사용하는 소스 어레이에만 연결할 수 있습니다. FLI는 FC LUN만 지원합니다. 하지만 iSCSI LUN을 가져올 수 있는 해결 방법이 있습니다. 다른 FLI 온라인 7-Mode에서 ONTAP 워크플로우에 비해 iSCSI LUN을 FC LUN으로 가져올 것이므로 중단 기간은 전체 워크플로우를 포괄합니다.' 
+summary: FLI는 FC LUN만 지원합니다. 하지만 iSCSI LUN을 가져올 수 있는 해결 방법이 있습니다. 다른 FLI 온라인 7-모드 ONTAP 워크플로와 달리, iSCSI LUN을 FC LUN으로 가져오기 때문에 중단 기간은 전체 워크플로에 걸쳐 발생합니다. 
 ---
 = 비 FC LUN 임포트
 :allow-uri-read: 
@@ -11,7 +11,7 @@ summary: 'FLI(Foreign LUN Import)는 FlexArray 기술을 활용하여 외부 LUN
 
 
 [role="lead"]
-FLI(Foreign LUN Import)는 FlexArray 기술을 활용하여 외부 LUN을 마운트하므로 FCP를 사용하는 소스 어레이에만 연결할 수 있습니다. FLI는 FC LUN만 지원합니다. 하지만 iSCSI LUN을 가져올 수 있는 해결 방법이 있습니다. 다른 FLI 온라인 7-Mode에서 ONTAP 워크플로우에 비해 iSCSI LUN을 FC LUN으로 가져올 것이므로 중단 기간은 전체 워크플로우를 포괄합니다.
+FLI는 FC LUN만 지원합니다. 하지만 iSCSI LUN을 가져올 수 있는 해결 방법이 있습니다. 다른 FLI 온라인 7-모드 ONTAP 워크플로와 달리, iSCSI LUN을 FC LUN으로 가져오기 때문에 중단 기간은 전체 워크플로에 걸쳐 발생합니다.
 
 다른 FLI 온라인 7-Mode에서 ONTAP 워크플로우에 비해 iSCSI LUN을 FC LUN으로 가져올 것이므로 중단 기간은 전체 워크플로우를 포괄합니다.
 

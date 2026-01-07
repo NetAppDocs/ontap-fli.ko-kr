@@ -32,7 +32,7 @@ FLI 마이그레이션 프로젝트에는 다음과 같은 툴 및 유틸리티�
 
 * * 상호 운용성 매트릭스 *
 +
-상호 운용성 매트릭스 툴(IMT)은 NetApp, FlexArray, 타사 소프트웨어 구성요소의 상호 운용성 확인을 위해 사용되는 NetApp 웹 기반 유틸리티입니다.
+상호 운용성 매트릭스 도구(IMT )는 NetApp 및 타사 소프트웨어 구성 요소 간의 상호 운용성 검사에 사용되는 NetApp 웹 기반 유틸리티입니다.
 
 * * ONTAP 시스템 관리자 *
 +
@@ -48,10 +48,6 @@ WFA는 스토리지 워크플로우를 생성하고 스토리지 프로비저닝
 
 https://mysupport.netapp.com/site/tools["NetApp 툴"]
 
-http://mysupport.netapp.com/NOW/download/tools/ndcp/["NetApp 툴: 데이터 센터 플래너"]
-
 https://mysupport.netapp.com/matrix["NetApp 상호 운용성 매트릭스 툴"]
-
-http://mysupport.netapp.com/documentation/productlibrary/index.html?productID=61372["NetApp 설명서:OnCommand 시스템 관리자(최신 릴리즈)"]
 
 http://mysupport.netapp.com/documentation/productlibrary/index.html?productID=61550["NetApp 설명서: OnCommand Workflow Automation(최신 릴리즈)"]

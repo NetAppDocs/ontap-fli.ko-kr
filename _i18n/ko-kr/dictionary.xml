@@ -86,7 +86,6 @@
   <block id="61c84893442e8d448753228d506c5ea1" category="paragraph">50:0a:09:81:00:xx:xx:xx</block>
   <block id="347017fd1e37a22faf91875981bc4fb3" category="paragraph">0b</block>
   <block id="e3be5aecfb0260579fe80049e1c8a50c" category="paragraph">다음은 대상 스토리지 디바이스 탭을 설정하는 방법의 예입니다.</block>
-  <block id="5de6b93b6bf9ec704eaeabd6643ae0c4" category="summary">FLI 상호 운용성 매트릭스(IMT)는 FlexArray IMT와 매우 유사하나, FLI에서 작동하는 NetApp 공인 소스 어레이를 더 잘 지원하기 위해 명백히 다른 상호 운용성 툴로 추가되었습니다.</block>
   <block id="2a37c6b1b4932254bf5792ec6f52e0fc" category="doc">FLI 상호 운용성 및 지원 기준</block>
   <block id="a4600dce963004a41457e38f18ab9470" category="paragraph">외부 LUN 가져오기를 수행하기 전에 두 가지 상호 운용성 영역을 확인해야 합니다.</block>
   <block id="86af0a34f3847c9f63762fbabc885521" category="list-text">FLI가 지원되는지 확인하십시오. FLI IMT를 검토하면 됩니다.</block>
@@ -172,7 +171,6 @@
   <block id="43ba6657c4f4e7530405ab5336090456" category="list-text">패브릭 B의 zoneset에서 영역을 제거합니다</block>
   <block id="e9497856652d0046bf57cfde9533357c" category="list-text">패브릭 B에서 zoneset을 활성화합니다</block>
   <block id="00638c4d1a05535ef1e35dda5d0df3aa" category="paragraph">Cisco 패브릭의 예</block>
-  <block id="8970c458447db1c2605bb5f15b71b109" category="summary">FLI는 NetApp FlexArray과 동일한 배선 요구사항을 가지고 있습니다. NetApp 스토리지 이니시에이터 포트는 소스 스토리지 타겟 포트가 연결되는 패브릭에 연결됩니다. 소스 스토리지를 NetApp 스토리지에 연결하는 동안 FlexArray 모범 사례를 따르십시오.</block>
   <block id="3ce8bd6c1992bd681505fc41c17c030b" category="doc">FLI의 물리적 배선 요구사항</block>
   <block id="e23cfe3f5f5db6eba97c79167e9f598f" category="paragraph">마이그레이션 중에 사용되는 스토리지 어레이에는 두 Fabric에 있는 각 컨트롤러의 기본 경로(사용 중)가 있어야 합니다. 즉, 마이그레이션할 소스 스토리지 및 대상 스토리지 노드가 두 Fabric의 공통 영역에 있어야 합니다. NetApp 클러스터에 다른 컨트롤러를 추가할 필요는 없으며 실제로 LUN을 임포트/마이그레이션하는 컨트롤러만 추가하면 됩니다. 마이그레이션에 간접 경로를 사용할 수 있지만, 모범 사례는 소스와 대상 어레이 간에 액티브/최적화 경로를 사용하는 것입니다. 다음 그림은 두 패브릭 모두에 기본(활성) 경로가 있는 HDS AMS2100 및 NetApp ONTAP 스토리지를 보여 줍니다.</block>
   <block id="b86568f0ab2436e9a4ea2cfd9d49fcd5" category="paragraph">이 그림은 이중 패브릭용 스토리지 배선의 예입니다.</block>
@@ -328,19 +326,14 @@
   <block id="13ebdf331e696ec36ce21332b70ff56a" category="paragraph">초기 VTOC 디스크 초기화 루틴 동안 Solaris format 명령은 디스크에 대한 SCSI 조회를 수행하고 공급업체별 정보(제조업체, 제품 및 버전)를 디스크 레이블에 기록합니다. 모든 추가 문의는 실제 장치가 아닌 디스크 레이블로 전달됩니다. 블록 수준 마이그레이션은 이 디스크 레이블을 새 디스크에 복사하고, 이전 SCSI 조회 데이터는 시스템 도구 및 로그에 계속 표시됩니다. eler는 마이그레이션 후 디스크를 새로운 조회 데이터로 업데이트합니다.</block>
   <block id="3a63df31c7c07052260a745267ccc673" category="paragraph">FLI 마이그레이션 프로젝트에는 다음과 같은 툴 및 유틸리티도 유용합니다.</block>
   <block id="9169b858c9b6edfe9b59c84b47b04338" category="list-text">* 상호 운용성 매트릭스 *</block>
-  <block id="f2d4045460d1a1983c44cb974e219db3" category="paragraph">상호 운용성 매트릭스 툴(IMT)은 NetApp, FlexArray, 타사 소프트웨어 구성요소의 상호 운용성 확인을 위해 사용되는 NetApp 웹 기반 유틸리티입니다.</block>
   <block id="a6a077b904bacb12d48c41c5c73204a8" category="list-text">* ONTAP 시스템 관리자 *</block>
   <block id="a9d0aa8b103e4adf8ae15e7f25516585" category="paragraph">ONTAP System Manager는 그래픽 인터페이스를 사용하여 NetApp FAS 시스템의 원격 스토리지 관리를 제공합니다.</block>
   <block id="63f145a157a4de507f52e0defe916b43" category="list-text">* OnCommand Workflow Automation *</block>
   <block id="314466fdc9350ebf7ec10c814395d315" category="paragraph">WFA는 스토리지 워크플로우를 생성하고 스토리지 프로비저닝, 마이그레이션, 서비스 해제, 클론 복제 등의 스토리지 관리 작업을 자동화할 수 있는 소프트웨어 솔루션입니다.</block>
   <block id="41906f366d54c43ed11596a26fede0c4" category="inline-link">NetApp 툴</block>
   <block id="ecd381cf83e11898e675dbdba4cb2661" category="paragraph"><block ref="ecd381cf83e11898e675dbdba4cb2661" category="inline-link-rx"></block></block>
-  <block id="d1ed20623d06a5575b5bebe97eb3c03a" category="inline-link">NetApp 툴: 데이터 센터 플래너</block>
-  <block id="82330aa0d5032553b20acd353259792c" category="paragraph"><block ref="82330aa0d5032553b20acd353259792c" category="inline-link-rx"></block></block>
   <block id="9ed4a475dd3705157a9fed8811f63ce2" category="inline-link">NetApp 상호 운용성 매트릭스 툴</block>
   <block id="687d97208bee730c33801be1d460abf6" category="paragraph"><block ref="687d97208bee730c33801be1d460abf6" category="inline-link-rx"></block></block>
-  <block id="4313112e38e2034aae406f4730087905" category="inline-link">NetApp 설명서:OnCommand 시스템 관리자(최신 릴리즈)</block>
-  <block id="0fb89981f1f59ac6c2fc1a6cad5da0e0" category="paragraph"><block ref="0fb89981f1f59ac6c2fc1a6cad5da0e0" category="inline-link-rx"></block></block>
   <block id="62580aa51e9dd22e6410288365e0cfae" category="inline-link">NetApp 설명서: OnCommand Workflow Automation(최신 릴리즈)</block>
   <block id="385f2125f2c2eed2ad18d00d78cfc7d4" category="paragraph"><block ref="385f2125f2c2eed2ad18d00d78cfc7d4" category="inline-link-rx"></block></block>
   <block id="ee3c3a8b2f3a842e463f69562d71d6e7" category="summary">FLI 마이그레이션 프로세스는 데이터 마이그레이션의 발견, 분석, 계획, 실행 및 검증과 같은 5단계 방법론입니다.</block>
@@ -349,7 +342,6 @@
   <block id="ce4f0621e8f1bf1e49980aaf4a5f7334" category="paragraph">이러한 단계는 마이그레이션 프로세스 전반에 걸쳐 일반적인 작업이 수행되는 위치를 파악하는 데 도움이 되는 일반적인 프레임워크를 제공합니다. 이 섹션의 차트에는 호스트, 패브릭, 대상 스토리지 및 소스 스토리지의 4가지 주요 구성 요소 각각에서 병렬로 수행할 수 있는 작업이 표시됩니다.</block>
   <block id="00c90fb59f1e33aa67f42b7b9099b00f" category="summary">궁극적으로 전환 중인 호스트 OS, HBA, 스위치 및 ONTAP 스토리지가 지원되는지 확인해야 합니다.</block>
   <block id="2843856fe1aedc468540254858bf6c10" category="doc">7-Mode에서 ONTAP FLI로 지원되는 구성</block>
-  <block id="b5b71cee20299cfbb2af31994283f0bf" category="paragraph">FLI 7-Mode에서 ONTAP로의 전환 워크플로우를 사용하는 경우 FlexArray IMT에서 소스(7-Mode 컨트롤러)를 확인할 필요가 없습니다. 목록에 표시되지 않지만 이 전환 워크플로에서 명시적으로 지원됩니다. 모든 호스트가 지원되는 구성인지 확인해야 합니다.</block>
   <block id="ae26af74c65eb30e105c96f274d4516a" category="paragraph">FLI 관련 플랫폼 요구사항은 없습니다. 버전은 파이버 채널 프로토콜(FCP)을 지원해야 하지만 7-Mode Data ONTAP의 최소 버전은 없습니다.</block>
   <block id="6cdd3c73f6b04848b0836f249b29d749" category="paragraph">FLI에서 가져올 수 있는 최대 LUN 크기는 6TB입니다. 이는 현재 ONTAP에서 지원하는 최대 크기의 드라이브를 기준으로 한 제한 사항입니다. 더 큰 외부 LUN을 마운트하려고 하면 LUN이 파손된 것으로 표시되고 레이블을 LUN에 쓸 수 없게 됩니다.</block>
   <block id="5e0c9df591e5df923a8325573e7ca5f7" category="summary">다음은 운영 패브릭 A에 있는 Brocade 패브릭의 예입니다</block>
@@ -364,11 +356,7 @@
   <block id="0371a2b790b684d89139aa01a9d899dd" category="paragraph">문제를 찾아 해결하고 위험을 줄이기 위해 호스트 이벤트 로그를 검토합니다. 호스트는 재부팅되어 주요 재구성이 발생하기 전에 호스트에 기본적인 문제가 없는지 확인합니다.</block>
   <block id="9a2d7036802624ba03c75b07ef21f584" category="paragraph">소스 LUN이 대상 스토리지에 표시된 후 마이그레이션 작업을 생성하고 실행할 수 있습니다. 마이그레이션 완료(FLI 오프라인) 또는 FLI LUN 관계가 FLI 온라인 상태로 전환되면 호스트가 대상 스토리지에 조닝(zoning)됩니다. 새 LUN이 매핑되며 드라이버, 다중 경로 소프트웨어 및 분석 단계에서 식별된 기타 모든 업데이트에 대해 호스트 개선을 시작할 수 있습니다.</block>
   <block id="16abdd8ae3b60341fa19eb1be8305b9e" category="summary">이 절차는 Brocade 패브릭 zoneset에서 소스 스토리지 및 호스트 영역 제거를 보여 줍니다.</block>
-  <block id="d0ae902543b17dc39935b9f9ff10caf9" category="summary">AFF는 모든 ONTAP 소프트웨어 릴리즈에서 FlexArray를 지원하지 않습니다. 해당 릴리즈에서 AFF와 동일한 클러스터의 비 AFF 고가용성(HA) 쌍에 FLI(Foreign LUN Imports)를 스테이징해야 합니다.</block>
   <block id="4d2c8e2d52b2d1e27a2032516bde2b24" category="doc">외부 LUN 가져오기를 사용하여 LUN을 AFF로 가져옵니다</block>
-  <block id="678b11ba8ef0148b72870cd8ab43c178" category="paragraph">ONTAP는 AFF 9.1부터 FLI를 지원합니다. FKU를 사용하여 다른 어레이에서 ONTAP 클러스터로 직접 LUN을 가져올 수 있습니다.</block>
-  <block id="1d1decf73b3514198e759fb813b2f31e" category="paragraph">ONTAP 8.3.2에서 AFF은 승인된 PVR(Process Variance Request)을 사용하여 FLI를 지원할 수 있습니다. 승인을 위해 제출된 PVR을 얻으려면 NetApp 세일즈 팀에 문의하십시오. 승인 시, 일반적으로 NetApp 시스템 엔지니어인 제출자는 FLI 기능 활성화에 대한 지침이 포함된 승인 편지를 받게 됩니다.</block>
-  <block id="03120ec505b2fc02252feb3c2947d24a" category="paragraph">8.3.2 이전의 ONTAP 소프트웨어 버전에서는 쓰기 최적화 중 일부가 수행되었기 때문에 AFF에서 현재 FlexArray를 지원하지 않습니다. AFF가 설치된 동일한 클러스터에서 비 AFF HA 쌍에 대한 FLI 가져오기를 스테이징해야 합니다. 마이그레이션이 완료된 후 볼륨 또는 LUN 이동과 같은 무중단 운영(NDO)을 사용하여 마이그레이션된 LUN을 AFF로 이동할 수 있습니다. AFF 클러스터에 비 AFF 노드가 없는 경우 이를 위해 스윙 기어를 차용할 가능성에 대해 고객 팀에 문의하십시오.</block>
   <block id="22e769e6dfe56bc3b7fec8d36e575f71" category="summary">FLI 오프라인 실행 단계에서는 마이그레이션 호스트 준비를 포함합니다.</block>
   <block id="540aa6d6b05b87237a5035773dc7ce09" category="doc">FLI 오프라인 마이그레이션을 위한 호스트 준비</block>
   <block id="5f51d20e71b9fee9d17896df728cf25f" category="paragraph">대부분의 경우 이 단계를 수행하기 전에 이 개선 작업을 수행할 수 있습니다. 그렇지 않은 경우 호스트 연결 키트 또는 DSM 설치와 같은 호스트 조정을 수행합니다. 분석 단계에서는 각 호스트에서 수행해야 하는 항목의 간격 목록을 갖게 됩니다. 그러면 해당 호스트가 ONTAP를 사용하여 지원되는 구성에 있게 됩니다. 수행되는 마이그레이션 유형에 따라 호스트를 교정 및 재부팅하거나(온라인 FLI/7-Mode에서 ONTAP FLI로 FLI), 마이그레이션 프로세스가 완료될 때까지(오프라인 FLI) 문제를 해결하는 동시에 종료해야 합니다.</block>
@@ -431,7 +419,6 @@
   <block id="bb127db0e6dffe1777a9bc3bbf1ecc82" category="list-text">오프라인 마이그레이션 시 타사 어레이에서 FLI는 클라이언트 시스템을 오프라인 상태로 전환하고 데이터를 새 LUN에 복사한 후 다시 온라인 상태로 만듭니다.</block>
   <block id="b33a9293c8c067048b0e027cc7820941" category="list-text">전환 마이그레이션에서 FLI는 7-Mode에서 운영되는 ONTAP를 ONTAP로 전환합니다. 이 프로세스는 소스 배열이 ONTAP 인 경우를 제외하고 기능적으로 동일합니다. 전환 워크플로는 온라인 또는 오프라인 모드에서 사용할 수 있습니다.</block>
   <block id="44023aa16885f326f40c8d26a3d792dc" category="list-text">자동 마이그레이션 시 FLI는 WFA(Workflow Automation) 소프트웨어를 사용하여 마이그레이션 프로세스의 일부를 자동화합니다. WFA를 사용하는 FLI는 온라인 또는 오프라인 모드에서 사용할 수 있습니다.</block>
-  <block id="ed84643b976a61e35dab90c06a1328ad" category="paragraph">구조적으로 세 가지 마이그레이션과 전환 워크플로우가 상당히 유사합니다. 이 4가지 요소는 모두 NetApp의 FlexArray 기술을 활용하여 ONTAP 컨트롤러가 소스 어레이 앞에서 이니시에이터 역할을 수행하고, 이 위치를 사용하여 소스에서 대상 ONTAP 어레이의 LUN으로 블록 LUN 블록을 복제할 수 있게 합니다.</block>
   <block id="4d01f8ae44780dd783a9a1352d13eb15" category="paragraph">컷오버가 발생할 경우, 작업 중단 기간의 길이, 자동화를 사용할 때 또는 소스 어레이가 ONTAP 7-Mode 또는 타사 어레이를 실행하는 NetApp 스토리지인 경우 워크플로우와 그 차이점이 있습니다.</block>
   <block id="53a51b7dcda82a62f1a85a24f43b7788" category="summary">검증 작업은 선택 사항이지만 권장됩니다. 소스 LUN과 대상 LUN의 블록별 비교입니다. 마이그레이션 시간보다 작업이 거의 비슷하거나 약간 더 오래 걸리는지 확인합니다.</block>
   <block id="e57e82538b681c873e1cfb334a6f3601" category="list-text">외부 LUN 속성을 false로 표시합니다.</block>
@@ -588,7 +575,6 @@
   <block id="f9e0cb9ba50f068a2ac223e1fb2428e7" category="summary">FLI 솔루션은 NetApp 고객에게 이러한 이점을 통해 특별한 가치를 제공하도록 설계되었습니다.</block>
   <block id="ebe284b6317268b9506fdcdb41331f0b" category="doc">FLI 기반 솔루션의 이점</block>
   <block id="53d134f02bc4e40dc1a38a13c2b5f025" category="list-text">FLI는 ONTAP에 내장되어 있으며 추가 라이센싱이 필요하지 않습니다.</block>
-  <block id="ce3b5246051a674a15f5382caab2cc12" category="list-text">FLI는 FlexArray 기술을 활용하지만 FlexArray 라이센스는 필요하지 않습니다.</block>
   <block id="a6af658145c481e571f55cb606f4e3e3" category="list-text">FLI는 데이터 마이그레이션을 위해 추가 하드웨어 어플라이언스가 필요하지 않습니다.</block>
   <block id="601633186bcdcca37af13ab5aeaa6b02" category="list-text">FLI 기반 솔루션은 다양한 마이그레이션 유형과 타사 스토리지 플랫폼의 구성을 지원합니다.</block>
   <block id="ff8176da561485db908ffcc196a65b8c" category="list-text">FLI는 LUN을 자동으로 정렬하며 32비트 애그리게이트에서 호스팅되는 LUN을 ONTAP 어레이에 호스팅된 64비트 Aggregate로 마이그레이션할 수 있습니다. 따라서 7-Mode에서 ONTAP로 FLI를 전환하기에 적합한 것으로, 32비트 애그리게이트에서 호스팅되거나 잘못 정렬된 7-Mode 호스팅 LUN을 전환하기에 적합합니다.</block>
@@ -1150,8 +1136,6 @@
   <block id="5ee8c627194be9305eb2f195346bf13e" category="summary">FLI 7-Mode에서 ONTAP로의 마이그레이션을 준비하려면 호스트 및 소스 LUN 경로와 기타 세부 정보를 확인하십시오.</block>
   <block id="7892998f6cd1a85180c0b47cb02c2b6c" category="doc">마이그레이션을 위한 소스 및 타겟 스토리지 준비</block>
   <block id="62915faa86ce0270957550462ab778f3" category="list-text">ONTAP에서 '고급' 권한 레벨로 변경합니다.</block>
-  <block id="6957ef5bef3e2b05030e2f318c20f70e" category="list-text">나열된 스토리지 오류에 대한 세부 정보를 봅니다. 일부 오류는 계속하기 전에 조치가 필요할 수 있습니다. 그러나 다음 예에 표시된 ""이 장치는 ONTAP(R) LUN입니다." 오류는 무시해도 됩니다.</block>
-  <block id="b8e20808df451129caa39264a050e4ae" category="paragraph">"이 장치는 ONTAP\(R\) LUN입니다."라는 오류 메시지는 FLI가 FlexArray 또는 ONTAP 대상 가상화를 지원하지 않는 ONTAP 기술을 사용하기 때문에 발생합니다. FLI는 LUN을 가져올 수 있지만 FlexArray에서는 LUN 가상화를 지원하지 않습니다.</block>
   <block id="e5810d56320059c0373293d0da4050c0" category="list-text">7-Mode 스토리지에서 매핑된 LUN을 나열합니다. 디스크 속성 및 경로를 확인합니다.</block>
   <block id="97c500043e97619a7cdae1db7eb50436" category="list-text">타겟 LUN을 생성합니다.</block>
   <block id="785fe114b1b46895afc9982f8587b494" category="list-text">테스트 LUN을 테스트 igroup에 매핑합니다.</block>
@@ -1160,7 +1144,6 @@
   <block id="cf4e13b9b7146fa58901a5bc51850ed3" category="paragraph">타사 소프트웨어가 제거되고 NetApp 소프트웨어가 설치 및 구성되었으며 호스트가 NetApp의 LUN에 액세스하게 됩니다. 특정 호스트 유형에 대한 마이그레이션 후 개선 작업의 예는 _호스트 개선_ 항목을 참조하십시오.</block>
   <block id="dfe7b37a42a22434a5cd3777ed775602" category="summary">스토리지, 스위치 및 호스트가 적절히 구성되었는지 확인하고 마이그레이션 기간과 작업 수준을 추정할 수 있는 몇 가지 샘플을 얻기 위해 하나 이상의 테스트 마이그레이션을 수행해야 합니다.</block>
   <block id="29b36bd1e7c4f736d341e2632051fa93" category="doc">마이그레이션 테스트</block>
-  <block id="ee499a8b98fda959d00d7caca3584161" category="summary">FLI(Foreign LUN Import)는 FlexArray 기술을 활용하여 외부 LUN을 마운트하므로 FCP를 사용하는 소스 어레이에만 연결할 수 있습니다. FLI는 FC LUN만 지원합니다. 하지만 iSCSI LUN을 가져올 수 있는 해결 방법이 있습니다. 다른 FLI 온라인 7-Mode에서 ONTAP 워크플로우에 비해 iSCSI LUN을 FC LUN으로 가져올 것이므로 중단 기간은 전체 워크플로우를 포괄합니다.</block>
   <block id="8c83908f3246c4ea01517197b1f0a841" category="doc">비 FC LUN 임포트</block>
   <block id="dc54dc0df5ad07a6c087036a2585ee52" category="paragraph">다른 FLI 온라인 7-Mode에서 ONTAP 워크플로우에 비해 iSCSI LUN을 FC LUN으로 가져올 것이므로 중단 기간은 전체 워크플로우를 포괄합니다.</block>
   <block id="e7ce7ac413ef9c629400cec0539ce23e" category="list-text">소스 스토리지에서 원하는 iSCSI LUN을 해당 iSCSI igroup에서 매핑 해제해야 합니다.</block>
@@ -1178,10 +1161,7 @@
   <block id="8129cc4d9aa314cede44f0db47578d65" category="list-text">FLI 전환 마이그레이션 후 작업</block>
   <block id="ed7cbae072fb6b5459833b1aaf0b2b9c" category="summary">FLI(Foreign LUN Import)는 ONTAP에 내장된 기능으로, 사용자가 데이터를 간편하고 효율적으로 외부 어레이 LUN에서 NetApp LUN으로 가져올 수 있습니다.</block>
   <block id="bd6d110624152bef80bfb3a40415afcb" category="doc">외부 LUN 임포트 개요</block>
-  <block id="e545390b6a02c90809e3ba41d6cd0d49" category="paragraph">FLI는 NetApp FlexArray ® 기술을 활용하여 외부 RAID 어레이 LUN을 검색하고 해당 LUN에서 데이터를 가져옵니다. FlexArray을 사용하면 NetApp ONTAP 컨트롤러가 하나 이상의 타사 어레이 앞에서 이니시에이터 역할을 할 수 있습니다. FlexArray는 이러한 어레이에서 백엔드 스토리지로 LUN을 마운트한 다음 해당 LUN의 공간을 NetApp 유니파이드 스토리지(FCP, FCoE, iSCSI, NFS 및 CIFS/SMB 프로토콜 액세스 허용)로 SAN 또는 NAS 환경의 호스트에 표시할 수 있습니다.</block>
-  <block id="19f6373fc1d63d6ca70966941c8c6838" category="paragraph">FLI에는 FlexArray 라이센스가 필요하지 않습니다. FLI는 FlexArray 기술을 활용하여 외부 LUN을 NetApp ONTAP 어레이에 복사한 다음, 해당 LUN을 사용하는 호스트 및 애플리케이션이 현재 LUN을 호스팅하는 NetApp 어레이를 향하도록 할 수 있습니다. ONTAP에서 더 이상 프로페셔널 서비스 실행을 마이그레이션할 필요는 없지만, NetApp은 가장 간단한 마이그레이션을 제외한 모든 마이그레이션에 대해 범위 지정, 계획, 교육을 수행하는 프로페셔널 서비스를 적극 권장합니다.</block>
   <block id="603139ad94ee4b366078d1718edd6cc8" category="paragraph">FLI는 SAN LUN을 ONTAP로 마이그레이션하도록 개발되었습니다. FLI는 다음을 포함하되 이에 국한되지 않는 다양한 마이그레이션 요구사항을 지원합니다.</block>
-  <block id="8f9080da05de4c15ecad29c5259754e0" category="list-text">FlexArray 구성에서 지원되는 대로 EMC, Hitachi, HP 및 기타 공급업체의 이기종 스토리지 어레이 간에 데이터 마이그레이션</block>
   <block id="63fcf874938b3f8a8d09eea8f4e717fd" category="list-text">데이터 센터 재배치, 통합 및 어레이 교체 시 블록 데이터의 마이그레이션을 간소화하고 가속화합니다.</block>
   <block id="99abf425200601a606145e997abba074" category="list-text">마이그레이션 및 LUN 재정렬을 단일 워크플로우로 통합</block>
   <block id="587d7ded98be7df0f5f867261e578e9e" category="paragraph">또한 7-Mode에서 ONTAP로 전환 절차를 사용하면 32비트에서 64비트 애그리게이트로 변환하고, 정렬 문제를 해결하고, LUN을 단일 작업으로 마이그레이션할 수 있습니다.</block>
@@ -1193,12 +1173,8 @@
   <block id="4ab82376627d3c92c29ab3d0e5562860" category="paragraph">이 그림은 FLI 온라인 데이터 마이그레이션을 보여 줍니다. 호스트가 새 LUN이 호스팅되는 NetApp 컨트롤러에 연결되어 있습니다. 그런 다음 가져오는 동안 호스트 작업을 재개하고 계속할 수 있습니다.</block>
   <block id="3e93c4ba8debcbb0556af1cd7ab1b741" category="summary">FLI 마이그레이션을 시작하기 전에 LUN이 다음 요구사항을 충족해야 합니다.</block>
   <block id="e80e48acabbfbfabe9d26f77e6893f2e" category="list-text">FLI는 각 컨트롤러에서 최소 1개의 FC 포트를 필요로 하며 LUN이 이니시에이터 모드에서 직접 마이그레이션하도록 합니다.</block>
-  <block id="1aa4f2a052fd81ec3e8e4d05af38fa3d" category="list-text">ONTAP에서 할당을 방지하려면 대상 스토리지에서 외부 LUN을 외부 LUN으로 표시해야 합니다.</block>
-  <block id="9aa3188a54765c6430f32b9c1bd813fd" category="list-text">가져오기를 시작하기 전에 외부 LUN이 가져오기 관계에 있어야 합니다.</block>
-  <block id="44aa1f7a817892effc0c87066a63421e" category="list-text">LUN은 외부 LUN과 크기가 같아야 하며 디스크 블록 크기가 같아야 합니다. 이러한 두 요구 사항은 LUN 생성 단계에서 모두 적용됩니다.</block>
   <block id="712ab059b692b9bc1b27b9cc4debdd19" category="list-text">LUN은 확장하거나 축소해서는 안 됩니다.</block>
   <block id="28346dfebd33c0a30bb74655c8205c5e" category="list-text">LUN은 하나 이상의 igroup에 매핑되어야 합니다.</block>
-  <block id="1be37e9706ae71ec79642c4a74ddb6e4" category="list-text">관계를 생성하기 전에 NetApp LUN을 오프라인 상태로 전환해야 합니다. 그러나 LUN 관계가 생성된 후 온라인 FLI의 경우 온라인으로 되돌릴 수 있습니다.</block>
   <block id="e646e16bee8b32e6ea29e30d01970a6c" category="section-title">제한 사항</block>
   <block id="9f0253275fe68858c0af6b82677674c0" category="list-text">모든 마이그레이션이 LUN 레벨입니다.</block>
   <block id="627efaeda3a2eeb48c8581eb26bd2021" category="list-text">FLI는 FC(파이버 채널) 연결만 지원합니다.</block>
@@ -1590,4 +1566,20 @@
   <block id="a9fa02c73b0556989b39e0a09dc2fb37" category="sidebar">마이그레이션을 위한 호스트 준비</block>
   <block id="9cc66e684b29dae71b3873021ab5f900" category="sidebar">소스 LUN을 대상 어레이에 매핑합니다.</block>
   <block id="3e06682f4f26baa39169365df5a4cbff" category="paragraph">ONTAP 9.17.1부터 FLI 온라인 마이그레이션을 사용한 외부 LUN의 데이터 마이그레이션이 ASA r2 시스템에서 지원됩니다. ASA r2 시스템은 스토리지 계층 구현 방식에서 다른 ONTAP 시스템(ASA, AFF, FAS)과 다릅니다. ASA r2 시스템에서는 스토리지 유닛(LUN 또는 네임스페이스)이 생성될 때 볼륨이 자동으로 생성됩니다. 따라서 LUN 가져오기 관계를 생성하기 전에 볼륨을 생성할 필요가 없습니다. ASA r2 시스템을 사용하는 경우 이 단계를 건너뛸 수 있습니다.</block>
+  <block id="8f5dacf4f4b55059433f61ed7a616538" category="paragraph">FLI 7-Mode에서 ONTAP 으로의 전환 워크플로를 사용하는 경우 IMT 에서 소스(7-Mode 컨트롤러)를 확인할 필요가 없습니다. 목록에는 포함되지 않지만, 이 전환 워크플로를 위해 특별히 지원되는 기능입니다. 모든 호스트가 지원되는 구성인지 확인해야 합니다.</block>
+  <block id="70af7e1fedf476634203ffed3e810f9b" category="summary">FLI 상호 운용성 매트릭스(IMT)는 FLI와 호환되는 NetApp 인증 소스 어레이를 더욱 효과적으로 지원하도록 설계된 별도의 상호 운용성 도구입니다.</block>
+  <block id="4381eab0b8454437664a831f008b220f" category="paragraph">ONTAP 더 이상 전문 서비스 업체가 주도하는 마이그레이션을 요구하지 않지만, NetApp 가장 간단한 마이그레이션을 제외한 모든 마이그레이션에 대해 범위 설정, 계획 및 교육에 전문 서비스 업체가 참여할 것을 강력히 권장합니다.</block>
+  <block id="5c2701f0dedd30db8b462a850ade9d29" category="list-text">EMC, Hitachi, HP 및 기타 공급업체의 이기종 스토리지 어레이에서 NetApp 으로 데이터를 마이그레이션합니다.</block>
+  <block id="03bdcb1abadb9de7e792d4ea528ede06" category="list-text">ONTAP 에서 할당을 방지하려면 대상 어레이에서 외부 LUN을 외부로 표시해야 합니다.</block>
+  <block id="12c0657de6e3049dc1c10bc5be7c65ea" category="list-text">가져오기를 시작하기 전에 외부 LUN이 가져오기 관계에 있어야 합니다.</block>
+  <block id="54299053ded6ce9382d5400397c64c0a" category="list-text">LUN은 외부 LUN과 크기가 동일해야 합니다. 이 요구 사항은 LUN 생성 단계에서 처리됩니다.</block>
+  <block id="c6f68a5b040db10ea284e182330b02fa" category="list-text">외부 LUN 블록 크기는 512비트여야 합니다. NetApp LUN은 512비트 블록 크기만 지원합니다.</block>
+  <block id="2f4de8a67de8d942e5c6cb3bc23f9971" category="list-text">NetApp LUN을 오프라인으로 전환한 후 관계를 설정해야 합니다. 하지만 LUN 관계가 생성된 후에는 온라인 FLI의 경우 다시 온라인 상태로 전환할 수 있습니다.</block>
+  <block id="381b5fecf3c1646a7eb39b7c4003f26b" category="summary">마이그레이션 중에 사용되는 스토리지 어레이는 양쪽 패브릭 모두에 존재하는 각 컨트롤러(사용 중)로부터의 기본 경로를 가져야 합니다. 즉, 마이그레이션 대상인 소스 어레이 노드와 대상 어레이 노드는 양쪽 패브릭 모두에서 공통 영역에 있어야 합니다.</block>
+  <block id="b027f66470fdc2503b4a162dfc66f032" category="paragraph">상호 운용성 매트릭스 도구(IMT )는 NetApp 및 타사 소프트웨어 구성 요소 간의 상호 운용성 검사에 사용되는 NetApp 웹 기반 유틸리티입니다.</block>
+  <block id="fe3b2f586b2d988463d0819cb5bd8354" category="summary">ONTAP 9.1 버전부터 AFF FLI를 지원합니다. FLI를 사용하면 다른 어레이의 LUN을 ONTAP 클러스터로 직접 가져올 수 있습니다.</block>
+  <block id="544cd217124f2df963edefb2af62f43d" category="paragraph">ONTAP 8.3.2 버전부터 AFF 승인된 프로세스 변경 요청(PVR)을 통해 FLI를 지원할 수 있습니다. PVR 승인을 받으려면 NetApp 계정 팀에 문의하십시오. 승인이 완료되면 제출자(일반적으로 NetApp 시스템 엔지니어)는 FLI 기능 활성화 방법에 대한 지침이 포함된 승인서를 받게 됩니다.</block>
+  <block id="c0be6833308ef6249cbd9f89e7a798b0" category="paragraph">ONTAP 소프트웨어 버전이 8.3.2 이전인 경우, AFF 가 있는 동일한 클러스터 내의 AFF 아닌 HA 쌍으로 FLI 가져오기를 준비해야 합니다. 마이그레이션이 완료되면 볼륨 이동이나 LUN 이동과 같은 비중단 작업(NDO)을 사용하여 마이그레이션된 LUN을 AFF 로 이동할 수 있습니다. AFF 클러스터에 AFF 이외의 노드가 없는 경우, 이를 해결하기 위해 스윙 장비를 빌릴 수 있는지 담당 계정 팀에 문의하십시오.</block>
+  <block id="b259a08f8828833b95c5b4f5f88fa25b" category="list-text">표시된 저장 오류에 대한 자세한 내용을 확인하세요. 일부 오류는 진행하기 전에 조치가 필요할 수 있습니다.</block>
+  <block id="2496428c9cc7db06e462e33d26960f96" category="summary">FLI는 FC LUN만 지원합니다. 하지만 iSCSI LUN을 가져올 수 있는 해결 방법이 있습니다. 다른 FLI 온라인 7-모드 ONTAP 워크플로와 달리, iSCSI LUN을 FC LUN으로 가져오기 때문에 중단 기간은 전체 워크플로에 걸쳐 발생합니다.</block>
 </blocks>
