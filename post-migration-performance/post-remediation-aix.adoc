@@ -1,0 +1,153 @@
+---
+permalink: post-migration-performance/post-remediation-aix.html 
+sidebar: sidebar 
+keywords: host remediation, aix, post-migration, fli, ontap 
+summary: 마이그레이션 후 AIX 호스트에서 새로 가져온 LUN이 제대로 인식되고 작동하도록 하기 위해 수정 단계를 거쳐야 합니다. 
+---
+= ONTAP FLI AIX 마이그레이션 후 호스트 복구 작업을 수행합니다.
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+마이그레이션 후 AIX 호스트에서 새로 가져온 LUN이 제대로 인식되고 작동하도록 하기 위해 수정 단계를 거쳐야 합니다.
+
+
+
+== 마이그레이션 후 - 오프라인 FLI
+
+오프라인 FLI의 경우, LUN 가져오기를 삭제하고 호스트 이니시에이터가 연결되었는지 확인한 후 LUN을 온라인 상태로 전환하십시오.
+
+[cols="5"]
+|===
+| 파일 시스템 | 블록 디바이스 | LVM(FS) | 클러스터 | Sanboot 
+
+
+| 1단계: 매핑된 모든 AIX 호스트에서 스토리지를 다시 검색합니다 | 1단계: 매핑된 모든 AIX 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 AIX 호스트에서 스토리지를 다시 검색합니다 | 1단계: 매핑된 모든 AIX 호스트에서 스토리지를 다시 검색합니다 | 1단계: 서버 전원 켜기 
+
+
+| 2단계: 다중 경로 디바이스 식별 | 2단계: 다중 경로 디바이스 식별 | 2단계: 다중 경로 디바이스 식별 | 2단계: 다중 경로 디바이스 식별 | 2단계: IPL(Initial Program Load)/SMS 메뉴에서 부팅 장치 목록에 새 스토리지 장치의 장치 목록을 참조하여 새 LUN이 표시되는지 확인합니다. 부팅 순서를 새 장치 목록 경로로 설정합니다. 
+
+
+| 3단계: 파일 시스템 세부 정보 확인 | 3단계: 다중 경로 디바이스 ID를 식별하고 해당 애플리케이션에 제공합니다. | 3단계: 새 LUN이 검색되었는지 확인합니다 | 3단계: 파일 시스템 세부 정보 확인 | 3단계: 서버가 정상적으로 부팅되는지 확인합니다 
+
+
+| 4단계: 장치를 각각의 폴더에 다시 마운트합니다 |  | 4단계: VG 활성화 | 4단계: 필요한 클러스터 구성을 확인하고 클러스터 애플리케이션을 시작합니다 | 4단계: LUN 가져오기의 일부인 새로 매핑된 LUN에서 부팅하도록 호스트를 재시작합니다 
+
+
+|  |  | 5단계: VG에 있는 LV 나열 | 5단계: 클러스터 상태와 사용 중인 애플리케이션을 검증합니다. |  
+
+
+|  |  | 6단계: LVM을 각각의 폴더에 다시 마운트합니다 |  |  
+|===
+
+NOTE: 최신 및 업데이트된 명령 목록은 OS 공급업체 설명서를 참조하십시오.
+
+.단계
+. 분리 후 다시 스캔하여 깨끗한 상태인지 확인하십시오.
++
+[source, cli]
+----
+cfgmgr
+----
+. 스토리지 디바이스를 식별합니다.
++
+[source, cli]
+----
+lsdev -Cc disk
+sanlun lun show all
+sanlun lun show all -pv
+lsmpio -l hdiskx
+----
+. 장치가 연결되어 있는지 확인합니다.
++
+[source, cli]
+----
+lspv |grep hdiskx
+----
+. 볼륨 그룹과 파일 시스템을 식별합니다.
++
+[source, cli]
+----
+lspv
+lsvg <vg_name>
+lsvg -l <vg_name>
+lsvg -p <vs_name>
+----
+. Varyonvg 및 마운트 파일 시스템.
++
+[source, cli]
+----
+varyonvg <vg_name>
+mount /mount_point
+df -g
+----
+
+
+
+
+== 마이그레이션 후 - 온라인 FLI
+
+가져오기 관계를 삭제한 후, UNMAP이 활성화된 상태에서 새 LUN이 독립적으로 작동하는지 확인하십시오. LUN 가져오기를 삭제한 후, LUN에 `-space-reserve disabled` 및 `-space-allocation enabled`가 설정되어 있는지 확인하십시오. 설정되어 있지 않으면 적절하게 수정하십시오.
+
+[cols="4"]
+|===
+| 파일 시스템 | 블록 디바이스 | LVM(FS) | Sanboot 
+
+
+| 1단계: 매핑된 모든 AIX 호스트에서 스토리지를 다시 검색합니다 | 1단계: 매핑된 모든 AIX 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 AIX 호스트에서 스토리지를 다시 검색합니다 | 1단계: 매핑된 모든 AIX 호스트에서 스토리지를 다시 검색합니다 
+
+
+|  |  | 장치가 씬 프로비저닝된 경우 SCSI UNMAP이 자동으로 활성화됩니다. | 장치가 씬 프로비저닝된 경우 SCSI UNMAP이 자동으로 활성화됩니다. 
+|===
+.단계
+. 분리 후 다시 스캔하여 깨끗한 상태인지 확인하십시오.
++
+[source, cli]
+----
+cfgmgr
+----
+. 스토리지 디바이스를 식별합니다.
++
+[source, cli]
+----
+lsdev -Cc disk
+sanlun lun show all
+sanlun lun show all -pv
+lsmpio -l hdiskx
+----
+. 장치가 연결되어 있는지 확인합니다.
++
+[source, cli]
+----
+lspv |grep hdiskx
+----
+. 장치에서 UNMAP을 확인합니다.
++
+[source, cli]
+----
+chfs -a reclaim=normal /mount_point
+lvmstat -v vg_name -r
+----
+
+
+[cols="1,2"]
+|===
+|  | AIX/PowerVM 
+
+
+| 1단계 | 호스트 정보를 캡처합니다. 
+
+
+| 2단계 | 파일 시스템을 마운트 해제합니다. 
+
+
+| 3단계 | VG를 백업하십시오. 
+
+
+| 4단계 | VG를 비활성화합니다. 
+
+
+| 5단계 | VG를 내보냅니다. 
+|===

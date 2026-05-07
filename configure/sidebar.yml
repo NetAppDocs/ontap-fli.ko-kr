@@ -1,0 +1,14 @@
+---
+section: configure
+title: ONTAP FLI 구성
+entries:
+- title: 개요
+  url: "/configure/config-overview.html"
+- title: FC 연결 및 배선
+  url: "/configure/fc-connectivity-wiring.html"
+- title: FC 어댑터를 이니시에이터 모드로 구성
+  url: "/configure/fc-configure-adapter-initiator-mode.html"
+- title: FC 조닝 모범 사례
+  url: "/configure/fc-zoning-model-best-practices.html"
+- title: iSCSI 백엔드 구성
+  url: "/configure/iscsi-setup-backend-connectivity.html"

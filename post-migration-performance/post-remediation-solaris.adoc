@@ -1,0 +1,143 @@
+---
+permalink: post-migration-performance/post-remediation-solaris.html 
+sidebar: sidebar 
+keywords: host remediation, solaris, post-migration, fli, ontap 
+summary: 마이그레이션 후 Solaris 호스트에서 새로 가져온 LUN이 제대로 인식되고 작동하도록 하기 위해 수정 단계를 수행해야 합니다. 
+---
+= ONTAP FLI Solaris 마이그레이션 후 호스트 문제 해결을 수행합니다.
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+마이그레이션 후 Solaris 호스트에서 새로 가져온 LUN이 제대로 인식되고 작동하도록 하기 위해 수정 단계를 수행해야 합니다.
+
+
+
+== 마이그레이션 후 - 오프라인 FLI
+
+오프라인 FLI의 경우, LUN 가져오기를 삭제하고 호스트 이니시에이터가 연결되었는지 확인한 후 LUN을 온라인 상태로 전환하십시오.
+
+[cols="5"]
+|===
+| 파일 시스템 | 블록 디바이스 | LVM(FS) | 클러스터 | Sanboot 
+
+
+| 1단계: 매핑된 모든 Solaris 호스트에서 스토리지를 다시 검색합니다 | 1단계: 매핑된 모든 Solaris 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 Solaris 호스트에서 스토리지를 다시 검색합니다 | 1단계: 매핑된 모든 Solaris 호스트에서 스토리지를 다시 검색합니다 | 1단계: 서버 전원 켜기 
+
+
+| 2단계: 다중 경로 디바이스 식별 | 2단계: 다중 경로 디바이스 식별 | 2단계: 다중 경로 디바이스 식별 | 2단계: 다중 경로 디바이스 식별 | 2단계: SPARC 서버 OBP에서 이 호스트 HBA에 제공되는 새 부팅 장치를 구성합니다 
+
+
+| 3단계: 풀 세부 정보 확인 | 3단계: 다중 경로 디바이스 ID를 식별하고 해당 애플리케이션에 제공합니다. | 3단계: 풀 상태 확인 | 3단계: 파일 시스템 세부 정보 확인 | 3단계: LUN 가져오기의 일부인 새로 매핑된 LUN에서 부팅하도록 호스트를 재시작합니다 
+
+
+| 4단계: 장치를 각각의 폴더에 다시 마운트합니다 |  | 4단계: 풀 가져오기 | 4단계: 필요한 클러스터 구성을 확인하고 클러스터 애플리케이션을 시작합니다 |  
+
+
+|  |  | 5단계: 풀에 있는 FS 나열 | 5단계: 클러스터 상태와 클러스터를 사용하는 애플리케이션을 검증합니다. |  
+
+
+|  |  | 6단계: FS를 해당 폴더에 다시 마운트합니다 |  |  
+|===
+
+NOTE: 최신 및 업데이트된 명령 목록은 OS 공급업체 설명서를 참조하십시오.
+
+.단계
+. 연결 후 다시 스캔합니다.
++
+[source, cli]
+----
+cfgadm -al
+----
+. 스토리지 디바이스를 식별합니다.
++
+[source, cli]
+----
+format
+sanlun lun show all
+mpathadm list lu
+mpathadm show lu
+----
+. 장치가 연결되어 있는지 확인합니다.
++
+[source, cli]
+----
+format |grep disk_id
+----
+. zpool을 가져오면 FS가 자동으로 마운트됩니다.
++
+[source, cli]
+----
+zpool import zpool_name
+df -g (to ensure its unmounted)
+----
+
+
+
+
+== 마이그레이션 후 - 온라인 FLI
+
+LUN 가져오기를 삭제한 후, LUN에 -space-reserve가 비활성화되고 -space-allocation이 활성화되어 있는지 확인하십시오. 그렇지 않은 경우, 적절하게 수정하십시오.
+
+[cols="4"]
+|===
+| 파일 시스템 | 블록 디바이스 | LVM(FS) | Sanboot 
+
+
+| 1단계: 매핑된 모든 Solaris 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 Solaris 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 Solaris 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 Solaris 호스트에서 스토리지를 다시 검색합니다. 
+|===
+
+NOTE: 최신 및 업데이트된 명령 목록은 OS 공급업체 설명서를 참조하십시오.
+
+.단계
+. 연결 후 다시 스캔합니다.
++
+[source, cli]
+----
+cfgadm -al
+----
+. 스토리지 디바이스를 식별합니다.
++
+[source, cli]
+----
+format
+sanlun lun show all
+mpathadm list lu
+mpathadm show lu
+----
+. 장치가 연결되어 있는지 확인합니다.
++
+[source, cli]
+----
+`format |grep disk_id`
+----
+. zpool을 가져오면 FS가 자동으로 마운트됩니다.
++
+[source, cli]
+----
+zpool import zpool_name
+df -g
+----
+
+
+[cols="2"]
+|===
+|  | Solaris 
+
+
+| 1단계 | 호스트 정보를 캡처합니다. 
+
+
+| 2단계 | 파일 시스템을 마운트 해제합니다. 
+
+
+| 3단계 | VG를 백업하십시오. 
+
+
+| 4단계 | VG를 비활성화합니다. 
+
+
+| 5단계 | VG를 내보냅니다. 
+|===

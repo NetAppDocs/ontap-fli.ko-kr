@@ -1,0 +1,115 @@
+---
+permalink: post-migration-performance/post-remediation-hp.html 
+sidebar: sidebar 
+keywords: host remediation, hp-ux, post-migration, fli, ontap 
+summary: 마이그레이션 후 HP-UX 호스트에서 새로 가져온 LUN이 제대로 인식되고 작동하도록 하기 위해 수정 단계를 수행해야 합니다. 
+---
+= ONTAP FLI HP 마이그레이션 후 호스트 복구 작업을 수행합니다.
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+마이그레이션 후 HP-UX 호스트에서 새로 가져온 LUN이 제대로 인식되고 작동하도록 하기 위해 수정 단계를 수행해야 합니다.
+
+
+
+== 마이그레이션 후 - 오프라인 FLI
+
+오프라인 FLI의 경우, LUN 가져오기를 삭제하고 호스트 이니시에이터가 연결되었는지 확인한 후 LUN을 온라인 상태로 전환하십시오.
+
+[cols="5"]
+|===
+| 파일 시스템 | 블록 디바이스 | LVM(FS) | 클러스터 | Sanboot 
+
+
+| 1단계: 매핑된 모든 HP-UX 호스트에서 스토리지를 다시 검색합니다 | 1단계: 매핑된 모든 HP-UX 호스트에서 스토리지를 다시 스캔합니다. | 1단계: 매핑된 모든 HP-UX 호스트에서 스토리지를 다시 검색합니다 | 1단계: 매핑된 모든 HP-UX 호스트에서 스토리지를 다시 검색합니다 | 1단계: 서버 전원 켜기 
+
+
+| 2단계: 다중 경로 디바이스 식별 | 2단계: 다중 경로 디바이스 식별 | 2단계: 다중 경로 디바이스 식별 | 2단계: 다중 경로 디바이스 식별 | 2단계: UEFI 셸에서 장치 매핑 테이블을 확인하고 새 스토리지 장치에서 hpux로 부팅합니다. 기본 부팅 장치를 새 스토리지 LUN으로 설정합니다. 
+
+
+| 3단계: 파일 시스템 세부 정보 확인 | 3단계: 다중 경로 디바이스 ID를 식별하고 해당 애플리케이션에 제공합니다. | 3단계: 새 LVM 장치 파일이 제대로 검색되었는지 확인합니다 | 3단계: 파일 시스템 세부 정보 확인 | 3단계: LUN 가져오기의 일부인 새로 매핑된 LUN에서 부팅하도록 호스트를 재시작합니다 
+
+
+| 4단계: 장치를 각각의 폴더에 다시 마운트합니다 |  | 4단계: VG/LVM 가져오기 | 4단계: 필요한 클러스터 구성을 확인하고 클러스터 애플리케이션을 시작합니다 |  
+
+
+|  |  | 5단계: VG 활성화 | 5단계: 클러스터 상태와 클러스터를 사용하는 애플리케이션을 검증합니다. |  
+
+
+|  |  | 6단계: VG에 존재하는 LV 목록을 작성하십시오 |  |  
+
+
+|  |  | 7단계: LVM을 각각의 폴더에 다시 마운트합니다 |  |  
+|===
+
+
+== 마이그레이션 후 - 온라인 FLI
+
+LUN 가져오기를 삭제한 후 LUN에 `-space-reserve disabled` 및 `-space-allocation enabled`가 설정되어 있는지 확인하십시오. 설정되어 있지 않으면 적절하게 수정하십시오.
+
+SCSI UNMAP 기능이 올바르게 작동하려면 지원되는 소프트웨어 버전을 확인하기 위해 공급업체 설명서를 참조하십시오. 이 기능을 사용하려면 Veritas VxVM + VxFS 조합이 필요합니다.
+
+[cols="4"]
+|===
+| 파일 시스템 | 블록 디바이스 | LVM(FS) | Sanboot 
+
+
+| 1단계: 매핑된 모든 HP-UX 호스트에서 스토리지를 다시 검색합니다 | 1단계: 매핑된 모든 HP-UX 호스트에서 스토리지를 다시 스캔합니다. | 1단계: 매핑된 모든 HP-UX 호스트에서 스토리지를 다시 검색합니다 | 1단계: 매핑된 모든 HP-UX 호스트에서 스토리지를 다시 검색합니다 
+|===
+.단계
+. 스토리지 디바이스를 식별합니다.
++
+[source, cli]
+----
+ioscan -fnC disk
+insf -e
+sanlun lun show all
+sanlun lun show all -pv
+sanlun lun show -wwpn
+----
+. VG를 가져오고 VG를 온라인으로 전환합니다.
++
+[source, cli]
+----
+vgimport /dev/vg_name /dev/disk/disk_name
+vgchange -a y /dev/vg_name
+----
+. 볼륨 그룹과 파일 시스템을 식별합니다.
++
+[source, cli]
+----
+vgdisplay -v /dev/vg_name
+vgdisplay /dev/vg_name
+lvdisplay /dev/vg_name/lv_name
+----
+. 파일 시스템을 마운트합니다.
++
+[source, cli]
+----
+bdf
+mount /dev/vg_name/vol_name /mount_point
+----
+
+
+[cols="2"]
+|===
+|  | HP-UX 
+
+
+| 1단계 | 호스트 정보를 캡처합니다. 
+
+
+| 2단계 | 파일 시스템을 마운트 해제합니다. 
+
+
+| 3단계 | VG를 백업하십시오. 
+
+
+| 4단계 | VG를 비활성화합니다. 
+
+
+| 5단계 | VG를 내보냅니다. 
+|===

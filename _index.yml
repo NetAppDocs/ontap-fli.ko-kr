@@ -6,13 +6,62 @@ indexpage:
     foreign
   lead: ONTAP 외부 LUN 임포트
   tiles:
-  - title: FLI 워크플로
+  - title: 릴리스 노트
+    url: "/release-notes.html"
     links:
-    - title: 오프라인 워크플로
-      url: "/san-migration/concept_fli_offline_workflow.html"
-    - title: 온라인 워크플로
-      url: "/san-migration/concept_fli_online_workflow.html"
-    - title: FLI 7-Mode에서 ONTAP로의 전환 워크플로우
-      url: "/san-migration/concept_fli_7_mode_to_ontap_transition_workflow.html"
-    - title: WFA(워크플로우 자동화)를 사용하는 FLI
-      url: "/san-migration/concept_fli_using_workflow_automation_wfa.html"
+    - title: SAN 데이터 마이그레이션을 위한 ONTAP의 새로운 기능
+      url: release-notes/whats-new.html
+  - title: 시작하기
+    url: "/get-started.html"
+    links:
+    - title: ONTAP 데이터 마이그레이션 프로그램에 대해 알아보십시오
+      url: "/get-started/learn-about-data-migration.html"
+    - title: ONTAP로 SAN 데이터 마이그레이션에 대해 알아보십시오
+      url: "/get-started/learn-about-san-data-migration.html"
+    - title: ONTAP Foreign LUN Import에 대해 알아보십시오
+      url: "/get-started/learn-about-fli.html"
+  - title: FLI 단계
+    url: "/phases.html"
+    links:
+    - title: ONTAP Foreign LUN Import(FLI) 검색 단계
+      url: "/phases/discovery-phase.html"
+    - title: ONTAP Foreign LUN Import(FLI) 분석 단계
+      url: "/phases/analyze-phase.html"
+    - title: ONTAP Foreign LUN Import(FLI) 계획 및 준비 단계
+      url: "/phases/plan-prepare-phase.html"
+    - title: ONTAP Foreign LUN Import(FLI) 실행 단계
+      url: "/phases/execute-phase.html"
+    - title: ONTAP 외부 LUN 가져오기(FLI) 검증 단계
+      url: "/phases/verify-phase.html"
+  - title: FLI 구성
+    url: "/configure.html"
+    links:
+    - title: ONTAP FLI(Foreign LUN Import) 연결 및 배선
+      url: "/configure/fc-connectivity-wiring.html"
+    - title: ONTAP Foreign LUN Import(FLI)에서 권장하는 FC 배선 및 조닝 방법
+      url: "/configure/iscsi-setup-backend-connectivity.html"
+  - title: FLI 마이그레이션
+    url: "/migrate.html"
+    links:
+    - title: FLI 마이그레이션을 위한 외부 LUN 검색
+      url: "/migrate/discover-foreign-luns.html"
+    - title: ONTAP FLI LUN 가져오기 관계를 생성합니다
+      url: "/migrate/create-import-relationship.html"
+    - title: FLI LUN 가져오기 실행 및 모니터링
+      url: "/migrate/execute-monitor.html"
+    - title: FLI LUN 가져오기 관계를 확인하고 삭제합니다
+      url: "/migrate/verify-delete.html"
+  - title: FLI 마이그레이션 후
+    url: "/post-migration-performance.html"
+    links:
+    - title: 마이그레이션 후 정리 수행
+      url: "/post-migration-performance/clean-up.html"
+    - title: ESXi VMFSS ATS/CAW 문제 해결 수행
+      url: "/post-migration-performance/esxi-remediation.html"
+    - title: FLI 성능
+      url: "/post-migration-performance/performance.html"
+  - title: 샘플 사이트 조사 및 계획 워크시트
+    url: "/sample-site.html"
+    links:
+    - title: 개요
+      url: "/san-migration/reference_sample_site_survey_and_planning_worksheet.html"

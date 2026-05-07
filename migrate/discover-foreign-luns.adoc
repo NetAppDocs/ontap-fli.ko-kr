@@ -1,0 +1,90 @@
+---
+permalink: migrate/discover-foreign-luns.html 
+sidebar: sidebar 
+keywords: discover foreign luns, foreign lun import, fli, ontap, storage disk show, mark foreign lun, fc backend, iscsi backend, foreign disk, lun discovery, san migration 
+summary: 호스트에서 외부 LUN의 프로비저닝을 해제하고 ONTAP 이니시에이터에 매핑하여 ONTAP이 스토리지 스택에서 LUN을 검색할 수 있도록 합니다. 
+---
+= FLI 마이그레이션을 위한 외부 LUN 검색
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+백엔드 연결이 구성되면 먼저 호스트에서 소스(외부) LUN의 매핑을 해제하고 프로비저닝을 해제한 다음 외부 어레이(벤더 호스트 그룹 및 이니시에이터 레코드)의 ONTAP 이니시에이터 ID에 매핑하고 마스킹하여 ONTAP 검색을 위한 소스(외부) LUN을 프로비저닝합니다. 이때 이중으로 표시되지 않도록 해야 합니다.
+
+다음으로, 백엔드 경로가 엔드 투 엔드로 온라인 상태인지 확인합니다(FC FLI의 FC 영역 설정 및 마스킹 또는 iSCSI FLI의 ONTAP에서 대상으로의 정상적인 iSCSI 세션). 예상되는 경로 이중화 및 기본 적격성을 갖춘 상태로 ONTAP 스토리지 스택에서 외부 LUN이 검색되었는지 확인합니다.
+
+NetApp 이니시에이터에 외부 어레이 LUN 프로비저닝, 이 단계에서 가져오기 위해 식별된 LUN은 호스트 OS에서 이미 안전하게 프로비저닝 해제되었습니다. 이제 이 LUN을 NetApp iSCSI 이니시에이터가 있는 호스트 그룹(ONTAP의 iGroup에 해당)에 매핑해야 합니다.
+
+.예
+Pure Storage의 경우, LUN/볼륨을 이니시에이터(이 경우 NetApp 이니시에이터)에 매핑하는 데 사용되는 명령어는 다음과 같습니다.
+
+[listing]
+----
+purehost create <HOSTNAME>
+purehost list
+purehost list --all
+purehgroup create <HGROUP>
+purehgroup list
+purehgroup list --connect
+purevol connect --host <HOSTNAME> <VOLUME>
+purevol connect --hgroup <HGROUP> <VOLUME>
+----
+.시작하기 전에
+Foreign LUN Import는 FC 및 iSCSI 백엔드를 통해 지원됩니다. FLI 마이그레이션을 시작하기 전에 link:../configure/fc-connectivity-wiring.html["FC"] 또는 link:../configure/iscsi-setup-backend-connectivity.html["iSCSI"] 백엔드를 구성해야 합니다.
+
+.단계
+. 권한 수준을 고급으로 설정합니다.
++
+[source, cli]
+----
+set -privilege advanced
+----
+. 외부 LUN 가시성 확인:
++
+[source, cli]
+----
+storage disk show
+----
+. 외국어로 표시:
++
+[source, cli]
+----
+storage disk set-foreign-lun -disk <FOREIGN_DISK_ID> -is-foreign-lun true
+----
+. 외부 일련 번호 가져오기(대상 LUN 생성에 사용됨):
++
+[source, cli]
+----
+storage disk show -disk <FOREIGN_DISK_ID> -fields serial-number
+----
+. 검색된 외부 디스크를 외부 디스크로 표시합니다.
++
+[source, cli]
+----
+storage disk set-foreign-lun -disk <FOREIGN_DISK_ID> -is-foreign-lun true
+----
+. 외부 디스크 일련 번호 캡처(LUN 생성에 사용됨):
++
+[source, cli]
+----
+storage disk show -disk <FOREIGN_DISK_ID> -fields serial-number
+----
+
+
+*예*
+
+[listing]
+----
+C1_Cluster::*> storage disk show  -disk *NET*
+                     Usable           Disk    Container   Container
+Disk                   Size Shelf Bay Type    Type        Name      Owner
+---------------- ---------- ----- --- ------- ----------- --------- --------
+NET-1.1                   -     -   - LUN     foreign     -         -
+C1_Cluster::*>
+C1_Cluster::*> storage disk show -disk NET-1.1 -fields serial-number
+disk    serial-number
+------- -------------
+NET-1.1 wtJfv?ZnvjXa
+----

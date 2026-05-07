@@ -1,0 +1,37 @@
+---
+permalink: get-started/key-features-benefits.html 
+sidebar: sidebar 
+keywords: fli, foreign lun import, ontap fli, block migration, san migration, online migration, offline migration, key features, benefits, multipathing, fibre channel, iscsi, lun import, data migration, load balancing 
+summary: 온라인 및 오프라인 마이그레이션 옵션과 SAN 환경을 위한 블록 수준 LUN 마이그레이션을 포함한 ONTAP FLI의 주요 기능과 이점에 대해 알아보십시오. 
+---
+= ONTAP Foreign LUN Import의 주요 기능 및 이점에 대해 알아보십시오
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ONTAP Foreign LUN Import(FLI)는 타사(서드파티) 어레이 LUN에서 ONTAP 네이티브 LUN으로 데이터를 복사하는 내장 블록 마이그레이션 기능으로, 오프라인 및 온라인 마이그레이션 방식을 모두 지원합니다. FLI는 다양한 타사 어레이의 SAN LUN을 ONTAP로 마이그레이션하도록 설계되었으며, 여러 호스트 및 어레이에서 계획, 실행 및 검증을 표준화하는 데 도움이 되는 일관된 마이그레이션 방법론을 제공합니다.
+
+
+
+== 주요 기능
+
+* 비즈니스 다운타임 요구 사항에 맞춘 온라인 및 오프라인 마이그레이션.
+* 블록 수준의 OS 독립적 마이그레이션은 데이터를 이동하기 위해 호스트 볼륨 관리자나 OS 유틸리티에 의존하지 않습니다.
+* 이기종 SAN 환경에서 작동하며 다양한 타사 어레이의 SAN LUN을 ONTAP로 마이그레이션하도록 설계되었습니다.
+* 백엔드 전송은 FC 및 iSCSI 백엔드 연결 모두를 지원하여 유연하게 사용할 수 있지만, 지원되는 구성은 상호 운용성 검증에 따라 달라집니다.
+* 표준 SAN 경로 모델을 활용하는 네이티브 멀티패싱 및 로드 밸런싱을 지원합니다.
+* CLI 기반 제어 및 가시성을 통해 반복 가능한 실행과 운영 모니터링이 가능합니다.
+
+
+
+
+== 주요 이점
+
+* ONTAP FLI는 ONTAP에 포함되어 있습니다. FLI 기반 LUN 가져오기를 수행하기 위해 별도의 마이그레이션 어플라이언스가 필요하지 않습니다.
+* 호스트 액세스가 짧은 전환 후 재개될 수 있는 온라인 워크플로를 지원하여 다운타임 위험을 줄이고, 가져오기는 백그라운드에서 계속됩니다.
+* 다양한 호스트 및 어레이에서 계획, 실행 및 검증을 표준화하는 데 도움이 되는 일관된 마이그레이션 방법론입니다.
+* 정렬 및 형식 고려 사항을 전환 워크플로의 일부로 처리할 수 있는 7-Mode에서 ONTAP로의 마이그레이션을 포함한 복잡한 전환 시나리오를 지원합니다.
+* 전문 서비스가 필수는 아니지만 강력하게 지원되는 운영 모델이며, NetApp은 단순 마이그레이션을 넘어서는 모든 작업에 대해서는 범위 설정, 계획 수립 및 교육을 위해 전문 서비스 또는 자격을 갖춘 파트너를 활용할 것을 권장합니다.
+

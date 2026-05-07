@@ -1,0 +1,193 @@
+---
+permalink: phases/remediation-esxi.html 
+sidebar: sidebar 
+keywords: ontap, fli, foreign lun import, esxi host, pre-migration, offline fli, online fli 
+summary: ESXi 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다음 사전 마이그레이션 단계를 완료하십시오. 오프라인 마이그레이션과 온라인 마이그레이션에 대한 단계가 각각 다릅니다. 
+---
+= ONTAP FLI ESXi 호스트 해결
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+ESXi 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다음 사전 마이그레이션 단계를 완료하십시오. 오프라인 마이그레이션과 온라인 마이그레이션에 대한 단계가 각각 다릅니다.
+
+
+
+== 사전 마이그레이션 - 오프라인 FLI
+
+이 단계 그룹은 온라인 및 오프라인 FLI 모두에 공통적으로 적용됩니다. 호스트에서 소스 LUN의 프로비저닝을 해제하기 전에 다음 단계가 완료되었는지 확인하십시오.
+
+[cols="4"]
+|===
+| VM/VMDK | RDM | WSFC | VMSC 
+
+
+ a| 
+1단계: 게스트 VM을 정상적으로 종료합니다.
+ a| 
+1단계: RDM을 사용하는 VM의 경우, nmp 디바이스로 백엔드 매핑을 확인하고 RDM 디스크를 안전하게 제거합니다.
+ a| 
+1단계: WFSC가 있는 경우 클러스터를 정상적으로 종료하고 Windows 복구 단계를 따라 디스크를 제거하십시오.
+ a| 
+1단계: VM-HA 또는 VMSC가 구성된 경우 HA를 비활성화하고, 하트비트 디스크가 있는 경우 해제하고, 필요에 따라 클러스터 구성을 조정합니다.
+
+
+
+ a| 
+2단계: 마이그레이션 예정인 데이터 저장소를 마운트 해제합니다. 공유 데이터 저장소인 경우 모든 호스트에서 마운트 해제해야 합니다.
+ a| 
+2단계: 마이그레이션에 관련된 NMP 디바이스를 분리합니다.
+ a| 
+2단계: 게스트 VM을 정상적으로 종료합니다.
+ a| 
+2단계: 마이그레이션 예정인 데이터 저장소를 마운트 해제합니다. 공유 데이터 저장소인 경우 모든 호스트에서 마운트 해제해야 합니다.
+
+
+
+ a| 
+3단계: VMFS 잠금 모드(ATS 전용 vs ATS+SCSI)를 확인합니다. ATS 전용인 경우 SCSI로 변경합니다(온라인 FLI에만 필요).
+ a| 
+ a| 
+3단계: 마이그레이션 예정인 데이터 저장소를 마운트 해제합니다. 공유 데이터 저장소인 경우 모든 호스트에서 마운트 해제해야 합니다. a
+ a| 
+3단계: 마이그레이션에 관련된 NMP 디바이스를 분리합니다.
+
+
+
+ a| 
+4단계: 마이그레이션에 관련된 NMP 디바이스를 분리합니다.
+|   a| 
+4단계: 마이그레이션에 관련된 NMP 디바이스를 분리합니다.
+|  
+|===
+.알아두어야 할 핵심 사항
+* *ATS 전용* 설정은 데이터스토어의 첫 번째 익스텐트에 있는 VMFS 헤더에 저장됩니다. 데이터스토어가 여러 익스텐트에 걸쳐 있는 경우 첫 번째 익스텐트만 수정하면 됩니다.
+* 데이터 저장소가 여러 ESXi 호스트에서 공유되는 경우 일반적으로 한 호스트에서 업데이트하는 것으로 충분합니다. 다른 호스트는 재검색/재마운트 후 변경 사항을 적용합니다.
+* ATS 전용 모드를 변경하는 동안에는 데이터스토어에 대한 활성 I/O 작업이 실행 중이면 안 됩니다. VMware 지침에 따라 변경 사항을 적용하려면 VM을 대피/마이그레이션하거나 종료한 후 필요에 따라 마운트 해제/재마운트해야 합니다.
+
+
+
+
+=== ESX 예제 명령: 동기화 블록
+
+호스트를 유지보수 모드로 전환합니다::
+
+
+esxcli system maintenanceMode set --enable true
+
+스토리지 디바이스 및 데이터 저장소 식별::
+
+
+[Source]
+----
+esxcli storage core device list
+esxcli storage filesystem list
+----
+VMFS ATS 잠금 모드 확인::
+
+
+vmkfstools --queryfs -h /vmfs/volumes/<DATASTORE_NAME>
+
+데이터스토어를 마운트 해제합니다(공유하는 경우 모든 ESXi 호스트에서 반복)::
+
+
+esxcli storage filesystem unmount -l <DATASTORE_NAME>
+
+백업 디바이스(NMP/naa 디바이스)를 분리합니다::
+
+
+esxcli storage core device set -d <naa.ID> --state=off
+
+장치가 분리되었는지 확인하십시오::
+
+
+esxcli storage core device list -d <naa.ID>
+
+분리 후 다시 스캔하여 깨끗한 상태인지 확인하십시오::
+
+
+esxcli storage core adapter rescan --all
+
+완료 후 유지 관리 모드 종료::
+
+
+esxcli system maintenanceMode set --enable false
+
+
+
+== 사전 마이그레이션 - 온라인 FLI
+
+다음은 온라인 FLI의 구체적인 단계이지만 이러한 단계 전에 사전 마이그레이션 오프라인 FLI의 단계를 먼저 수행해야 합니다.
+
+NetApp LUN이 호스트에 프로비저닝된 후에는 다음 단계를 수행해야 합니다.
+
+이 시점에서 lun import는 이미 생성되었고, lun은 호스트 igroup에 매핑되었으며, 호스트에서 iSCSI 또는 FC Initiator가 로그인되어 있습니다.
+
+FLI가 오프라인 상태인 경우 NetApp LUN은 오프라인 상태로 유지됩니다.
+
+[cols="3"]
+|===
+| VM/VMDK | RDM | VMSC 
+
+
+| 1단계: 매핑된 모든 ESXi 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 ESXi 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 ESXi 호스트에서 스토리지를 다시 검색합니다. 
+
+
+| 2단계: 볼륨/디바이스 세부 정보를 나열하여 LUN의 파일 시스템 세부 정보를 확인합니다. | 2단계: 새로운 NAA ID를 식별하고 해당 VM에 RDM을 다시 추가합니다. | 2단계: 볼륨/디바이스 세부 정보를 나열하여 LUN의 파일 시스템 세부 정보를 확인합니다. 
+
+
+| 3단계: 데이터스토어 세부 정보를 확인하고 데이터스토어를 ESXi에 다시 마운트합니다. | 3단계: 게스트 VM을 켜고 애플리케이션을 시작합니다. | 3단계: 데이터스토어 세부 정보를 확인하고 데이터스토어를 ESXi에 다시 마운트합니다. 
+
+
+| 4단계: 게스트 VM의 전원을 켜고 애플리케이션을 시작합니다. |  | 4단계: 게스트 VM의 전원을 켜고 애플리케이션을 시작합니다. 
+
+
+|  |  | 5단계: 게스트 VM 전원을 켜고 애플리케이션을 시작합니다 
+|===
+
+NOTE: 최신 및 업데이트된 명령 목록은 OS 공급업체 설명서를 참조하십시오.
+
+호스트를 유지보수 모드로 전환합니다::
+
+
+esxcli system maintenanceMode set --enable true
+
+스토리지 디바이스 및 데이터 저장소 식별::
+
+
+[Source]
+----
+esxcli storage core device list
+esxcli storage filesystem list
+----
+VMFS ATS 잠금 모드 확인::
+
+
+vmkfstools --queryfs -h /vmfs/volumes/<DATASTORE_NAME>
+
+데이터스토어를 마운트 해제합니다(공유하는 경우 모든 ESXi 호스트에서 반복)::
+
+
+esxcli storage filesystem unmount -l <DATASTORE_NAME>
+
+ATS 전용이 감지되면 ATS+SCSI로 변환합니다.::
+
+
+vmkfstools --configATSOnly 0 /vmfs/volumes/<DATASTORE_NAME>
+
+백업 디바이스(NMP/naa 디바이스)를 분리합니다::
+
+
+esxcli storage core device set -d <naa.ID> --state=off
+
+장치가 분리되었는지 확인하십시오::
+
+
+esxcli storage core device list -d <naa.ID>
+
+분리 후 다시 스캔하여 깨끗한 상태인지 확인하십시오::
+
+
+esxcli storage core adapter rescan --all

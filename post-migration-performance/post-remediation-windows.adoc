@@ -1,0 +1,157 @@
+---
+permalink: post-migration-performance/post-remediation-windows.html 
+sidebar: sidebar 
+keywords: host remediation, windows, post-migration, fli, ontap 
+summary: 마이그레이션 후 Windows 호스트는 새로 가져온 LUN이 제대로 인식되고 작동하도록 하기 위한 수정 단계를 거쳐야 합니다. 
+---
+= ONTAP FLI Windows 마이그레이션 후 호스트 복구 작업을 수행합니다.
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+마이그레이션 후 Windows 호스트는 새로 가져온 LUN이 제대로 인식되고 작동하도록 하기 위한 수정 단계를 거쳐야 합니다.
+
+
+
+== 마이그레이션 후 - 오프라인 FLI
+
+오프라인 FLI의 경우, LUN 가져오기를 삭제하고 호스트 이니시에이터가 연결되었는지 확인한 후 LUN을 온라인 상태로 전환하십시오.
+
+[cols="4"]
+|===
+| 파일 시스템 디바이스 | 물리적 드라이브(파일 시스템 없음) | WFSC | Hyper V 
+
+
+| 1단계: 매핑된 모든 호스트의 스토리지를 다시 스캔합니다 | 1단계: 매핑된 모든 호스트의 스토리지를 다시 스캔합니다 | 1단계: 매핑된 모든 호스트의 스토리지를 다시 스캔합니다 | 1단계: 디스크 관리를 다시 검색합니다. 모든 디스크가 연결되어야 합니다. 
+
+
+| 2단계: 나열된 드라이브를 확인하고 디스크를 온라인 상태로 전환합니다 | 2단계: 필요한 애플리케이션에 물리적 디스크를 추가하고 시작합니다. | 2단계: 나열된 드라이브를 확인하고 디스크를 온라인 상태로 전환합니다. | 2단계: 디스크를 선택하고 온라인 상태로 전환합니다. 모든 디스크가 ONLINE 상태가 되고 원래 이름과 디스크 문자를 할당받아야 합니다. 
+
+
+| 3단계: 모든 파일 시스템 디스크가 사용 가능하고 정상적으로 작동하는지 확인합니다 |  | 3단계: 매핑된 모든 호스트에 드라이브가 사용 가능하고 ONLINE 상태인지 확인합니다. | 3단계: Virtual Machine의 전원을 켜보세요. Virtual Machine이 문제없이 온라인 상태가 되어야 합니다. 
+
+
+| 4단계: 필요한 애플리케이션 시작 |  | 4단계: WFSC 클러스터 애플리케이션을 시작하고 필요한 클러스터형 리소스를 구성합니다. |  
+|===
+
+
+== 마이그레이션 후 - 온라인 FLI
+
+LUN 가져오기를 삭제한 후, LUN에 -space-reserve가 비활성화되고 -space-allocation이 활성화되어 있는지 확인하십시오. 그렇지 않은 경우, 적절하게 수정하십시오.
+
+[cols="2"]
+|===
+| 파일 시스템 디바이스 | 물리적 드라이브(파일 시스템 없음) 
+
+
+| 1단계: 매핑된 모든 호스트의 스토리지를 다시 스캔합니다 | 1단계: 매핑된 모든 호스트의 스토리지를 다시 스캔합니다 
+
+
+| 2단계: 대상 측에서 공간 할당이 활성화된 경우 변경 사항을 반영하려면 호스트를 재부팅해야 합니다. | 2단계: 대상 측에서 공간 할당이 활성화된 경우 변경 사항을 반영하려면 호스트를 재부팅해야 합니다. 
+|===
+
+
+=== 파일 시스템 디바이스
+
+.단계
+. 매핑된 모든 호스트의 스토리지를 다시 스캔합니다
++
+[source, cli]
+----
+Update-HostStorageCache
+----
+. 나열된 드라이브를 식별하고 디스크를 온라인 상태로 만드십시오.
++
+[source, cli]
+----
+Get-Disk | Where-Object IsOffline -eq $true
+Set-Disk -Number <DiskNumber> -IsOffline $false
+----
+. 파일 시스템 디스크가 모두 사용 가능하고 정상적으로 작동하는지 확인하십시오.
++
+[source, cli]
+----
+Get-Volume | Format-Table DriveLetter, FileSystemLabel, Size, SizeRemaining
+----
+. 필요한 애플리케이션을 시작합니다.
++
+[source, cli]
+----
+Start-Service -Name <ServiceName>
+----
+
+
+
+
+=== 물리적 드라이브(파일 시스템 없음)
+
+.단계
+. 매핑된 모든 호스트의 스토리지를 다시 스캔합니다.
++
+[source, cli]
+----
+Update-HostStorageCache
+----
+. 필요한 애플리케이션에 물리적 디스크를 추가하고 시작하십시오.
+
+
+
+
+=== WSFC
+
+.단계
+. 매핑된 모든 호스트의 스토리지를 다시 스캔합니다.
++
+[source, cli]
+----
+Update-HostStorageCache
+----
+. 나열된 드라이브를 식별하고 디스크를 온라인 상태로 만드십시오.
++
+[source, cli]
+----
+Get-Disk | Where-Object IsOffline -eq $true
+Set-Disk -Number <DiskNumber> -IsOffline $false
+----
+. 매핑된 모든 호스트에 드라이브가 사용 가능하고 ONLINE 상태인지 확인하십시오.
++
+[source, cli]
+----
+Get-ClusterResource | Where-Object ResourceType -eq "Physical Disk"
+----
+. WSFC 클러스터 애플리케이션을 시작하고 필요한 클러스터형 리소스를 구성합니다.
++
+[source, cli]
+----
+Start-Cluster -Name <ClusterName>
+Start-ClusterResource -Name <ResourceName>
+----
+
+
+
+
+=== Hyper V
+
+.단계
+. 디스크 관리를 다시 검색하면 모든 디스크가 연결됩니다.
++
+[source, cli]
+----
+Update-HostStorageCache
+----
+. 디스크를 선택하고 온라인 상태로 전환하면 모든 디스크가 온라인 상태가 되고 원래 이름과 디스크 문자를 받게 됩니다.
++
+[source, cli]
+----
+Get-Disk | Where-Object IsOffline -eq $true
+Set-Disk -Number <DiskNumber> -IsOffline $false
+----
+. 가상 머신의 전원을 켜보십시오. 가상 머신이 문제없이 온라인 상태가 되어야 합니다.
++
+[source, cli]
+----
+Start-VM -Name <VM_Name>
+----
+

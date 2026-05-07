@@ -1,0 +1,157 @@
+---
+permalink: phases/remediation-solaris.html 
+sidebar: sidebar 
+keywords: ontap, fli, foreign lun import, solaris host, pre-migration, offline fli, online fli 
+summary: Solaris 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다음 사전 마이그레이션 단계를 완료하십시오. 오프라인 마이그레이션과 온라인 마이그레이션에 대한 단계가 각각 다릅니다. 
+---
+= ONTAP FLI Solaris 호스트 수정
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Solaris 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다음 사전 마이그레이션 단계를 완료하십시오. 오프라인 마이그레이션과 온라인 마이그레이션에 대한 단계가 각각 다릅니다.
+
+
+
+== 사전 마이그레이션 - 오프라인 FLI
+
+이러한 단계는 온라인 및 오프라인 FLI 모두에 공통적으로 적용됩니다. 호스트에서 소스 LUN의 프로비저닝을 해제하기 전에 다음 단계를 완료했는지 확인하십시오.
+
+[cols="3"]
+|===
+| 파일 시스템(ZFS/Zpool) | OSC(Oracle Sun Cluster)(SCSI3 PR) 및 Zpool | SANBOOT 
+
+
+| 1단계: 엔드 투 엔드 블록 디바이스 구성 수집: 다중 경로 상태/경로, 블록 디바이스의 Zpool 레이아웃 및 올바른 부팅 디바이스와 부팅 매개변수를 확인하는 OBP(ok 프롬프트) 설정. | 1단계: 엔드 투 엔드 블록 장치 구성 수집: 다중 경로 상태/경로, 블록 장치의 LVM 레이아웃 및 올바른 부팅 장치와 부팅 매개 변수를 확인하는 OBP 설정. | 1단계: 엔드 투 엔드 SAN 부팅 구성: 다중 경로 상태/경로, 부팅 LUN의 RPool 레이아웃 및 올바른 부팅 장치와 부팅 매개 변수를 확인하는 OBP 설정을 수집합니다. 
+
+
+| 2단계: 대상 마운트 지점에 대한 모든 작업이 일시 중지되었는지 확인합니다. 블록 장치에 액세스하는 프로세스가 남아 있지 않은지 확인합니다. 필요한 경우 열려 있는 프로세스 핸들을 비우거나 종료합니다. | 2단계: 마이그레이션할 각 LUN에 대한 클러스터 리소스 그룹을 비활성화합니다. | 2단계: 호스트를 재부팅하여 위의 변경 사항이 정상적으로 적용되는지 확인합니다. 호스트가 정상적으로 부팅되면 FLI 마이그레이션을 위한 호스트 사전 복구 작업이 완료된 것입니다. 
+
+
+| 3단계: 풀이 사용 중이 아닌지 확인합니다. 풀을 사용하는 파일 시스템의 마운트를 해제합니다. | 3단계: 풀이 사용 중이 아닌지 확인하십시오 | 3단계: 이제 ONTAP FLI 워크플로우를 진행하기 위해 sanboot 호스트를 종료합니다. 
+
+
+| 4단계: 풀 내보내기 확인 | 4단계: OSC 구성에서 소스 LUN을 제거합니다. |  
+
+
+| 5단계: 필요한 경우 호스트 SCSI 버스 재검색을 수행합니다. 예: `devfsadm` | 5단계: 오래된 SCSI 장치 파일이 있으면 모두 제거합니다. 참고: LUN 영구 예약이 있는 경우 이를 지우고 PR 키가 없는지 확인하십시오 |  
+
+
+|  | 6단계: 호스트를 다시 스캔하여 기존 디바이스 매핑에 오래된 항목이 없는지 확인합니다. |  
+|===
+
+NOTE: 최신 및 업데이트된 명령 목록은 OS 공급업체 설명서를 참조하십시오.
+
+.단계
+. 스토리지 디바이스를 식별합니다.
++
+[Source]
+----
+echo | format
+sanlun lun show all (This is only applicable for NetApp devices)
+mpathadm list lu
+mpathadm show lu lu_name
+luxadm display node wwn/ disk path
+----
+. zpool과 파일 시스템을 식별합니다.
++
+[Source]
+----
+zpool status <zpool_name>
+df -h
+----
+. 파일 시스템을 마운트 해제하고 내보냅니다.
++
+[Source]
+----
+zfs umount /mount_point
+zpool export <zpool_name>
+df -h (to ensure its unmounted)
+----
+. SCSI 블록 디바이스를 제거합니다.
++
+[Source]
+----
+rm /dev/rdsk/disk_ID
+----
+. 장치가 분리되었는지 확인하십시오.
++
+format | grep disk_id
+
+. 분리 후 다시 스캔하여 깨끗한 상태인지 확인하십시오.
++
+cfgadm -al
+
+
+
+
+
+== 사전 마이그레이션 - 온라인 FLI
+
+아래는 온라인 FLI의 구체적인 단계이지만, 이러한 단계는 사전 마이그레이션 단계인 오프라인 FLI 단계를 먼저 수행해야 합니다. 다음 단계는 NetApp LUN이 호스트에 프로비저닝된 후에 수행해야 합니다.
+
+[cols="4"]
+|===
+| 파일 시스템 | 블록 디바이스 | LVM(FS) | Sanboot 
+
+
+| 1단계: 매핑된 모든 Solaris 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 Solaris 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 Solaris 호스트에서 스토리지를 다시 검색합니다. | 1단계: 서버 전원을 켭니다. 
+
+
+| 2단계: 다중 경로 스토리지 디바이스를 식별합니다. | 2단계: 다중 경로 디바이스를 식별합니다. | 2단계: 다중 경로 디바이스를 식별합니다. | 2단계: SPARC 서버 OBP에서 이 호스트 HBA에 제공되는 새 부팅 장치를 구성합니다. nvalias를 수정하여 새 디스크 경로를 나타내도록 합니다. 
+
+
+| 3단계: 파일 시스템 세부 정보를 확인합니다. | 3단계: 다중 경로 디바이스 ID를 식별하고 해당 애플리케이션에 제공합니다. | 3단계: 풀 상태를 확인합니다. | 3단계: LUN 가져오기의 일부인 새로 매핑된 LUN에서 부팅하도록 호스트를 다시 시작합니다. 
+
+
+| 4단계: 장치를 각각의 폴더에 다시 마운트합니다. |  | 4단계: 풀을 가져옵니다. |  
+
+
+|  |  | 5단계: 풀 상태를 확인합니다. |  
+
+
+|  |  | 6단계: 풀/ZFS를 마운트합니다. |  
+|===
+
+NOTE: 최신 및 업데이트된 명령 목록은 OS 공급업체 설명서를 참조하십시오.
+
+.단계
+. 스토리지 디바이스를 식별합니다.
++
+[Source]
+----
+format
+sanlun lun show all
+mpathadm list lu
+mpathadm show lu
+----
+. zpool과 파일 시스템을 식별합니다.
++
+[Source]
+----
+zpool status <zpool_name>
+df -h
+----
+. Varyoffvg 및 파일 시스템 마운트 해제.
++
+[Source]
+----
+zfs umount /mount_point
+zpool export <zpool_name>
+df -h (to ensure its unmounted)
+----
+. SCSI 블록 디바이스를 제거합니다.
++
+rm /dev/rdsk/disk_ID
+
+. 장치가 분리되었는지 확인하십시오.
++
+format | grep disk_id
+
+. 분리 후 다시 스캔하여 깨끗한 상태인지 확인하십시오.
++
+cfgadm -al
+
+

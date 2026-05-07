@@ -1,0 +1,157 @@
+---
+permalink: phases/remediation-aix.html 
+sidebar: sidebar 
+keywords: ontap, fli, foreign lun import, aix host, pre-migration, offline fli, online fli 
+summary: AIX 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다음 사전 마이그레이션 단계를 완료하십시오. 오프라인 마이그레이션과 온라인 마이그레이션에 대한 단계가 각각 다릅니다. 
+---
+= ONTAP FLI AIX 호스트 복구
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+AIX 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다음 사전 마이그레이션 단계를 완료하십시오. 오프라인 마이그레이션과 온라인 마이그레이션에 대한 단계가 각각 다릅니다.
+
+
+
+== 사전 마이그레이션 - 오프라인 FLI
+
+이러한 단계는 온라인 및 오프라인 FLI 모두에 공통적으로 적용됩니다. 호스트에서 소스 LUN의 프로비저닝을 해제하기 전에 다음 단계를 완료했는지 확인하십시오.
+
+[cols="5"]
+|===
+| 파일 시스템 | 블록 디바이스 | LVM(FS) | 클러스터 | Sanboot 
+
+
+| 1단계: 마이그레이션 범위에 있는 파일 시스템의 LUN 세부 정보를 캡처합니다. | 1단계: 마이그레이션 범위에 포함된 원시 블록 디바이스(파일 시스템 없음)로 사용되는 LUN 세부 정보를 캡처합니다. | 1단계: 마이그레이션 범위에 포함되는 LVM 구성이 있는 호스트에 매핑된 LUN을 캡처합니다. | 1단계: 전체 클러스터 세부 정보와 마이그레이션에 관련된 디스크를 캡처합니다. | 1단계: SAN 부팅 LUN 세부 정보 및 관련 파티션 정보를 캡처합니다. 
+
+
+| 2단계: 파일 시스템을 마운트 해제합니다. | 2단계: 다중 경로 장치와 연결된 SCSI 블록 장치를 제거합니다. | 2단계: LVM 장치가 이미 마운트되어 있는 경우 마운트를 해제합니다. | 2단계: 권장 절차에 따라 클러스터 서비스를 정상적으로 종료합니다. | 2단계: 운영체제와 IPL(Initial Program Load)/SMS 메뉴에서 부팅 장치 목록을 확인합니다. 모든 장치가 장치 이름으로 올바르게 참조되는지 확인하십시오. 
+
+
+| 3단계: 다중 경로 장치와 연결된 SCSI 블록 장치를 제거합니다. | 3단계: 모든 디바이스를 다시 스캔합니다. | 3단계: VG를 백업하고 VG를 비활성화/끄십시오. 예: `varyoffvg vg_name` | 3단계: 다중 경로 장치와 연결된 SCSI 블록 장치를 제거합니다. 예: `rmdev -Rdl hdiskx` |  
+
+
+| 4단계: 호스트를 다시 스캔하여 기존 디바이스 매핑의 오래된 항목이 없는지 확인합니다. | 4단계: 호스트를 다시 스캔하여 기존 디바이스 매핑의 오래된 항목이 없는지 확인합니다. | 4단계: 호스트를 다시 스캔하여 기존 디바이스 매핑의 오래된 항목이 없는지 확인합니다. 예: `cfgmgr` | 4단계: 호스트를 다시 스캔하여 기존 디바이스 매핑에 오래된 항목이 없는지 확인합니다. |  
+|===
+
+NOTE: 최신 및 업데이트된 명령 목록은 OS 공급업체 설명서를 참조하십시오.
+
+.단계
+. 스토리지 디바이스를 식별합니다.
++
+[Source]
+----
+lsdev -Cc disk
+sanlun lun show all (This works only for NetApp storage)
+sanlun lun show all -pv
+lsmpio -l hdiskx
+----
+. 볼륨 그룹과 파일 시스템을 식별합니다.
++
+[Source]
+----
+lspv
+lsvg <vg_name>
+lsvg -l <vg_name>
+lsvg -p <vs_name>
+----
+. Varyoffvg 및 파일 시스템 마운트 해제.
++
+[Source]
+----
+df -g (to get the mount points)
+umount /mount_point
+varyoffvg <vg_name>
+df -g (to ensure its unmounted)
+----
+. SCSI 블록 디바이스를 제거합니다.
++
+rmdev -Rdl hdiskx
+
+. 장치가 분리되었는지 확인하십시오.
++
+lspv |grep hdiskx
+
+. 분리 후 다시 스캔하여 깨끗한 상태인지 확인하십시오.
++
+cfgmgr
+
+
+
+
+
+== 사전 마이그레이션 - 온라인 FLI
+
+아래는 온라인 FLI를 위한 구체적인 단계이지만, 이 단계에 앞서 위의 사전 마이그레이션 - 오프라인 FLI 섹션에 있는 단계를 완료해야 합니다.
+
+NetApp LUN이 호스트에 프로비저닝된 후에는 다음 단계를 수행해야 합니다.
+
+이 시점에서 LUN 가져오기는 이미 생성되었고, LUN은 호스트 igroup에 매핑되었으며, 호스트에서 iSCSI 또는 FC Initiator가 로그인되어 있습니다.
+
+오프라인 FLI의 경우 NetApp LUN은 오프라인 상태를 유지합니다.
+
+[cols="4"]
+|===
+| 파일 시스템 | 블록 디바이스 | LVM(FS) | Sanboot 
+
+
+| 1단계: 매핑된 모든 AIX 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 AIX 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 AIX 호스트에서 스토리지를 다시 검색합니다. | 1단계: 서버 전원을 켭니다. 
+
+
+| 2단계: 다중 경로 디바이스를 식별합니다. 예: `lsdev -Cc disk; lsmpio -l hdiskx` | 2단계: 다중 경로 디바이스를 식별합니다. 예: `lsdev -Cc disk; lsmpio -l hdiskx` | 2단계: 다중 경로 디바이스를 식별합니다. 예: `lsdev -Cc disk; lsmpio -l hdiskx` | 2단계: IPL(Initial Program Load)/SMS 메뉴에서 부팅 장치 목록에 새 스토리지 장치의 장치 목록을 참조하여 새 LUN이 표시되는지 확인합니다. 부팅 순서를 새 장치 목록 경로로 설정합니다. 
+
+
+| 3단계: 파일 시스템 세부 정보를 확인합니다. | 3단계: 다중 경로 디바이스 ID를 식별하고 해당 애플리케이션에 제공합니다. | 3단계: 새 LUN이 검색되었는지 확인합니다. | 3단계: 서버가 정상적으로 부팅되는지 확인합니다. 
+
+
+| 4단계: 장치를 각각의 폴더에 다시 마운트합니다. |  | 4단계: VG는 자동으로 활성화되어야 합니다. |  
+
+
+|  |  | 5단계: VG, LV 및 파일 시스템이 활성화되어 있고 마운트 가능한지 확인합니다. |  
+|===
+
+NOTE: 최신 및 업데이트된 명령 목록은 OS 공급업체 설명서를 참조하십시오.
+
+.단계
+. 스토리지 디바이스 식별
++
+[Source]
+----
+lsdev -Cc disk
+sanlun lun show all (This works only for NetApp storage)
+sanlun lun show all -pv
+lsmpio -l hdiskx
+----
+. 볼륨 그룹과 파일 시스템을 식별합니다.
++
+[Source]
+----
+lspv
+lsvg <vg_name>
+lsvg -l <vg_name>
+lsvg -p <vs_name>
+----
+. Varyoffvg 및 파일 시스템 마운트 해제.
++
+[Source]
+----
+df -g (to get the mount points)
+umount /mount_point
+varyoffvg <vg_name>
+df -g (to ensure its unmounted)
+----
+. SCSI 블록 디바이스를 제거합니다.
++
+rmdev -Rdl
+
+. 장치가 분리되었는지 확인하십시오.
++
+lspv |grep hdiskx
+
+. 분리 후 다시 스캔하여 깨끗한 상태인지 확인하십시오.
++
+cfgmgr
+
+

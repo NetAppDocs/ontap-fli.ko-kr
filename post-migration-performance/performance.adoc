@@ -1,0 +1,80 @@
+---
+permalink: post-migration-performance/performance.html 
+sidebar: sidebar 
+keywords: fli performance, foreign lun import, import throttle, throughput, lun import pause, lun import resume, iscsi fli, performance counters, san migration, bandwidth 
+summary: 스로틀 제어를 사용하여 FLI 가져오기 처리량을 관리함으로써 워크로드 부족 현상을 줄이고 활성 프로덕션 워크로드 동안 대역폭 균형을 유지하십시오. 
+---
+= ONTAP FLI 성능 제어
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+외부 LUN 가져오기(FLI)에는 워크로드 부족 위험을 줄이고 프로덕션 I/O가 활성화된 동안 가져오기에 사용되는 대역폭을 관리하는 데 도움이 되는 제어 기능이 포함되어 있습니다.
+
+가져오기 속도를 제한합니다(가져오기 처리량 제한):: ONTAP는 LUN 가져오기 스로틀 기능을 제공하여 가져오기 관계에 최대 처리량 제한을 적용합니다. 값이 0이면 가져오기가 사용자 I/O와 함께 최선을 다해 실행되고, 0이 아닌 값은 가져오기 대역폭을 제한합니다:
++
+--
+최대 가져오기 처리량(예: 3MB/s)을 설정하려면 다음을 수행하십시오.
+
+[source, cli]
+----
+set -privilege advanced
+lun import throttle -vserver <SVM> -path <LUN_PATH> -max-throughput-limit 3MB
+----
+--
+자세한 가져오기 진행 상황 및 처리량 모니터링:: lun import show -instance(또는 -fields)를 사용하여 현재 처리량, 최대 처리량 제한 및 가져오기에 표시된 QoS 컨텍스트를 포함한 자세한 상태를 확인합니다.
++
+--
+[source, cli]
+----
+set -privilege advanced
+lun import show -instance
+----
+--
+일시 중지(운영 제한):: 온라인 가져오기가 호스트 I/O와 백엔드 리소스를 공유하는 경우, 호스트 I/O가 복구될 수 있도록 가져오기를 일시 중지한 다음 마지막 체크포인트에서 다시 시작하는 것이 운영상 유용할 수 있습니다.
++
+--
+[source, cli]
+----
+set -privilege advanced
+lun import pause -vserver <SVM> -path <LUN_PATH>
+----
+--
+가져오기 재개::
++
+--
+[source, cli]
+----
+set -privilege advanced
+lun import resume -vserver <SVM> -path <LUN_PATH>
+----
+--
+
+
+
+
+== iSCSI FLI 성능 카운터
+
+사용 가능한 객체 검색/확인(선택 사항):: `statistics catalog object show | grep -i iswi`
+통계 수집 시작:: `statistics start -object iswi_session -sample_id import_in_progress`
+iSCSI 이니시에이터 세션 카운터를 수집합니다.:: `statistics show -sample-id import_in_progress`
+
+
+
+
+== ONTAP FLI 성능에 영향을 미치는 요인
+
+가져오기를 완료하는 시간은 다음을 포함한 여러 변수의 영향을 받습니다.
+
+* 소스와 대상 간의 동시 마이그레이션 수
+* 소스 어레이 용량 및 현재 로드
+* 대상 ONTAP 기능 및 현재 로드
+* 마이그레이션 중 호스트 I/O 양(특히 온라인 가져오기에 중요)
+* 프런트엔드 패브릭 및 네트워크 특성(대역폭, 팬인(Fan-in) 및 팬아웃, 전체 토폴로지 등)
+* 인터클러스터 LIF 리소스를 사용하는 기타 FLI 이외의 ONTAP 애플리케이션
+* 동시성 측면에서 FLI의 일반적인 지침은 최상의 성능을 위해 노드당 동시 마이그레이션을 8개 이하로 제한할 것을 권장합니다.
+
+
+이러한 변수들은 환경에 따라 달라지기 때문에 성능을 예측하는 가장 신뢰할 수 있는 방법은 크기가 다른 여러 테스트 마이그레이션을 실행한 다음 측정된 처리량을 사용하여 운영 기간을 계획하는 것입니다.

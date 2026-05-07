@@ -1,0 +1,20 @@
+---
+permalink: get-started/learn-about-7-mode.html 
+sidebar: sidebar 
+keywords: 7 mode transition, foreign lun import, fli, ontap, clustered ontap, lun migration, online workflow, offline workflow, 32 bit aggregates, misaligned lun, data migration, 7 mode to ontap 
+summary: 온라인 또는 오프라인 워크플로를 사용하여 NetApp 7-Mode 시스템에서 clustered ONTAP로 LUN을 마이그레이션하기 위해 Foreign LUN Import를 사용하는 방법을 알아보십시오. 
+---
+= Foreign LUN Import 7-Mode에서 ONTAP로의 전환에 대해 알아보십시오
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+소스 LUN이 ONTAP 7 모드를 실행하는 NetApp 시스템에 호스팅되어 있고 해당 LUN을 클러스터형 ONTAP로 마이그레이션하려는 경우 7 모드와 클러스터 모드 ONTAP 간의 외부 LUN 가져오기를 사용한 데이터 마이그레이션입니다. 이 접근 방식은 32비트 애그리게이트에 호스팅된 LUN이나 정렬되지 않은 LUN과 같은 레거시 시나리오에 특히 유용하며, 외부 LUN 가져오기는 다른 사용 사례에도 활용될 수 있습니다.
+
+외부 LUN 가져오기를 사용한 데이터 마이그레이션은 온라인 또는 오프라인 워크플로를 사용하여 수행할 수 있습니다. 운영 방식은 표준 FLI 온라인 및 오프라인 마이그레이션과 동일한 순서와 규칙을 따르며, 유일한 차이점은 소스 어레이가 타사 어레이가 아닌 NetApp 7 Mode 컨트롤러라는 점입니다.
+
+즉, 소스가 외부 어레이이든 NetApp 7 Mode 어레이이든 핵심 FLI 마이그레이션 워크플로는 동일하며, 소스 플랫폼만 변경됩니다.
+
+iSCSI FLI는 NetApp 7 Mode 소스에서 가져오기를 지원하지 않습니다.

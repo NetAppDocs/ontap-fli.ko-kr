@@ -1,0 +1,12 @@
+---
+section: migrate
+title: FLI 마이그레이션
+entries:
+- title: 외부 LUN 검색
+  url: "/migrate/discover-foreign-luns.html"
+- title: 가져오기 관계 생성
+  url: "/migrate/create-import-relationship.html"
+- title: 마이그레이션 실행 및 모니터링
+  url: "/migrate/execute-monitor.html"
+- title: 소스 LUN을 확인하고 삭제합니다
+  url: "/migrate/verify-delete.html"

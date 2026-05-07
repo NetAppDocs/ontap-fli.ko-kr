@@ -1,0 +1,53 @@
+---
+permalink: post-migration-performance/post-remediation-linux.html 
+sidebar: sidebar 
+keywords: host remediation, linux, post-migration, fli, ontap 
+summary: 마이그레이션 후 Linux 호스트는 새로 가져온 LUN이 제대로 인식되고 작동하도록 하기 위한 수정 단계를 거쳐야 합니다. 
+---
+= ONTAP FLI Linux 마이그레이션 후 호스트 문제 해결을 수행합니다.
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+마이그레이션 후 Linux 호스트는 새로 가져온 LUN이 제대로 인식되고 작동하도록 하기 위한 수정 단계를 거쳐야 합니다.
+
+
+
+== 마이그레이션 후 - 오프라인 FLI
+
+오프라인 FLI의 경우, LUN 가져오기를 삭제하고 호스트 이니시에이터가 연결되었는지 확인한 후 LUN을 온라인 상태로 전환하십시오.
+
+[cols="3"]
+|===
+| 파일 시스템(LVM 및 Non-LVM) | LVM이 있는 Pacemaker(SCSI3 PR) | SANBOOT 
+
+
+| 1단계: 매핑된 모든 Linux 호스트에서 스토리지를 다시 검색합니다 | 1단계: 매핑된 모든 Linux 호스트에서 스토리지를 다시 검색합니다 | 1단계: 서버 전원 켜기 
+
+
+| 2단계: 다중 경로 디바이스를 검색합니다. | 2단계: 다중 경로 장치를 검색합니다. 마이그레이션된 LUN이 PCS Stonith 구성에 추가되었는지 확인합니다. | 2단계: 서버 HBA BIOS 또는 UEFI에서 이 호스트 HBA에 제공되는 새 부팅 장치를 구성합니다 
+
+
+| 3단계: 볼륨 그룹을 가져오고 VG 활성화를 수행합니다. | 3단계: 새로 발견된 VG/LVM에 대해 VG 구성 백업 복원을 수행한 후 VG를 활성화합니다. | 3단계: LUN 가져오기의 일부인 새로 매핑된 LUN에서 부팅하도록 호스트를 재시작합니다 
+
+
+| 4단계: LVM 구성을 해당 마운트 지점에 마운트합니다. | 4단계: 새 PCS 리소스 그룹을 생성하고 사용 가능한 LV 및 파일 시스템에 해당하는 리소스를 추가합니다. 참고: 새로 활성화된 LVM 객체는 LV 및 파일 시스템 구조를 그대로 유지합니다. |  
+
+
+|  | 5단계: 모든 리소스에 대한 PCS 클러스터 상태가 온라인이고 사용 가능한 상태인지 확인합니다. |  
+|===
+
+
+== 마이그레이션 후 - 온라인 FLI
+
+LUN 가져오기를 삭제한 후 LUN에 `-space-reserve disabled` 및 `-space-allocation enabled`가 설정되어 있는지 확인하십시오. 설정되어 있지 않으면 적절하게 수정하십시오.
+
+[cols="4"]
+|===
+| 파일 시스템 | 블록 디바이스 | LVM(FS) | Sanboot 
+
+
+| 1단계: 매핑된 모든 Linux 호스트에서 스토리지를 다시 검색합니다 | 1단계: 매핑된 모든 Linux 호스트에서 스토리지를 다시 검색합니다 | 1단계: 매핑된 모든 Linux 호스트에서 스토리지를 다시 검색합니다 | 1단계: 매핑된 모든 Linux 호스트에서 스토리지를 다시 검색합니다 
+|===

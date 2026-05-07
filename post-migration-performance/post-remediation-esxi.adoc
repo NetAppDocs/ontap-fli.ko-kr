@@ -1,0 +1,242 @@
+---
+permalink: post-migration-performance/post-remediation-esxi.html 
+sidebar: sidebar 
+keywords: host remediation, esxi, post-migration, fli, ontap 
+summary: 마이그레이션 후 ESXi 호스트는 새로 가져온 LUN이 제대로 인식되고 작동하도록 하기 위한 수정 단계를 거쳐야 합니다. 
+---
+= ONTAP FLI ESXi 마이그레이션 후 호스트 복구 작업을 수행합니다.
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+마이그레이션 후 ESXi 호스트는 새로 가져온 LUN이 제대로 인식되고 작동하도록 하기 위한 수정 단계를 거쳐야 합니다.
+
+
+
+== 마이그레이션 후 - 오프라인 FLI
+
+오프라인 FLI의 경우, LUN 가져오기를 삭제하고 호스트 이니시에이터가 연결되었는지 확인한 후 LUN을 온라인 상태로 전환하십시오.
+
+[cols="4"]
+|===
+| VM/VMDK | RDM | WFSC | VMSC 
+
+
+| 1단계: 매핑된 모든 ESXi 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 ESXi 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 ESXi 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 ESXi 호스트에서 스토리지를 다시 검색합니다. 
+
+
+| 2단계: 볼륨/디바이스 세부 정보를 나열하여 LUN의 파일 시스템 세부 정보를 확인합니다. | 2단계: 새로운 NAA ID를 식별하고 해당 VM에 RDM을 다시 추가합니다. | 2단계: 볼륨/디바이스 세부 정보를 나열하여 LUN의 파일 시스템 세부 정보를 확인합니다. | 2단계: 볼륨/디바이스 세부 정보를 나열하여 LUN의 파일 시스템 세부 정보를 확인합니다. 
+
+
+| 3단계: 데이터스토어 세부 정보를 확인하고 데이터스토어를 ESXi에 다시 마운트합니다. | 3단계: 게스트 VM을 켜고 애플리케이션을 시작합니다. | 3단계: 데이터스토어 세부 정보를 확인하고 데이터스토어를 ESXi에 다시 마운트합니다. | 3단계: 데이터스토어 세부 정보를 확인하고 데이터스토어를 ESXi에 다시 마운트합니다. 
+
+
+| 4단계: 데이터 저장소 세부 정보를 확인하고 데이터 저장소를 ESXi에 다시 마운트합니다. |  | 4단계: 데이터 저장소 세부 정보를 확인하고 데이터 저장소를 ESXi에 다시 마운트합니다. | 4단계: 게스트 VM의 전원을 켜고 애플리케이션을 시작합니다. 
+
+
+|  |  | 5단계: 클러스터에서 사용되는 RDM 디스크를 식별하고 동일한 컨트롤러 ID 및 유닛 번호(예: SCSI1:0)를 사용하여 WFSC 클러스터 노드에 다시 매핑하여 이전 구성과의 일관성을 유지합니다. | 5단계: 게스트 VM 전원을 켜고 애플리케이션을 시작합니다 
+
+
+|  |  | 6단계: 게스트 VM의 전원을 켜고 클러스터 애플리케이션을 시작합니다. |  
+|===
+
+NOTE: 최신 및 업데이트된 명령 목록은 OS 공급업체 설명서를 참조하십시오.
+
+분리 후 다시 스캔하여 깨끗한 상태인지 확인하십시오::
+
+
+[source, cli]
+----
+esxcli storage core adapter rescan --all
+----
+완료 후 유지 관리 모드 종료::
+
+
+[source, cli]
+----
+esxcli system maintenanceMode set --enable false
+----
+LUN에 매핑된 모든 ESXi 호스트에서 스토리지를 다시 검색합니다::
+
+
+[source, cli]
+----
+esxcli storage core adapter rescan --all
+----
+LUN/파일 시스템 세부 정보를 확인하기 위해 장치 및 파일 시스템을 나열합니다::
+
+
+[source, cli]
+----
+esxcli storage core device list
+esxcli storage filesystem list
+----
+마이그레이션 후 변경된 경우 새 NAA ID를 식별합니다::
+
+
+[source, cli]
+----
+esxcli storage core device list | grep -i naa
+----
+VMFS 데이터 저장소를 ESXi에 다시 마운트합니다::
+
+
+[source, cli]
+----
+esxcli storage filesystem mount -l <DATASTORE_NAME>
+----
+데이터 저장소 마운트를 확인합니다::
+
+
+[source, cli]
+----
+esxcli storage filesystem list
+----
+vSphere UI를 통해 VM에 RDM을 다시 추가합니다.:: CLI는 일반적으로 사용되지 않으며, 대신 백엔드 디바이스 가시성을 확인하십시오.
++
+--
+[source, cli]
+----
+esxcli storage core device list -d <naa.ID>
+----
+--
+유지보수 모드 종료(해당되는 경우)::
+
+
+[source, cli]
+----
+esxcli system maintenanceMode set --enable false
+----
+게스트 VM 전원 켜기::
++
+--
+(VM 전원 관리 작업은 일반적으로 vCenter를 통해 수행되지만 ESXi 호스트에서 검증할 수도 있습니다.)
+
+[source, cli]
+----
+vim-cmd vmsvc/getallvms
+vim-cmd vmsvc/power.on <VMID>
+----
+--
+
+
+
+
+== 마이그레이션 후 - 온라인 FLI
+
+가져오기 관계를 삭제한 후 CAW/UNMAP/XCOPY/WRITESAME이 활성화된 상태에서 새 LUN이 독립적으로 작동하는지 확인하십시오.
+
+데이터스토어를 마운트 해제하고 ATS 전용으로 설정한 다음 다시 마운트하여 VMFS 잠금 모드를 ATS 전용으로 되돌리십시오. LUN 가져오기를 삭제한 후 LUN에 -space-reserve가 비활성화되고 -space-allocation이 활성화되어 있는지 확인하십시오. 그렇지 않은 경우 적절하게 수정하십시오.
+
+[cols="3"]
+|===
+| VM/VMDK | RDM | VMSC 
+
+
+| 1단계: 매핑된 모든 ESXi 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 ESXi 호스트에서 스토리지를 다시 검색합니다. | 1단계: 매핑된 모든 ESXi 호스트에서 스토리지를 다시 검색합니다. 
+
+
+| 2단계: 게스트 VM을 정상적으로 종료합니다. |  | 2단계: 게스트 VM을 정상적으로 종료합니다. 
+
+
+| 3단계: 마이그레이션 예정인 데이터 저장소를 마운트 해제합니다. 공유 데이터 저장소인 경우 모든 호스트에서 마운트 해제해야 합니다. |  | 3단계: 마이그레이션 예정인 데이터 저장소를 마운트 해제합니다. 공유 데이터 저장소인 경우 모든 호스트에서 마운트 해제해야 합니다. 
+
+
+| 4단계: VMFS 잠금 모드(ATS 전용 vs ATS+SCSI)를 확인합니다. ATS-SCSI인 경우 ATS 전용으로 변경합니다 |  | 4단계: VMFS 잠금 모드(ATS 전용 vs ATS+SCSI)를 확인합니다. ATS-SCSI인 경우 ATS 전용으로 변경합니다 
+
+
+| 5단계: 데이터 저장소 세부 정보를 확인하고 데이터 저장소를 ESXi에 다시 마운트합니다. |  | 5단계: VM-HA/DRS를 활성화하고 필요한 경우 필요한 하트비트 디스크를 구성합니다. 
+
+
+| 6단계: 게스트 VM의 전원을 켜고 애플리케이션을 시작합니다. |  | 6단계: 게스트 VM 전원을 켜고 애플리케이션을 시작합니다 
+
+
+| 7단계: 데이터 저장소 잠금 모드 및 VM/애플리케이션 상태 검증 |  | 7단계: 데이터 저장소 잠금 모드 및 VM/애플리케이션 상태 검증 
+|===
+분리 후 다시 스캔하여 깨끗한 상태인지 확인하십시오::
+
+
+[source, cli]
+----
+esxcli storage core adapter rescan --all
+----
+완료 후 유지 관리 모드 종료::
+
+
+[source, cli]
+----
+esxcli system maintenanceMode set --enable false
+----
+LUN에 매핑된 모든 ESXi 호스트에서 스토리지를 다시 검색합니다::
+
+
+[source, cli]
+----
+esxcli storage core adapter rescan --all
+----
+LUN/파일 시스템 세부 정보를 확인하기 위해 장치 및 파일 시스템을 나열합니다::
+
+
+[source, cli]
+----
+esxcli storage core device list
+esxcli storage filesystem list
+----
+마이그레이션 후 변경된 경우 새 NAA ID를 식별합니다::
+
+
+[source, cli]
+----
+esxcli storage core device list | grep -i naa
+----
+VMFS 데이터 저장소를 ESXi에 다시 마운트합니다::
+
+
+[source, cli]
+----
+esxcli storage filesystem mount -l <DATASTORE_NAME>
+----
+데이터 저장소 마운트를 확인합니다::
+
+
+[source, cli]
+----
+esxcli storage filesystem list
+----
+vSphere UI를 통해 VM에 RDM을 다시 추가합니다.::
++
+--
+CLI는 일반적으로 사용되지 않으며, 대신 백엔드 디바이스 가시성을 확인하십시오.
+
+[source, cli]
+----
+esxcli storage core device list -d <naa.ID>
+----
+--
+유지보수 모드 종료(해당되는 경우)::
+
+
+[source, cli]
+----
+esxcli system maintenanceMode set --enable false
+----
+게스트 VM 전원 켜기::
++
+--
+(VM 전원 관리 작업은 일반적으로 vCenter를 통해 수행되지만 ESXi 호스트에서 검증할 수도 있습니다.)
+
+[source, cli]
+----
+vim-cmd vmsvc/getallvms
+vim-cmd vmsvc/power.on <VMID>
+----
+--
+ATS+SCSI가 감지되면 ATS 전용으로 변환합니다::
+
+
+[source, cli]
+----
+vmkfstools --configATSOnly 1 /vmfs/volumes/<DATASTORE_NAME>
+----

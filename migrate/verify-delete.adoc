@@ -1,0 +1,88 @@
+---
+permalink: migrate/verify-delete.html 
+sidebar: sidebar 
+keywords: verify import, delete import relationship, foreign lun import, fli, lun import delete, lun import verify, import cleanup, san migration, offline verification, asa r2 
+summary: 복사가 완료되면 가져오기 관계를 삭제하여 마이그레이션을 완료하고, 선택적으로 제거하기 전에 블록 레벨 데이터 무결성을 확인합니다. 
+---
+= FLI LUN 가져오기 관계를 확인하고 삭제합니다
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+가져오기 복사가 완료되고 가져오기 상태가 complete이면 lun import delete를 사용하여 가져오기 페어링을 제거함으로써 마이그레이션을 완료할 수 있습니다. 이렇게 하면 소스 LUN이 더 이상 사용되지 않고 대상 LUN이 호스트 I/O의 활성 복사본이 된 후 가져오기 관계가 안전하게 삭제됩니다. 오프라인 FLI 워크플로에서는 일반적으로 가져오기 및 검증 후 대상 LUN을 온라인 상태로 전환하여 호스트가 마이그레이션된 LUN을 재검색하고 액세스를 재개할 수 있도록 합니다.
+
+관계를 삭제하기 전에 데이터 무결성 확인이 필요한 경우 lun import verify를 실행할 수 있습니다. 이 명령은 블록 레벨 데이터 비교를 수행하지만 검증이 오프라인에서 수행되어야 하므로(즉, 검증 기간 동안 LUN을 오프라인으로 전환하고 호스트에서 액세스할 수 없도록 해야 하므로) 중단을 야기합니다. 호스트 복구, 조닝 및 이니시에이터 정리, 문서화, 운영 검증과 같은 마이그레이션 후 작업은 마이그레이션 후 단계에서 처리되며 의도적으로 이 섹션의 범위에서 제외됩니다.
+
+.이 작업에 관하여
+ONTAP 9.17.1 버전부터 ASA r2 시스템에서 FLI 오프라인 마이그레이션을 이용한 외부 LUN 데이터 마이그레이션이 지원됩니다. ASA r2 시스템은 스토리지 계층 구현에서 다른 ONTAP 시스템(ASA, AFF, FAS)과 다릅니다. ASA r2 시스템에서는 스토리지 유닛(LUN 또는 네임스페이스)을 생성할 때 볼륨이 자동으로 생성됩니다. 각 볼륨에는 하나의 스토리지 유닛만 포함됩니다. 따라서 ASA r2 시스템에서는 LUN 생성 시  `-path` 옵션에 볼륨 이름을 포함할 필요 없이 스토리지 유닛 경로를 포함해야 합니다.
+
+.단계
+. 권한 수준을 고급으로 설정합니다.
++
+[source, cli]
+----
+set -privilege advanced
+----
+. 가져오기 상태를 확인하십시오(삭제하기 전에 완료 또는 중지되어야 함):
++
+[source, cli]
+----
+lun import show -vserver <SVM_NAME> -path /vol/<VOL>/<LUN_NAME>
+----
+. 가져오기가 아직 진행 중 상태이고 완료율이 100%인 경우:
++
+[source, cli]
+----
+lun import stop -vserver <SVM_NAME> -path /vol/<VOL>/<LUN_NAME>
+----
+. 가져오기 관계를 삭제합니다(완료):
++
+[source, cli]
+----
+lun import delete -vserver <SVM_NAME> -path /vol/<VOL>/<LUN_NAME>
+----
+. 관계가 제거되었는지 확인합니다.
++
+[source, cli]
+----
+lun import show -vserver <SVM_NAME> -path /vol/<VOL>/<LUN_NAME>
+----
+. 가져오기가 현재 실행 중이 아닌지 확인합니다(중지되었거나 완료되어야 함).
++
+[source, cli]
+----
+lun import show -vserver <SVM_NAME> -path /vol/<VOL>/<LUN_NAME>
+----
+. LUN을 오프라인으로 전환하십시오(검증은 오프라인에서 수행해야 합니다).
++
+[source, cli]
+----
+lun offline -vserver <SVM_NAME> -path /vol/<VOL>/<LUN_NAME>
+----
+. 블록별 검증을 시작합니다(선택 사항이지만 권장됨):
++
+[source, cli]
+----
+lun import verify start -vserver <SVM_NAME> -path /vol/<VOL>/<LUN_NAME>
+----
+. 검증 진행 상황 모니터링:
++
+[source, cli]
+----
+lun import show -vserver <SVM_NAME> -path /vol/<VOL>/<LUN_NAME>
+----
+. 확인 중지(LUN을 온라인 상태로 전환하기 전에 필수):
++
+[source, cli]
+----
+lun import verify stop -vserver <SVM_NAME> -path /vol/<VOL>/<LUN_NAME>
+----
+. LUN을 온라인 상태로 전환합니다(중단 기간은 여기서 종료됩니다).
++
+[source, cli]
+----
+lun online -vserver <SVM_NAME> -path /vol/<VOL>/<LUN_NAME>
+----
+

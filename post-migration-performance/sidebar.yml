@@ -1,0 +1,24 @@
+---
+section: post-migration-performance
+title: FLI 마이그레이션 후
+entries:
+- title: 마이그레이션 후 개요
+  url: "/post-migration-performance/post-migration-overview.html"
+- title: 마이그레이션 후 정리 수행
+  url: "/post-migration-performance/clean-up.html"
+- title: ESXi VMFSS ATS/CAW 문제 해결 수행
+  url: "/post-migration-performance/esxi-remediation.html"
+- title: ONTAP FLI ESXi 마이그레이션 후 호스트 복구 작업을 수행합니다.
+  url: "/post-migration-performance/post-remediation-esxi.html"
+- title: ONTAP FLI AIX 마이그레이션 후 호스트 복구 작업을 수행합니다.
+  url: "/post-migration-performance/post-remediation-aix.html"
+- title: ONTAP FLI HP 마이그레이션 후 호스트 복구 작업을 수행합니다.
+  url: "/post-migration-performance/post-remediation-hp.html"
+- title: ONTAP FLI Linux 마이그레이션 후 호스트 문제 해결을 수행합니다.
+  url: "/post-migration-performance/post-remediation-linux.html"
+- title: ONTAP FLI Solaris 마이그레이션 후 호스트 문제 해결을 수행합니다.
+  url: "/post-migration-performance/post-remediation-solaris.html"
+- title: ONTAP FLI Windows 마이그레이션 후 호스트 복구 작업을 수행합니다.
+  url: "/post-migration-performance/post-remediation-windows.html"
+- title: FLI 성능
+  url: "/post-migration-performance/performance.html"

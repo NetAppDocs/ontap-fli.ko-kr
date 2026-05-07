@@ -1,0 +1,75 @@
+---
+permalink: post-migration-performance/clean-up.html 
+sidebar: sidebar 
+keywords: post-migration cleanup, foreign lun import, fli, data integrity, snapshot, autosupport, fc fli, iscsi fli, san migration, de-provision, import logs 
+summary: FLI 이후 마이그레이션 후 정리 작업을 완료하려면 가져오기 완료를 확인하고 데이터 무결성을 확인한 후 임시 백엔드 구성을 제거하십시오. 
+---
+= ONTAP FLI 마이그레이션 후 정리 작업을 수행합니다.
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+LUN 가져오기가 완료되고 관계가 삭제된 후에는 마이그레이션을 최종 완료하고 데이터 무결성을 보장하며 FLI 워크플로를 위해 설정된 임시 구성을 제거하기 위한 몇 가지 중요한 정리 단계가 있습니다. 이러한 단계에는 가져오기 완료 확인, 데이터 무결성 확인, ONTAP 검색에서 외부 LUN 프로비저닝 해제, 백엔드 연결 정리, 로그 및 문서 검토가 포함됩니다.
+
+FLI 마이그레이션을 완료한 후에는 다음 단계를 수행하여 마이그레이션을 최종 확정하고 깨끗한 상태를 유지해야 합니다.
+
+* LUN 가져오기가 성공적으로 완료되었는지, 데이터 무결성이 검증되었는지 확인하십시오.
+* 볼륨 레벨 스냅샷 생성
+* NetApp 스토리지 어레이 이니시에이터에서 LUN의 프로비저닝을 해제합니다.
++
+스토리지 공급업체에 따라 절차가 다를 수 있습니다. 외부 스토리지 어레이 공급업체에서 권장하는 단계를 따르십시오.
+
+
+
+.단계
+. 외부 LUN 속성을 false로 표시합니다(외부 디스크 일련 번호 사용):
++
+[source, cli]
+----
+storage disk modify -serial-number <FOREIGN_SERIAL> -is-foreign false
+----
+. 외부 스토리지 어레이 LUN이 ONTAP에 더 이상 표시되지 않는지 확인합니다.
++
+[source, cli]
+----
+storage disk show -array-name <ARRAY_NAME> -fields disk,serial-number,is-foreign,import-in-progress
+----
+. FC FLI에 대해 다음을 수행하십시오.
++
+.. NetApp 스토리지 어레이 이니시에이터와 외부 스토리지 어레이 대상 WWPN 간의 영역 설정을 삭제합니다.
+.. 원격 스토리지 어레이에서 NetApp 스토리지 어레이 이니시에이터가 더 이상 로그인되어 있지 않은지 확인하십시오.
+.. FC 어댑터를 이니시에이터에서 타겟으로 변환합니다.
+
+
+. iSCSI FLI의 경우 다음을 수행하십시오.
++
+.. 외부 스토리지 어레이와 NetApp 스토리지 어레이 간의 iSCSI 세션을 삭제합니다.
+.. 인터클러스터 LIF에서 iSCSI 이니시에이터를 삭제합니다.
+.. 외부 LUN 가져오기를 위해 클러스터 간 LIF가 생성되었고 해당 클러스터 간 LIF를 사용하는 다른 애플리케이션이 없는 경우 클러스터 간 LIF를 삭제하십시오.
+
+
+. 로그에서 오류를 검토하여 마이그레이션이 성공했는지 확인하십시오.
++
+가져오기 로그는 클러스터 이벤트 로그 파일에 저장됩니다.
+
++
+*예*
+
++
+[listing]
+----
+DataMig-cmode::*> rows 0; event log show -nodes * -event fli*
+7/7/2014 18:37:21   DataMig-cmode-01 INFORMATIONAL fli.lun.verify.complete: Import verify of foreign LUN 83017542001E of size 42949672960 bytes from array model DF600F belonging to vendor HITACHI  with NetApp LUN QvChd+EUXoiS is successfully completed.
+~~~~~~ Output truncated ~~~~~~~
+
+The verification steps to compare the source and destination LUNs are covered in the execute migration phase. The importing and LUN verification steps are covered in the execute migration phase because they are linked to the import job and the foreign LUN.
+----
+. 고객 환경을 문서화하기 위해 AutoSupport를 수집하고, 완료 후 최종 구성을 기록하기 위해 다른 AutoSupport를 수집합니다:
++
+[source, cli]
+----
+autosupport invoke -node <node_name> -type all -message “migration-final”
+----
+

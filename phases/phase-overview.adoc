@@ -1,0 +1,16 @@
+---
+permalink: phases/phase-overview.html 
+sidebar: sidebar 
+keywords: foreign lun import, fli, ontap, phase, overview 
+summary: '이 섹션에서는 구조화된 단계별 접근 방식을 사용하여 Foreign LUN Import(FLI) 마이그레이션을 실행하는 엔드 투 엔드 방법론, 특히 iSCSI 백엔드 FLI에 중점을 두고 설명합니다.' 
+---
+= ONTAP FLI 단계에 대해 알아보세요
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+이 섹션에서는 구조화된 단계별 접근 방식을 사용하여 Foreign LUN Import(FLI) 마이그레이션을 실행하는 엔드 투 엔드 방법론을 설명합니다. 특히 iSCSI 백엔드 FLI에 중점을 둡니다. 검색, 분석, 계획 및 준비, 실행 및 검증 단계 전반에 걸쳐 목표, 입력, 검증 체크포인트 및 결과물을 설명하여 외부 스토리지 어레이에서 ONTAP로의 예측 가능하고 지원 가능하며 위험이 낮은 마이그레이션을 보장합니다.
+
+이 워크플로는 사전 데이터 수집 및 상호 운용성 검증, 호스트 및 패브릭 준비 상태, 명확한 iSCSI 백엔드 설계 제약 조건(IC LIF 사용, 명확한 iSCSI 타겟 포털/IQN, 풀 메시 연결 및 확장성 제한), 그리고 애플리케이션 가용성과 롤백 옵션을 보호하기 위한 체계적인 변경 관리를 강조합니다. IMT 기반 지원 검증, 목표 지향적인 개선 계획 수립, 테스트 마이그레이션, 그리고 철저한 마이그레이션 후 정리 작업을 결합함으로써, 이 접근 방식은 FC 및 iSCSI 기반 FLI 시나리오 모두에서 마이그레이션이 성공적으로 완료되고, 완벽하게 지원되고, 문서화가 잘 되어 있으며, 운영상 깔끔한 마이그레이션 후 상태를 보장합니다.

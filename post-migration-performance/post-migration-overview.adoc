@@ -1,0 +1,16 @@
+---
+permalink: post-migration-performance/post-migration-overview.html 
+sidebar: sidebar 
+keywords: foreign lun import, fli, ontap, post-migration, performance, overview 
+summary: '이 섹션에서는 FLI(Foreign LUN Import) 마이그레이션이 완료된 후 수행해야 할 작업에 대해 설명합니다.' 
+---
+= ONTAP FLI 마이그레이션 후에 대해 알아보십시오
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+이 섹션에서는 외부 LUN 가져오기(FLI) 마이그레이션이 완료된 후 수행해야 할 작업을 설명합니다. 일반적인 정리 단계, 성능 검증 단계, 그리고 각 호스트 유형(AIX, ESXi, HP, Linux, Solaris 및 Windows)에 대한 단계가 포함되어 있습니다.
+
+마이그레이션 후 단계는 환경을 깨끗하고 지원 가능한 상태로 유지하고 데이터 무결성 및 성능 측면에서 마이그레이션이 성공적이었는지 검증하는 데 중요합니다.
