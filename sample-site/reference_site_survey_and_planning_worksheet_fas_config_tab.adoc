@@ -1,5 +1,5 @@
 ---
-permalink: san-migration/reference_site_survey_and_planning_worksheet_fas_config_tab.html 
+permalink: sample-site/reference_site_survey_and_planning_worksheet_fas_config_tab.html 
 sidebar: sidebar 
 keywords: site, survey and planning worksheet, fas config tab 
 summary: 사이트 조사 및 계획 워크시트의 일부로 FAS 구성에 대한 정보가 포함된 탭이 있어야 합니다. 

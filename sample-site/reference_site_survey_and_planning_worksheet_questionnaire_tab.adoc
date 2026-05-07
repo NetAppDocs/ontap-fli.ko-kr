@@ -1,5 +1,5 @@
 ---
-permalink: san-migration/reference_site_survey_and_planning_worksheet_questionnaire_tab.html 
+permalink: sample-site/reference_site_survey_and_planning_worksheet_questionnaire_tab.html 
 sidebar: sidebar 
 keywords: site, survey and planning worksheet, questionnaire tab 
 summary: 사이트 조사 및 계획 워크시트의 일부로, 초기 마이그레이션 설문지의 마이그레이션 프로젝트 정보가 포함된 탭이 있어야 합니다. 

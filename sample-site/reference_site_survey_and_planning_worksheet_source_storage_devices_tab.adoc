@@ -1,5 +1,5 @@
 ---
-permalink: san-migration/reference_site_survey_and_planning_worksheet_source_storage_devices_tab.html 
+permalink: sample-site/reference_site_survey_and_planning_worksheet_source_storage_devices_tab.html 
 sidebar: sidebar 
 keywords: site, survey and planning worksheet, source storage devices tab 
 summary: 사이트 조사 및 계획 워크시트의 일부로 마이그레이션 소스 스토리지 디바이스에 대한 정보가 포함된 탭이 있어야 합니다. 
