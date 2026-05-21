@@ -1300,7 +1300,6 @@
   <block id="f54f8723cdd855de6b42f8c6088ea7cf" category="paragraph">Start-VM -Name &lt;VM_Name&gt;</block>
   <block id="3530aa78abbe00fb441a6a913266c4f5" category="summary">마이그레이션이 계획대로 완료되었는지 확인하고 마이그레이션 기간 동안 사용된 임시 구성을 제거하는 검증 단계에 대해 알아보십시오.</block>
   <block id="c7b5ec48b58689a14b9ca8360ae61c36" category="doc">ONTAP 외부 LUN 가져오기(FLI) 검증 단계</block>
-  <block id="2dc59e510103c83c15f9b3fff186d965" category="paragraph">검증 단계에서는 마이그레이션이 계획대로 완료되었는지 확인하고 마이그레이션 후 정리 작업에 집중합니다. 여기에는 애플리케이션 동작 검증, ONTAP LUN에 대한 호스트 액세스 및 경로 확인, 감사 및 문제 해결을 위한 마이그레이션 로그 수집, 마이그레이션에만 사용된 임시 연결 및 구성 제거 등이 포함됩니다.</block>
   <block id="312705c3917e0ecf74999294476290b4" category="paragraph">정리 작업의 일환으로 더 이상 필요하지 않은 소스 측 이니시에이터 레코드와 영역 설정을 제거하고, 운영 팀이 명확한 "완성된" 상태를 파악할 수 있도록 최종 구성을 문서화합니다.</block>
   <block id="f67442f7dd9efc703506d4e505684839" category="paragraph">iSCSI FLI의 경우, 검증 단계에서는 인터클러스터 LIF에 생성된 소프트웨어 iSCSI 이니시에이터 세션과 이니시에이터를 제거하는 작업도 포함되어야 합니다. 인터클러스터 LIF가 외부 LUN 가져오기만을 위해 생성된 경우, 해당 LIF도 삭제해야 합니다.</block>
   <block id="c8253ba169277559e143f0f27d32ba7a" category="section-title">ONTAP FLI 검증 단계 작업</block>
@@ -1546,4 +1545,5 @@
   <block id="144e3bff2769f72c63f6e00004097fcc" category="sidebar">FLI 마이그레이션 후</block>
   <block id="259c870f8a8594516755af0729eb847a" category="sidebar">마이그레이션 후 개요</block>
   <block id="5d793778d9d63a7b0602b47ee814bd26" category="sidebar">SAN 데이터 마이그레이션의 새로운 기능</block>
+  <block id="d6fe85b2a7716d9377c34dd3d6ea37c4" category="paragraph">검증 단계에서는 마이그레이션이 계획대로 완료되었는지 확인하고 마이그레이션 후 정리 작업에 집중합니다. 여기에는 애플리케이션 동작 검증, ONTAP LUN에 대한 올바른 호스트 액세스 및 경로 확인, 감사 및 문제 해결을 위한 마이그레이션 로그 수집, 마이그레이션에만 사용된 임시 연결 및 구성 제거 등이 포함됩니다.</block>
 </blocks>
