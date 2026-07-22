@@ -19,6 +19,7 @@ iSCSI FLI의 경우, 검증 단계에서는 인터클러스터 LIF에 생성된 
 
 
 
+[[ontap-fli-verify-phase-tasks]]
 == ONTAP FLI 검증 단계 작업
 
 다음은 각 구성 요소에 대한 ONTAP FLI 검증 작업입니다.

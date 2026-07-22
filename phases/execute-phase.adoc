@@ -15,6 +15,7 @@ summary: 오프라인 또는 온라인 FLI 마이그레이션을 실행하고 �
 
 
 
+[[ontap-fli-execute-phase-tasks]]
 == ONTAP FLI 실행 단계 작업
 
 다음은 각 구성 요소에 대한 ONTAP FLI 실행 작업입니다.

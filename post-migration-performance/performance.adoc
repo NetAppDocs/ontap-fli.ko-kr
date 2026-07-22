@@ -55,6 +55,7 @@ lun import resume -vserver <SVM> -path <LUN_PATH>
 
 
 
+[[iscsi-fli-performance-counters]]
 == iSCSI FLI 성능 카운터
 
 사용 가능한 객체 검색/확인(선택 사항):: `statistics catalog object show | grep -i iswi`
@@ -64,6 +65,7 @@ iSCSI 이니시에이터 세션 카운터를 수집합니다.:: `statistics show
 
 
 
+[[ontap-fli-factors-that-impact-performance]]
 == ONTAP FLI 성능에 영향을 미치는 요인
 
 가져오기를 완료하는 시간은 다음을 포함한 여러 변수의 영향을 받습니다.

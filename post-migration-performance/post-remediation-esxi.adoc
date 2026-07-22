@@ -15,6 +15,7 @@ summary: 마이그레이션 후 ESXi 호스트는 새로 가져온 LUN이 제대
 
 
 
+[[post-migration-offline-fli]]
 == 마이그레이션 후 - 오프라인 FLI
 
 오프라인 FLI의 경우, LUN 가져오기를 삭제하고 호스트 이니시에이터가 연결되었는지 확인한 후 LUN을 온라인 상태로 전환하십시오.
@@ -124,6 +125,7 @@ vim-cmd vmsvc/power.on <VMID>
 
 
 
+[[post-migration-online-fli]]
 == 마이그레이션 후 - 온라인 FLI
 
 가져오기 관계를 삭제한 후 CAW/UNMAP/XCOPY/WRITESAME이 활성화된 상태에서 새 LUN이 독립적으로 작동하는지 확인하십시오.

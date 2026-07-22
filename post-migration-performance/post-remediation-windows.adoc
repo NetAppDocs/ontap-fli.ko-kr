@@ -15,6 +15,7 @@ summary: 마이그레이션 후 Windows 호스트는 새로 가져온 LUN이 제
 
 
 
+[[post-migration-offline-fli]]
 == 마이그레이션 후 - 오프라인 FLI
 
 오프라인 FLI의 경우, LUN 가져오기를 삭제하고 호스트 이니시에이터가 연결되었는지 확인한 후 LUN을 온라인 상태로 전환하십시오.
@@ -37,6 +38,7 @@ summary: 마이그레이션 후 Windows 호스트는 새로 가져온 LUN이 제
 |===
 
 
+[[post-migration-online-fli]]
 == 마이그레이션 후 - 온라인 FLI
 
 LUN 가져오기를 삭제한 후, LUN에 -space-reserve가 비활성화되고 -space-allocation이 활성화되어 있는지 확인하십시오. 그렇지 않은 경우, 적절하게 수정하십시오.
@@ -53,6 +55,7 @@ LUN 가져오기를 삭제한 후, LUN에 -space-reserve가 비활성화되고 -
 |===
 
 
+[[filesystem-devices]]
 === 파일 시스템 디바이스
 
 .단계
@@ -85,6 +88,7 @@ Start-Service -Name <ServiceName>
 
 
 
+[[physical-drives-no-filesystem]]
 === 물리적 드라이브(파일 시스템 없음)
 
 .단계
@@ -99,6 +103,7 @@ Update-HostStorageCache
 
 
 
+[[wsfc]]
 === WSFC
 
 .단계
@@ -132,6 +137,7 @@ Start-ClusterResource -Name <ResourceName>
 
 
 
+[[hyper-v]]
 === Hyper V
 
 .단계

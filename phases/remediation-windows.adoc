@@ -15,6 +15,7 @@ Windows 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다�
 
 
 
+[[pre-migration-offline-fli]]
 == 사전 마이그레이션 - 오프라인 FLI
 
 이 단계는 오프라인 및 온라인 FLI 모두에 적용됩니다. Windows 호스트에서 소스 LUN의 매핑을 해제하기 전에 다음 호스트 측 준비 작업을 완료하십시오.
@@ -34,6 +35,7 @@ Windows 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다�
 |===
 
 
+[[filesystem-devices]]
 === 파일 시스템 디바이스
 
 .단계
@@ -53,6 +55,7 @@ Set-Disk -Number <DiskNumber> -IsOffline $true
 
 
 
+[[physical-drives-no-filesystem]]
 === 물리적 드라이브(파일 시스템 없음)
 
 .단계
@@ -68,6 +71,7 @@ Stop-Service -Name <ServiceName>
 
 
 
+[[wsfc-windows-server-failover-clustering]]
 === WSFC(Windows Server Failover Clustering)
 
 .단계
@@ -87,6 +91,7 @@ Stop-Cluster -Name <ClusterName>
 
 
 
+[[hyper-v]]
 === Hyper V
 
 .단계
@@ -107,6 +112,7 @@ Get-Disk | Where-Object OperationalStatus -ne "Online"
 
 
 
+[[pre-migration-online-fli]]
 == 사전 마이그레이션 - 온라인 FLI
 
 다음은 온라인 FLI의 구체적인 단계이지만 이러한 단계 전에 사전 마이그레이션 - 오프라인 FLI의 단계를 수행해야 합니다.
@@ -135,6 +141,7 @@ NetApp LUN이 호스트에 프로비저닝된 후에는 다음 단계를 수행�
 |===
 
 
+[[filesystem-devices]]
 === 파일 시스템 디바이스
 
 .단계
@@ -161,6 +168,7 @@ Start-Service -Name <ServiceName>
 
 
 
+[[physical-drives-no-filesystem]]
 === 물리적 드라이브(파일 시스템 없음)
 
 .단계
@@ -176,6 +184,7 @@ Update-HostStorageCache
 
 
 
+[[wsfc]]
 === WSFC
 
 .단계
@@ -205,6 +214,7 @@ Start-ClusterResource -Name <ResourceName>
 
 
 
+[[hyper-v]]
 === Hyper V
 
 .단계

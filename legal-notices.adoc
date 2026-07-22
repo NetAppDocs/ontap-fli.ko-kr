@@ -1,7 +1,7 @@
 ---
-permalink: legal-notices.html 
 sidebar: sidebar 
-keywords: legal, notices, copyright, trademarks, patents 
+permalink: legal-notices.html 
+keywords: copyrights, notice, trademarks, patents, privacy, open source 
 summary: 법적 고지 사항은 저작권 선언, 상표, 특허 등에 대한 액세스를 제공합니다. 
 ---
 = 법적 고지
@@ -10,38 +10,37 @@ summary: 법적 고지 사항은 저작권 선언, 상표, 특허 등에 대한 
 :imagesdir: ./media/
 
 
+[role="lead"]
 법적 고지 사항은 저작권 선언, 상표, 특허 등에 대한 액세스를 제공합니다.
 
 
 
+[[copyright]]
 == 저작권
 
-http://www.netapp.com/us/legal/copyright.aspx[]
+link:https://www.netapp.com/company/legal/copyright/["https://www.netapp.com/company/legal/copyright/"^]
 
 
 
+[[trademarks]]
 == 상표
 
 NetApp, NetApp 로고, NetApp 상표 페이지에 나열된 마크는 NetApp Inc.의 상표입니다. 기타 회사 및 제품 이름은 해당 소유자의 상표일 수 있습니다.
 
-http://www.netapp.com/us/legal/netapptmlist.aspx[]
+link:https://www.netapp.com/company/legal/trademarks/["https://www.netapp.com/company/legal/trademarks/"^]
 
 
 
+[[patents]]
 == 특허
 
 NetApp 소유 특허 목록은 다음 사이트에서 확인할 수 있습니다.
 
-https://www.netapp.com/us/media/patents-page.pdf[]
+link:https://www.netapp.com/pdf.html?item=/media/11887-patentspage.pdf["https://www.netapp.com/pdf.html?item=/media/11887-patentspage.pdf"^]
 
 
 
+[[privacy-policy]]
 == 개인 정보 보호 정책
 
-https://www.netapp.com/us/legal/privacypolicy/index.aspx[]
-
-
-
-== 기계 번역
-
-현지화된 컨텐츠에 대한 중요 정보는 에서 확인하십시오 link:https://www.netapp.com/company/legal/machine-translation/["NetApp.com"]
+link:https://www.netapp.com/company/legal/privacy-policy/["https://www.netapp.com/company/legal/privacy-policy/"^]

@@ -23,6 +23,7 @@ iSCSI 및 FC ONTAP FLI는 오프라인 가져오기(가져오기 중 호스트 I
 
 
 
+[[key-terms]]
 == 주요 용어
 
 외부 어레이:: ONTAP를 실행하지 않는 모든 스토리지 시스템(7 Mode에서 ONTAP로 전환하는 컨텍스트의 NetApp 7 Mode 포함).
@@ -33,6 +34,7 @@ LUN 가져오기:: 외부 LUN에서 ONTAP LUN으로 블록을 전송하는 프�
 
 
 
+[[high-level-methodology]]
 == 상위 수준 방법론
 
 발견 단계:: 호스트, 스토리지 시스템, SAN/네트워크 패브릭 등 환경의 전체 인벤토리를 수집하여 존재하는 항목과 모든 항목이 연결된 방식을 파악하십시오.
@@ -44,6 +46,7 @@ LUN 가져오기:: 외부 LUN에서 ONTAP LUN으로 블록을 전송하는 프�
 
 
 
+[[intended-audience]]
 == 대상
 
 이 정보는 ONTAP으로의 SAN(블록/LUN) 데이터 마이그레이션, 특히 FLI(Foreign LUN Import) 및 관련 마이그레이션 옵션을 사용하는 마이그레이션을 계획하거나 실행하는 고객, 파트너 및 NetApp 현장 팀을 위한 것입니다.

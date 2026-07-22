@@ -15,6 +15,7 @@ ONTAP FLI 검색 단계는 마이그레이션 프로세스의 첫 번째 단계�
 
 
 
+[[prepare-for-an-iscsi-migration-with-ontap-fli]]
 == ONTAP FLI를 사용하여 iSCSI 마이그레이션을 준비하세요
 
 ONTAP FLI 검색 단계에서는 마이그레이션을 완료하는 데 필요한 기술 세부 정보를 수집합니다.
@@ -37,6 +38,7 @@ iSCSI FLI의 경우 검색 단계는 다음을 수행해야 합니다.
 
 
 
+[[ontap-fli-discovery-phase-tasks]]
 == ONTAP FLI 검색 단계 작업
 
 각 구성 요소에는 데이터를 수집하거나 연결을 검증하는 일련의 작업이 있습니다.
@@ -99,6 +101,7 @@ NOTE: iSCSI FLI에는 현장 검증이 필요합니다. FC 검증을 거친 어�
 |===
 
 
+[[recommended-ontap-fli-discovery-deliverables]]
 == 권장 ONTAP FLI 검색 결과물
 
 * 단일 인벤토리 시트 매핑: 호스트 → 소스 LUN → 외부 타겟 포털/IQN → ONTAP IC LIF/노드 → 대상 LUN으로 원활한 실행 및 롤백이 가능합니다.
