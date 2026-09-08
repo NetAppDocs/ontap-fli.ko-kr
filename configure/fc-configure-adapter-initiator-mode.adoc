@@ -4,7 +4,7 @@ sidebar: sidebar
 keywords:  
 summary:  
 ---
-= ONTAP 외부 LUN 가져오기(FLI) 마이그레이션을 위한 이니시에이터 모드로 FC 어댑터를 구성합니다
+= ONTAP FLI에서 FC 어댑터를 이니시에이터 모드로 구성합니다.
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/

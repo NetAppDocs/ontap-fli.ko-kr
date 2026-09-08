@@ -4,7 +4,7 @@ sidebar: sidebar
 keywords: verify phase, foreign lun import, fli, post-migration cleanup, application validation, fc zoning, iscsi cleanup, ontap configuration, migration documentation, san migration 
 summary: 마이그레이션이 계획대로 완료되었는지 확인하고 마이그레이션 기간 동안 사용된 임시 구성을 제거하는 검증 단계에 대해 알아보십시오. 
 ---
-= ONTAP 외부 LUN 가져오기(FLI) 검증 단계
+= ONTAP FLI 검증 단계에 대해 알아보십시오.
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/

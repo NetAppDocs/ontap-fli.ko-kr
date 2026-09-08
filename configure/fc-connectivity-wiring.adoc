@@ -4,7 +4,7 @@ sidebar: sidebar
 keywords:  
 summary:  
 ---
-= ONTAP FLI(Foreign LUN Import) 연결 및 배선
+= ONTAP FLI FC 연결 및 배선 관련 모범 사례
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/

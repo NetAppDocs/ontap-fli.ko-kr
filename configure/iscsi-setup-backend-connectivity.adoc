@@ -4,7 +4,7 @@ sidebar: sidebar
 keywords:  
 summary:  
 ---
-= ONTAP Foreign LUN Import(FLI)에서 권장하는 FC 배선 및 조닝 방법
+= ONTAP FLI용 iSCSI 백엔드 연결을 설정합니다.
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/

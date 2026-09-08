@@ -442,7 +442,6 @@
   <block id="16fcc6613999970f7ea424faf43da35f" category="doc">ONTAP FLI 구성에 대해 알아보십시오</block>
   <block id="a0e6eb2c92d86032a9e4a33a774c7c1d" category="paragraph">이 섹션에서는 파이버 채널(FC) 및 iSCSI 백엔드 연결을 모두 사용하는 외부 LUN 가져오기(FLI)의 구성 및 유효성 검사 프레임워크를 설명합니다. LUN 검색 및 가져오기 과정에서 ONTAP에서 외부 스토리지 어레이로의 안정적이고 이중화된 액세스를 보장하는 데 중점을 두며, 호스트 액세스 경로와의 명확한 분리를 유지합니다. 이 섹션에서는 권장 SAN 설계 원칙(듀얼 패브릭 FC, 이니시에이터/타겟 포트 사용, 영역 설정 모범 사례), ONTAP의 어댑터 구성 요구 사항, 그리고 가져오기 시작 전에 외부 LUN이 정상적으로 표시되고 작동하는지 확인하는 운영 점검 사항을 단계별로 안내합니다.</block>
   <block id="325ac5e1843d74ce4701f7fc7f081463" category="paragraph">또한, 이 문서는 ONTAP 소프트웨어 iSCSI 이니시에이터를 클러스터 간 LIF(IC LIF)에 바인딩하여 명시적 세션 생성(검색 세션 없음), 복원력을 위한 풀 메시 연결, 네트워크 연결 가능성 및 세션 상태에 대한 엄격한 검증을 강조하는 iSCSI 백엔드 FLI 모델을 자세히 설명합니다. FC 및 iSCSI 시나리오 모두에서 목표는 FLI 필수 요건을 충족하고, 모든 경로에서 일관된 외부 LUN 검색을 가능하게 하며, 검색 및 가져오기 실행 중 발생하는 문제를 해결하는 데 필요한 계측(통계 및 가시성)을 제공하는 결정적이고 지원 가능한 백엔드 전송을 구축하는 것입니다.</block>
-  <block id="82f20d975f0599b0ee78f0f6f5003f40" category="doc">ONTAP 외부 LUN 가져오기(FLI) 마이그레이션을 위한 이니시에이터 모드로 FC 어댑터를 구성합니다</block>
   <block id="66e3a07f75973131e5ce1a8bec2ec730" category="paragraph">ONTAP FLI over FC를 사용하려면 ONTAP 측에 이니시에이터 모드의 FC 어댑터가 필요합니다. 사용 가능한 이니시에이터 포트가 없는 경우 FC 타겟 어댑터 포트를 이니시에이터 모드로 변환해야 할 수 있습니다. 또한 FC 어댑터에 활성 FC LIF가 있는 경우 해당 활성 FC LIF를 동일한 패브릭 내의 다른 어댑터 포트로 이동해야 합니다.</block>
   <block id="0cd4753f7f850f606ecd5c64d3c2ea1c" category="list-text">사용 가능한 FC 어댑터를 확인하십시오.</block>
   <block id="6ca857f7a44a21cfffda914cf9549710" category="paragraph">*출력 예*</block>
@@ -460,7 +459,6 @@
   <block id="618a7203749c0b5afe17baf3d286bca2" category="list-text">ONTAP 이니시에이터 포트를 호스트와 영역 설정하지 마십시오. ONTAP 이니시에이터 포트는 가져오기 및 검색을 위해 소스 어레이 타겟 포트에 연결하는 데만 사용됩니다.</block>
   <block id="33043746d13aa030493a19883f6971f1" category="list-text">가져오기에 참여하는 ONTAP 노드만 영역으로 지정하면 되고, 클러스터 전체를 영역으로 지정할 필요는 없습니다.</block>
   <block id="e99278a7a50f88d78ed26c78cbf8748f" category="image-alt">ONTAP FLI에 대한 FC 조닝 예</block>
-  <block id="fbaf476695b9123b8d8f9bb85a279332" category="doc">ONTAP Foreign LUN Import 권장 FC 배선 및 조닝 사례</block>
   <block id="837bd897bf43519959d9b2554c205d65" category="paragraph">Foreign LUN Import(FLI)를 위해서는 소스 LUN이 ONTAP에서 액세스할 수 있어야 하며, 이는 소스 타겟 포트를 ONTAP 이니시에이터 포트에 영역화함으로써 달성됩니다. 기존의 소스-호스트 영역은 일반적으로 마이그레이션 중에 수정되지 않으며 마이그레이션 후 제거하거나 비활성화할 수 있습니다.</block>
   <block id="bbdc5f42209f2c5f86bba32aad4f9ffd" category="list-title">표준 FC FLI 시나리오는 4개의 서로 다른 영역을 사용합니다.</block>
   <block id="db69f0645b8fa611af7b84f966e56147" category="list-text">영역 1: 소스 스토리지에서 대상 스토리지로(Fabric A)</block>
@@ -506,7 +504,6 @@
   <block id="45a909869405fe8ef132d26fc306a055" category="paragraph">이 단계에서 외부 스토리지 어레이 iSCSI 타겟은 NetApp iSCSI 이니시에이터에서 활성 로그인 및 세션을 감지하고 확인할 수 있어야 합니다. 외부 어레이에서 공급업체에서 권장하는 명령을 사용하여 이니시에이터가 연결되어 있고 세션이 정상인지 확인하십시오.</block>
   <block id="6e8e6a4392d50fc320af33541d5b911a" category="paragraph">*검색 체크포인트*: 세션이 설정되면 ONTAP는 스토리지 경로를 추가하고 스토리지 스택에서 외부 LUN을 검색해야 합니다. 이는 디스크를 외부 디스크로 표시하고 가져오기 워크플로를 진행하기 위한 필수 조건입니다.</block>
   <block id="165bfafafc6e957d5e0754f65dda7b0f" category="summary">온라인 및 오프라인 마이그레이션 옵션과 SAN 환경을 위한 블록 수준 LUN 마이그레이션을 포함한 ONTAP FLI의 주요 기능과 이점에 대해 알아보십시오.</block>
-  <block id="267dcc9397ed4992a5f6de3164460880" category="doc">ONTAP Foreign LUN Import의 주요 기능 및 이점에 대해 알아보십시오</block>
   <block id="7f57df50c07d397c153ac86c88babe24" category="paragraph">ONTAP Foreign LUN Import(FLI)는 타사(서드파티) 어레이 LUN에서 ONTAP 네이티브 LUN으로 데이터를 복사하는 내장 블록 마이그레이션 기능으로, 오프라인 및 온라인 마이그레이션 방식을 모두 지원합니다. FLI는 다양한 타사 어레이의 SAN LUN을 ONTAP로 마이그레이션하도록 설계되었으며, 여러 호스트 및 어레이에서 계획, 실행 및 검증을 표준화하는 데 도움이 되는 일관된 마이그레이션 방법론을 제공합니다.</block>
   <block id="be01a357ae2c9752875b5385c732b017" category="section-title">주요 기능</block>
   <block id="6f85cdaea1ce05195fb644beb9b6e016" category="list-text">비즈니스 다운타임 요구 사항에 맞춘 온라인 및 오프라인 마이그레이션.</block>
@@ -522,7 +519,6 @@
   <block id="816bfc18821848b644919f8e87c92ac3" category="list-text">정렬 및 형식 고려 사항을 전환 워크플로의 일부로 처리할 수 있는 7-Mode에서 ONTAP로의 마이그레이션을 포함한 복잡한 전환 시나리오를 지원합니다.</block>
   <block id="47b66897c4c28ee964d7f84128066371" category="list-text">전문 서비스가 필수는 아니지만 강력하게 지원되는 운영 모델이며, NetApp은 단순 마이그레이션을 넘어서는 모든 작업에 대해서는 범위 설정, 계획 수립 및 교육을 위해 전문 서비스 또는 자격을 갖춘 파트너를 활용할 것을 권장합니다.</block>
   <block id="1026e7ead78dbcd9e3ebea59f6b73b20" category="summary">온라인 또는 오프라인 워크플로를 사용하여 NetApp 7-Mode 시스템에서 clustered ONTAP로 LUN을 마이그레이션하기 위해 Foreign LUN Import를 사용하는 방법을 알아보십시오.</block>
-  <block id="970c2425c4630fb96603d1c4a70945b6" category="doc">Foreign LUN Import 7-Mode에서 ONTAP로의 전환에 대해 알아보십시오</block>
   <block id="9c3b1a9e6ffe1c96c597072ceac52a17" category="paragraph">소스 LUN이 ONTAP 7 모드를 실행하는 NetApp 시스템에 호스팅되어 있고 해당 LUN을 클러스터형 ONTAP로 마이그레이션하려는 경우 7 모드와 클러스터 모드 ONTAP 간의 외부 LUN 가져오기를 사용한 데이터 마이그레이션입니다. 이 접근 방식은 32비트 애그리게이트에 호스팅된 LUN이나 정렬되지 않은 LUN과 같은 레거시 시나리오에 특히 유용하며, 외부 LUN 가져오기는 다른 사용 사례에도 활용될 수 있습니다.</block>
   <block id="c8c2d9e273bd68d115d0216b06360fab" category="paragraph">외부 LUN 가져오기를 사용한 데이터 마이그레이션은 온라인 또는 오프라인 워크플로를 사용하여 수행할 수 있습니다. 운영 방식은 표준 FLI 온라인 및 오프라인 마이그레이션과 동일한 순서와 규칙을 따르며, 유일한 차이점은 소스 어레이가 타사 어레이가 아닌 NetApp 7 Mode 컨트롤러라는 점입니다.</block>
   <block id="2af84a3630c491455edea05ea97e9519" category="paragraph">즉, 소스가 외부 어레이이든 NetApp 7 Mode 어레이이든 핵심 FLI 마이그레이션 워크플로는 동일하며, 소스 플랫폼만 변경됩니다.</block>
@@ -605,7 +601,6 @@
   <block id="64ea75caa71920ec87ff578169f0075a" category="list-text">SAN LUN Migrate(FLI 프로젝트용 sanlunmigrate)</block>
   <block id="ff76beca36064e56282d13cd22862ba8" category="list-text">프로덕션 마이그레이션을 수행하기 전에 고객 환경에서 외부 어레이/LUN 동작의 유효성을 검사하기 위해 검증 방식을 사용하십시오. 이는 전송 또는 공급업체 동작이 다를 경우 특히 중요합니다.</block>
   <block id="233991137dfdbb7ef01b6ac53fd5eb26" category="summary">ONTAP Foreign LUN Import를 위한 필수 요건(백엔드 연결, LUN 검색 및 가져오기 관계 요구 사항 포함)을 검토하십시오.</block>
-  <block id="043d06edeed4fa95f43af01f2f2f6113" category="doc">ONTAP 외부 LUN 가져오기 필수 요건에 대해 알아보십시오</block>
   <block id="6d1cae9dd026a35e9f3c2b33e8998dc6" category="paragraph">ONTAP Foreign LUN Import(FLI)를 시작하기 전에 성공적인 마이그레이션을 보장하기 위해 몇 가지 필수 조건을 충족해야 합니다. 이러한 필수 조건에는 FLI 프로세스가 올바르게 작동하는 데 필수적인 호환성, 연결성 및 구성 요구 사항이 포함됩니다.</block>
   <block id="0621ec7ccdf71517b26fc85ecec39c14" category="list-text">선택한 전송 방식에 대해 백엔드 연결이 가능해야 합니다.</block>
   <block id="17f9cbbbf5f6b5f84d47d7ce5be8481b" category="list-text">FC FLI를 사용하려면 컨트롤러당 최소 1개의 FC 포트가 필요하며, 이 포트는 이니시에이터 모드로 작동해야 합니다(이중화를 위해 패브릭당 1개씩, 총 2개의 포트를 사용하는 것이 좋습니다).</block>
@@ -619,7 +614,6 @@
   <block id="cf282bc9d5e2cafd322cc0eab6aca317" category="list-text">가져오기 복사를 시작하기 전에 외부 LUN과 대상 ONTAP LUN을 가져오기 관계를 통해 연결해야 합니다.</block>
   <block id="882b8625fb0676274db3decc8486f6d7" category="paragraph">가져오기 관계를 생성하기 전에 대상 ONTAP LUN을 오프라인 상태로 유지하십시오. 관계가 생성된 후에는 온라인 FLI를 수행할 때만 LUN을 온라인 상태로 전환할 수 있으며, 이렇게 하면 복사가 진행되는 동안 호스트가 I/O를 재개할 수 있습니다.</block>
   <block id="6cc95584903beea076e0f01f0960ebbc" category="summary">ONTAP FLI에서 지원하는 플랫폼 및 구성(FC 및 iSCSI 백엔드 옵션 포함)과 마이그레이션 계획을 위한 주요 제약 조건을 검토하십시오.</block>
-  <block id="f07bea32571fee7ebcbee5f0dd81797f" category="doc">ONTAP Foreign LUN Import에서 지원하는 구성 및 플랫폼에 대해 알아보십시오.</block>
   <block id="114e9c31f071edc22a1ebd2d95e7ac56" category="paragraph">ONTAP FLI는 예측 가능한 동작과 완벽한 지원 가능성을 보장하기 위해 지원되는 구성으로 배포해야 합니다.</block>
   <block id="a8a512b2fe98c374c8ce645e66e96c79" category="list-text">모든 FLI 마이그레이션은 LUN(블록) 수준에서 수행됩니다. 파일 및 프로토콜 수준 마이그레이션은 ONTAP FLI 범위를 벗어납니다.</block>
   <block id="0223ac1546a1a57bee09547782d1dec3" category="list-text">노드당 최대 8개의 동시 가져오기를 계획하십시오. 실제 안전한 동시성은 관찰된 호스트 지연 시간과 가져오기 지연 시간에 따라 달라집니다.</block>
@@ -897,7 +891,6 @@
   <block id="c8367d1847be4bf107411fc5988abc72" category="list-text">전환 중에 프로덕션 호스트에 동일한 소스 LUN이 동시에 제공되지 않도록 하여 이중 제공을 방지하십시오.</block>
   <block id="fa622a2e838351131c3a57fedab0e13f" category="list-text">운영 가져오기 전에 지원되는 검증 도구와 접근 방식을 사용하여 외부 어레이 검증을 완료하십시오.</block>
   <block id="aa2d3adeb52dbc07d150ac343762153a" category="summary">어레이, 네트워크 및 패브릭, ONTAP 구성 및 호스트 복구 단계가 올바른지 확인하고 프로덕션 일정에 반영할 수 있는 처리량 샘플을 수집하기 위해 하나 이상의 테스트 마이그레이션을 실행하십시오.</block>
-  <block id="fbb0e56b9669a3a22d376f1ebf9d6992" category="doc">ONTAP Foreign LUN Import(FLI) 테스트 마이그레이션 및 전환 계획</block>
   <block id="38bf5a831e6677435f556c02f2937499" category="paragraph">훌륭한 테스트 마이그레이션은 다음을 검증합니다.</block>
   <block id="ae71be2e4463a2e3e699b0e84381225d" category="list-text">백엔드 준비 상태: IC LIF 도달 가능성, iSCSI 세션 안정성 및 외부 LUN 검색이 모든 경로에서 일관적입니다.</block>
   <block id="04f477f16183084db45308ed2487b783" category="list-text">워크플로 정확성: 가져오기 관계 생성/시작/표시/완료(및 선택적 확인)는 선택한 모드(온라인/오프라인)에서 예상대로 작동합니다.</block>
@@ -1033,7 +1026,6 @@
   <block id="ccaba3e2ef4cc11788f752640d2bef81" category="cell">WFSC(RDM)</block>
   <block id="946ab9c4ee53ff470f0b11f871246541" category="cell">SCSI 3 PR이 필요하며, 온라인 가져오기는 지원되지 않습니다.</block>
   <block id="a206290b23543eb1623c6a32c713d054" category="summary">AIX 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다음 사전 마이그레이션 단계를 완료하십시오. 오프라인 마이그레이션과 온라인 마이그레이션에 대한 단계가 각각 다릅니다.</block>
-  <block id="e79abe8dc9e8b433668d04b7bfc7e308" category="doc">ONTAP FLI AIX 호스트 복구</block>
   <block id="9bf80c042b1c991f231ef9057bf669b3" category="section-title">사전 마이그레이션 - 오프라인 FLI</block>
   <block id="795e163087b8e0defa6616b657e6040e" category="paragraph">이러한 단계는 온라인 및 오프라인 FLI 모두에 공통적으로 적용됩니다. 호스트에서 소스 LUN의 프로비저닝을 해제하기 전에 다음 단계를 완료했는지 확인하십시오.</block>
   <block id="ac52cf637478f3656a1fdee5c02324fd" category="cell">파일 시스템</block>
@@ -1087,7 +1079,6 @@
   <block id="203b2a548839432bd394e89fce1211c8" category="list-text">스토리지 디바이스 식별</block>
   <block id="a844f8111bdbd6730701b4f8e6d62b6a" category="paragraph">rmdev -Rdl</block>
   <block id="c7452a61306f588ae53b154827b3b307" category="summary">ESXi 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다음 사전 마이그레이션 단계를 완료하십시오. 오프라인 마이그레이션과 온라인 마이그레이션에 대한 단계가 각각 다릅니다.</block>
-  <block id="15a9d795e9382a6d1b283bad69bad426" category="doc">ONTAP FLI ESXi 호스트 해결</block>
   <block id="931e04aeb9d78a062c5688e8e920d368" category="paragraph">ESXi 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다음 사전 마이그레이션 단계를 완료하십시오. 오프라인 마이그레이션과 온라인 마이그레이션에 대한 단계가 각각 다릅니다.</block>
   <block id="52f516279748fadba607f90c463c0e27" category="paragraph">이 단계 그룹은 온라인 및 오프라인 FLI 모두에 공통적으로 적용됩니다. 호스트에서 소스 LUN의 프로비저닝을 해제하기 전에 다음 단계가 완료되었는지 확인하십시오.</block>
   <block id="8371bd4c3681862cb8644e99ac43611d" category="cell">VM/VMDK</block>
@@ -1139,7 +1130,6 @@
   <block id="ba8a092c443bab89f95874823c908d97" category="list-text">ATS 전용이 감지되면 ATS+SCSI로 변환합니다.</block>
   <block id="cb7829ececd09abf3d020698dc6a9331" category="paragraph">vmkfstools --configATSOnly 0 /vmfs/volumes/&lt;DATASTORE_NAME&gt;</block>
   <block id="47dd17eb9fce4e0e549d8902cebdefba" category="summary">HP 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다음 사전 마이그레이션 단계를 완료하십시오. 오프라인 마이그레이션과 온라인 마이그레이션에 대한 단계가 각각 다릅니다.</block>
-  <block id="4418ff2a20c1673786dacc22b9dce584" category="doc">ONTAP FLI HP 호스트 해결</block>
   <block id="55b9c00dc0136823ebac1b1dd2ffb97d" category="cell">파일 시스템(LVM 및 Non-LVM)</block>
   <block id="54e9c061b069a76d555e06e5000ac8ac" category="cell">호스트 클러스터(SCSI3 PR)</block>
   <block id="1f1eac3ab16dcb2faf7df3c391cff901" category="cell">SANBOOT</block>
@@ -1171,7 +1161,6 @@
   <block id="cc6ab4f25151a1ddba63b381911753e0" category="cell">7단계: LVM을 각각의 폴더에 다시 마운트합니다</block>
   <block id="99afe60f9496a7f99361d6daca7429b5" category="list-text">파일 시스템을 마운트 해제하고 VG를 내보냅니다.</block>
   <block id="acb2032201bde1f660b8bca007557066" category="summary">Linux 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다음 사전 마이그레이션 단계를 완료하십시오. 오프라인 마이그레이션과 온라인 마이그레이션에 대한 단계가 각각 다릅니다.</block>
-  <block id="a25c0fff4daa01425a2d6b604681640d" category="doc">ONTAP FLI Linux 호스트 문제 해결</block>
   <block id="e02beebba413932c38cadf7865307907" category="cell">LVM이 있는 Pacemaker(SCSI3 PR)</block>
   <block id="b6083c6594ea6d4aaac23291b9009c7c" category="cell">1단계: 엔드 투 엔드 블록 장치 구성 수집: 다중 경로 상태/경로, 블록 장치의 LVM 레이아웃 및 올바른 부팅 장치와 부팅 매개변수를 확인하는 GRUB/부트로더 설정.</block>
   <block id="aa4999b0f6ce9bd1723385bc53f49175" category="cell">1단계: 엔드 투 엔드 SAN 부팅 구성: 다중 경로 상태/경로, 부팅 LUN의 LVM 레이아웃, 그리고 올바른 부팅 장치와 부팅 매개변수를 확인하는 GRUB/부트로더 설정을 수집합니다.</block>
@@ -1201,7 +1190,6 @@
   <block id="4f249d32aeb0051c8e6b1ea1a060c29a" category="cell">4단계: 새 PCS 리소스 그룹을 생성하고 사용 가능한 LV 및 파일 시스템에 해당하는 리소스를 추가합니다. 참고: 새로 활성화된 LVM 객체는 LV 및 파일 시스템 구조를 그대로 유지합니다.</block>
   <block id="abf8007138d4795282e54396893a18bc" category="cell">5단계: 모든 리소스에 대한 PCS 클러스터 상태가 온라인이고 사용 가능한 상태인지 확인합니다.</block>
   <block id="8c23eeb8835daa43dff255b5446abf8a" category="summary">Solaris 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다음 사전 마이그레이션 단계를 완료하십시오. 오프라인 마이그레이션과 온라인 마이그레이션에 대한 단계가 각각 다릅니다.</block>
-  <block id="7cf5a135d3c61528748b39ac49d1da1b" category="doc">ONTAP FLI Solaris 호스트 수정</block>
   <block id="30ef697c716abe0dade774df73bbb7ca" category="cell">파일 시스템(ZFS/Zpool)</block>
   <block id="0f3546281d9c20384d2719d8e9dbde87" category="cell">OSC(Oracle Sun Cluster)(SCSI3 PR) 및 Zpool</block>
   <block id="7d9cc4dc9df15aedf812546a021ad481" category="cell">1단계: 엔드 투 엔드 블록 디바이스 구성 수집: 다중 경로 상태/경로, 블록 디바이스의 Zpool 레이아웃 및 올바른 부팅 디바이스와 부팅 매개변수를 확인하는 OBP(ok 프롬프트) 설정.</block>
@@ -1232,7 +1220,6 @@
   <block id="7f971426a24b126ae6000d49121b87fb" category="cell">6단계: 풀/ZFS를 마운트합니다.</block>
   <block id="768f7d1e5e0def042f46b8b9cfed56e1" category="paragraph">rm /dev/rdsk/disk_ID</block>
   <block id="dffc409d1a050676e2e87c15a8566960" category="summary">Windows 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다음 사전 마이그레이션 단계를 완료하십시오. 오프라인 마이그레이션과 온라인 마이그레이션에 대한 단계가 각각 다릅니다.</block>
-  <block id="86b354c358c5be17575bc649daa91c98" category="doc">ONTAP FLI Windows 호스트 해결</block>
   <block id="5f79720081815a16d0df4ff8e1e544d9" category="paragraph">이 단계는 오프라인 및 온라인 FLI 모두에 적용됩니다. Windows 호스트에서 소스 LUN의 매핑을 해제하기 전에 다음 호스트 측 준비 작업을 완료하십시오.</block>
   <block id="7f9b6e92ec67dd79703496a4157dabee" category="cell">파일 시스템 디바이스</block>
   <block id="1b01aab3ec6c18422640b7087ea298e8" category="cell">물리적 드라이브(파일 시스템 없음)</block>
@@ -1316,7 +1303,6 @@
   <block id="2b2f46dbe2ce8c87285fdda18c51305f" category="list-text">소스 액세스를 해제할 때 원래 호스트 매핑과 관련된 호스트 이니시에이터 그룹 및 호스트 레코드를 제거하십시오.</block>
   <block id="4e55e59e6ef6d345dea21fe36f6bbf3d" category="list-text">마이그레이션된 소스 LUN이 호스트에 이중으로 노출될 수 있는 방식으로 더 이상 제공되지 않도록 해야 합니다. 이는 매우 중요하며 마이그레이션 과정 전반에 걸쳐 반드시 확인해야 합니다.</block>
   <block id="d9b24f13d4f4f580f19003076ea09576" category="summary">FLI 이후 마이그레이션 후 정리 작업을 완료하려면 가져오기 완료를 확인하고 데이터 무결성을 확인한 후 임시 백엔드 구성을 제거하십시오.</block>
-  <block id="9003b781c53de9809a2d1cdbe335d774" category="doc">ONTAP FLI 마이그레이션 후 정리 작업을 수행합니다.</block>
   <block id="879351ce6e141d137489c190a43107b1" category="paragraph">LUN 가져오기가 완료되고 관계가 삭제된 후에는 마이그레이션을 최종 완료하고 데이터 무결성을 보장하며 FLI 워크플로를 위해 설정된 임시 구성을 제거하기 위한 몇 가지 중요한 정리 단계가 있습니다. 이러한 단계에는 가져오기 완료 확인, 데이터 무결성 확인, ONTAP 검색에서 외부 LUN 프로비저닝 해제, 백엔드 연결 정리, 로그 및 문서 검토가 포함됩니다.</block>
   <block id="895946ce63a22bbd6ce2194c79a8ecb5" category="paragraph">FLI 마이그레이션을 완료한 후에는 다음 단계를 수행하여 마이그레이션을 최종 확정하고 깨끗한 상태를 유지해야 합니다.</block>
   <block id="32cf9a5194dc65d4653fb235725ce88e" category="list-text">LUN 가져오기가 성공적으로 완료되었는지, 데이터 무결성이 검증되었는지 확인하십시오.</block>
@@ -1337,7 +1323,6 @@
   <block id="5e71e1e2b20576b16d315429f48a329e" category="paragraph">가져오기 로그는 클러스터 이벤트 로그 파일에 저장됩니다.</block>
   <block id="0beb825c181cbbffff7c11b4c4f7044d" category="list-text">고객 환경을 문서화하기 위해 AutoSupport를 수집하고, 완료 후 최종 구성을 기록하기 위해 다른 AutoSupport를 수집합니다:</block>
   <block id="16a6c2983eece3a17cd6ca5aad69c0dc" category="summary">온라인 FLI 가져오기 관계를 통해 제공될 때 마운트를 방해할 수 있는 ATS 전용 VMFS 헤더가 있는 VMware ESXi 데이터 저장소를 수정합니다.</block>
-  <block id="ab75de2c738ed534e535a75644e35b4f" category="doc">ONTAP FLI ESXi VMFSS ATS/CAW 문제 해결을 수행합니다.</block>
   <block id="cd6b9e7275e97c0392430087f81f89f6" category="paragraph">온라인 FLI 마이그레이션 중에 임시 가져오기 관계는 VMware ATS 또는 CAW(VAAI Atomic Test and Set 또는 SCSI Compare And Write)를 지원하지 않습니다. 데이터스토어가 VMFS5이고 ATS를 지원하는 스토리지에 생성된 경우 VMware는 VMFS 헤더를 "ATS 전용"으로 표시할 수 있습니다. 이 경우 온라인 FLI 관계를 통해 데이터스토어를 마운트할 때 오류가 발생할 수 있습니다.</block>
   <block id="b15219cbeeb5be3d417d15217d94f2b3" category="list-text">"ATS 전용" 설정은 데이터스토어의 첫 번째 익스텐트에 있는 VMFS 헤더에 저장됩니다. 데이터스토어가 여러 익스텐트에 걸쳐 있는 경우 첫 번째 익스텐트만 수정하면 됩니다.</block>
   <block id="bc0c16772dcb705326a11b72eec18a4f" category="list-text">데이터 저장소가 여러 ESXi 호스트에서 공유되는 경우 일반적으로 한 호스트에서 업데이트하는 것으로 충분합니다. 다른 호스트는 재검색 및 재마운트 후 변경 사항을 적용합니다.</block>
@@ -1547,4 +1532,47 @@
   <block id="dd38f906b37d412de7d1c1dcf4cbf31c" category="paragraph"><block ref="dd38f906b37d412de7d1c1dcf4cbf31c" category="inline-link-macro-rx"></block></block>
   <block id="8acb58cbd50ef1b468a020ee0bd351d3" category="inline-link-macro"><block ref="8acb58cbd50ef1b468a020ee0bd351d3" category="inline-link-rx"></block></block>
   <block id="2352c4e1f4d0024ade0869e00e6243f4" category="paragraph"><block ref="2352c4e1f4d0024ade0869e00e6243f4" category="inline-link-macro-rx"></block></block>
+  <block id="15a25365e7d9848b6af9364748681d4a" category="doc">ONTAP FLI에서 FC 어댑터를 이니시에이터 모드로 구성합니다.</block>
+  <block id="4dbb6aad45c8e3f8971fa73b8fb1cb65" category="doc">ONTAP FLI FC 연결 및 배선 관련 모범 사례</block>
+  <block id="f4c33d13d9f0daaebef59efa47d35887" category="doc">ONTAP FLI FC 구역 설정 모델 및 모범 사례</block>
+  <block id="e5433016407dc6d5f7f37c33415d8dd8" category="doc">ONTAP FLI용 iSCSI 백엔드 연결을 설정합니다.</block>
+  <block id="076672f300ffdefd8a4b41ffe8bdb05c" category="doc">ONTAP 외부 LUN 가져오기의 주요 기능 및 이점</block>
+  <block id="e5a84d75421369af41a6022dabb96e58" category="doc">외부 LUN 가져오기 7-Mode에서 ONTAP 전환에 대해 알아보기</block>
+  <block id="edcf274d613b1fd3721fb03b9159a221" category="doc">ONTAP 외부 LUN 가져오기를 위한 필수 조건</block>
+  <block id="035581abad561e88980523560196a593" category="doc">ONTAP 외부 LUN 가져오기에 지원되는 구성</block>
+  <block id="afe9db30e9034e965c6e02e6756b98f0" category="doc">ONTAP FLI 관련 법적 고지</block>
+  <block id="754301ce7ba113a08fa49d266a9b75d8" category="doc">ONTAP FLI 마이그레이션을 위한 외부 LUN 검색</block>
+  <block id="32cbbba88160bd8d4144465f439f9bf4" category="doc">ONTAP FLI LUN 가져오기를 실행하고 모니터링합니다.</block>
+  <block id="b59970b095c3d11135d476b0588c57e4" category="doc">ONTAP FLI LUN 가져오기 관계를 확인하고 삭제합니다.</block>
+  <block id="58c1e8e3d9f8452e6351f2ad4a74c61d" category="doc">ONTAP FLI 분석 단계에 대해 알아보기</block>
+  <block id="e14e63c17be90ac4e49bccfc7dc66144" category="doc">ONTAP FLI 탐색 단계에 대해 알아보십시오.</block>
+  <block id="9c29e825b73fe7ed14d8b179b5ea42c5" category="doc">ONTAP FLI 실행 단계에 대해 알아보기</block>
+  <block id="0895a0dc679cfc5cfb3a7fddb491de9f" category="doc">ONTAP FLI 계획 및 준비 단계에 대해 알아보십시오.</block>
+  <block id="1b73325f1fbbdff2756ed0a1d22c1a5f" category="doc">ONTAP FLI 전환 계획을 위한 테스트 마이그레이션을 실행합니다.</block>
+  <block id="72d975a8123afa2e08e4966f7c286aad" category="doc">ONTAP FLI AIX 마이그레이션 전 호스트 복구 작업 수행</block>
+  <block id="4594f915b679d2a7f6b54e7ffbf5fa8e" category="doc">ONTAP FLI ESXi 마이그레이션 전 호스트 문제 해결 수행</block>
+  <block id="366d0776d5cabae665fa253345d8fc41" category="doc">ONTAP FLI HP 사전 마이그레이션 호스트 복구 작업을 수행합니다.</block>
+  <block id="ab64a4ccf46b4017f3173d801fa1e236" category="doc">ONTAP FLI Linux 마이그레이션 전 호스트 문제 해결 수행</block>
+  <block id="88bc2d4b97164c6f0f9e0f1e35618f8b" category="doc">ONTAP FLI Solaris 마이그레이션 전 호스트 문제 해결 수행</block>
+  <block id="3a2861cc21f8d5160e2aeed1e57f7b90" category="doc">ONTAP FLI Windows 마이그레이션 전 호스트 수정 작업 수행</block>
+  <block id="d55a75223e0c62b9a1ace1086fda9626" category="doc">ONTAP FLI 검증 단계에 대해 알아보십시오.</block>
+  <block id="5d198376368ca3b7e2d5997013d1320a" category="doc">ONTAP FLI 마이그레이션 후 정리 작업을 수행합니다.</block>
+  <block id="e4b7d30fdb059e9a69aec2daca4bc677" category="doc">ONTAP FLI ESXi VMFS ATS/CAW 문제 해결을 수행합니다.</block>
+  <block id="b2a64e601b7f02b898986f734ad6c822" category="doc">ONTAP FLI HP-UX 마이그레이션 후 호스트 복구 수행</block>
+  <block id="0b8dd6ad77664d8da58884a1061648a0" category="doc">ONTAP FLI 샘플 현장 조사 및 계획 워크시트</block>
+  <block id="70a983c31647e6aea4c72ad8aab15674" category="doc">ONTAP FLI 사이트 조사 및 계획 워크시트 Aggregate 상태 탭</block>
+  <block id="364c4532aad1535f22e77e02caf983ff" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 연락처 탭</block>
+  <block id="d09426d6159d4696c87f71747357eaa8" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 대상 스토리지 장치 탭</block>
+  <block id="9e47cabb06fd76190c249ee829a7e3e5" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 FAS Config 탭</block>
+  <block id="ec0ae5846e441f7cf083045814c5ab04" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 HBA 및 Zone 정보 탭</block>
+  <block id="4cdf04a8afc3c95a7f320c22d3189595" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 호스트 탭</block>
+  <block id="bb0b512896c8a5dd1b918d0395eea538" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 LUN 세부 정보 탭</block>
+  <block id="1e32c1e149391d5f6e39b031f53c6bf5" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 마이그레이션 일정 탭</block>
+  <block id="01cdccc5bb4a05fe9479946dda942c10" category="doc">ONTAP FLI 사이트 조사 및 계획 워크시트 NetApp LUN 레이아웃 탭</block>
+  <block id="c9859974dbca81bc695c4e51d335d875" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 설문지 탭</block>
+  <block id="14c70e596dba835b35dd092165b69ba5" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 SDS CLI 스크립트 탭</block>
+  <block id="dc7c368be27e6780a1b29d7562c2124f" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 소스 LUN 탭</block>
+  <block id="66a3fec0a9750426f0214cd67c946497" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 소스 저장 장치 탭</block>
+  <block id="c0ebf75273b086525a388999bf478927" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 스토리지 그룹 탭</block>
+  <block id="c9ab231f3a6a537a1fdc8be5ba0eaa5c" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 스위치 탭</block>
 </blocks>

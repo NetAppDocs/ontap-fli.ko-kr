@@ -4,7 +4,7 @@ sidebar: sidebar
 keywords: verify import, delete import relationship, foreign lun import, fli, lun import delete, lun import verify, import cleanup, san migration, offline verification, asa r2 
 summary: 복사가 완료되면 가져오기 관계를 삭제하여 마이그레이션을 완료하고, 선택적으로 제거하기 전에 블록 레벨 데이터 무결성을 확인합니다. 
 ---
-= FLI LUN 가져오기 관계를 확인하고 삭제합니다
+= ONTAP FLI LUN 가져오기 관계를 확인하고 삭제합니다.
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/

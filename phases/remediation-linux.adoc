@@ -4,7 +4,7 @@ sidebar: sidebar
 keywords: ontap, fli, foreign lun import, linux host, pre-migration, offline fli, online fli 
 summary: Linux 호스트에서 ONTAP FLI 마이그레이션을 실행하기 전에 다음 사전 마이그레이션 단계를 완료하십시오. 오프라인 마이그레이션과 온라인 마이그레이션에 대한 단계가 각각 다릅니다. 
 ---
-= ONTAP FLI Linux 호스트 문제 해결
+= ONTAP FLI Linux 마이그레이션 전 호스트 문제 해결 수행
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/

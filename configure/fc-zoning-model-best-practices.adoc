@@ -4,7 +4,7 @@ sidebar: sidebar
 keywords:  
 summary:  
 ---
-= ONTAP Foreign LUN Import 권장 FC 배선 및 조닝 사례
+= ONTAP FLI FC 구역 설정 모델 및 모범 사례
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/

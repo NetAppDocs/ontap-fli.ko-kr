@@ -4,7 +4,7 @@ sidebar: sidebar
 keywords: supported configurations, foreign lun import, fli, ontap fli, aff, asa, fas, ontap select, cloud volumes ontap, cvo, iscsi fli, fc fli, interoperability, san migration, lun import, supported platforms 
 summary: 'ONTAP FLI에서 지원하는 플랫폼 및 구성(FC 및 iSCSI 백엔드 옵션 포함)과 마이그레이션 계획을 위한 주요 제약 조건을 검토하십시오.' 
 ---
-= ONTAP Foreign LUN Import에서 지원하는 구성 및 플랫폼에 대해 알아보십시오.
+= ONTAP 외부 LUN 가져오기에 지원되는 구성
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/

@@ -4,7 +4,7 @@ sidebar: sidebar
 keywords: discover foreign luns, foreign lun import, fli, ontap, storage disk show, mark foreign lun, fc backend, iscsi backend, foreign disk, lun discovery, san migration 
 summary: 호스트에서 외부 LUN의 프로비저닝을 해제하고 ONTAP 이니시에이터에 매핑하여 ONTAP이 스토리지 스택에서 LUN을 검색할 수 있도록 합니다. 
 ---
-= FLI 마이그레이션을 위한 외부 LUN 검색
+= ONTAP FLI 마이그레이션을 위한 외부 LUN 검색
 :allow-uri-read: 
 :icons: font
 :imagesdir: ../media/
