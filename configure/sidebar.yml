@@ -2,7 +2,7 @@
 section: configure
 title: ONTAP FLI 구성
 entries:
-- title: 개요
+- title: ONTAP FLI 구성에 대해 알아보십시오
   url: "/configure/config-overview.html"
 - title: FC 연결 및 배선
   url: "/configure/fc-connectivity-wiring.html"

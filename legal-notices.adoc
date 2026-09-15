@@ -4,13 +4,14 @@ permalink: legal-notices.html
 keywords: copyrights, notice, trademarks, patents, privacy, open source 
 summary: 법적 고지 사항은 저작권 선언, 상표, 특허 등에 대한 액세스를 제공합니다. 
 ---
-= ONTAP FLI 관련 법적 고지
+= 법적 고지
 :allow-uri-read: 
 :icons: font
+:linkattrs: 
 :imagesdir: ./media/
 
 
-[role="lead"]
+[role="lead lead"]
 법적 고지 사항은 저작권 선언, 상표, 특허 등에 대한 액세스를 제공합니다.
 
 
@@ -44,3 +45,10 @@ link:https://www.netapp.com/pdf.html?item=/media/11887-patentspage.pdf["https://
 == 개인 정보 보호 정책
 
 link:https://www.netapp.com/company/legal/privacy-policy/["https://www.netapp.com/company/legal/privacy-policy/"^]
+
+
+
+[[machine-translation]]
+== 기계 번역
+
+현지화된 콘텐츠에 대한 중요 정보는 link:https://www.netapp.com/company/legal/machine-translation/["netapp.com"^]을 참조하십시오.

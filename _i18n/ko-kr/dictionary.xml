@@ -2,7 +2,6 @@
 <blocks>
   <block id="f3a29486bed19a90f2da6d007818b427" category="list-title">단계</block>
   <block id="54011b62f41dfb303a3eed8e66adacf5" category="summary">사이트 조사 및 계획 워크시트의 일부로 대상 스토리지 장치에 대한 정보가 포함된 탭이 있어야 합니다.</block>
-  <block id="cd1e0a3493fa61cb2dd0db1374b4f62b" category="doc">사이트 조사 및 계획 워크시트 대상 스토리지 디바이스 탭</block>
   <block id="5c6ab1284b6b7a5a7102854a969c99be" category="cell">스토리지 시스템</block>
   <block id="d41d8cd98f00b204e9800998ecf8427e" category="doc"></block>
   <block id="d6ed36bb2b00046e0edf3d24b526b7ad" category="paragraph">클러스터 이름</block>
@@ -41,7 +40,6 @@
   <block id="c2ca16d048ec66e04bca283eab048ec2" category="paragraph">호스트</block>
   <block id="0ac79129f2a7ba5db5e1f4d755cb3231" category="paragraph">패브릭</block>
   <block id="cb3628a430baab7a93ffd421b659b087" category="summary">사이트 조사 및 계획 워크시트의 일부로 마이그레이션 소스 스토리지 디바이스에 대한 정보가 포함된 탭이 있어야 합니다.</block>
-  <block id="66d379978b8364c9b7e4cace88b5bf8f" category="doc">사이트 조사 및 계획 워크시트 소스 스토리지 디바이스 탭</block>
   <block id="e11ebb23473888246705e815adf2fb83" category="paragraph">다음은 소스 스토리지 디바이스 탭을 설정하는 방법의 예입니다.</block>
   <block id="55fe6d37857f38fc5f2d32415d6be244" category="paragraph">스토리지 이름</block>
   <block id="ec9ceefe0c19f4c029008c23e3c947b7" category="paragraph">공급업체</block>
@@ -63,7 +61,6 @@
   <block id="c5f590d18e1ea128362eeafb7192cc21" category="paragraph">1E</block>
   <block id="f2b84afd0523a6df7547c404aa3647d8" category="doc">대상</block>
   <block id="2021cbde5bf5dfd18378e28e081ea40f" category="summary">사이트 조사 및 계획 워크시트의 일부로 마이그레이션 프로젝트 연락처 정보가 포함된 탭을 설정해야 합니다.</block>
-  <block id="9f2428b49944ffbe41d6eaaae6141691" category="doc">사이트 조사 및 계획 워크시트 연락처 탭</block>
   <block id="830bf6266222d642dda54d3adac324b5" category="paragraph">다음은 연락처 탭을 설정하는 방법의 예입니다.</block>
   <block id="23bd44903908dd85f008af4416f452f2" category="cell">마이그레이션 프로젝트 연락처 정보</block>
   <block id="cfad9f5ea3aed693642b36f141e70160" category="paragraph">자원 이름</block>
@@ -73,7 +70,6 @@
   <block id="faab5da77b26184402e64e2ee7a70060" category="paragraph">휴대 전화</block>
   <block id="ce8ae9da5b7cd6c3df2929543a9af92d" category="paragraph">이메일</block>
   <block id="da561bf84fa67d613a7bc697632e7936" category="summary">사이트 조사 및 계획 워크시트의 일부로 스토리지 그룹에 대한 정보가 포함된 탭이 있어야 합니다.</block>
-  <block id="a2aabbf550b46ec2c7ba272d1cc49cfe" category="doc">사이트 조사 및 계획 워크시트 스토리지 그룹 탭</block>
   <block id="d11cedfe393a70a8914339a7ddcf0db4" category="paragraph">다음은 스토리지 그룹 탭을 설정하는 방법의 예입니다.</block>
   <block id="e16f703e68085397177a15356b6f6195" category="cell">스토리지 그룹</block>
   <block id="12007e1d59f4d09c87dbe2c438256244" category="paragraph">목적지</block>
@@ -90,7 +86,6 @@
   <block id="a1f5a153bb25ffa89fc874e242492ae8" category="paragraph">21:00:00:24:ff:30:03:ea21:00:00:24:ff:30:03:eb</block>
   <block id="ca4cbb35f003ffb63d5fef7c9ccb68ba" category="paragraph">igroup create-OSType VMware -protocol -fcp -vserver 'datamig-' igroup 'dm-rx200s6-20' -initiator' 21:00:00:24:ff:30:03:ea, 21:00:24:ff:30:03:eb</block>
   <block id="82beca5dd3e21da8b12776479d520195" category="summary">사이트 조사 및 계획 워크시트의 일부로 마이그레이션 스위치 정보가 포함된 탭을 설정해야 합니다.</block>
-  <block id="9924c373f5e060d3e81782c12188defd" category="doc">사이트 조사 및 계획 워크시트 스위치 탭</block>
   <block id="e309370bdd52477ef0d27ea92e98564d" category="paragraph">다음은 스위치 탭을 설정하는 방법의 예입니다.</block>
   <block id="0052efad5d260a806d52bfcfe640936f" category="cell">스위치</block>
   <block id="222a267cc5778206b253be35ee3ddab5" category="paragraph">현재</block>
@@ -104,7 +99,6 @@
   <block id="d3d9446802a44259755d38e6d163e820" category="paragraph">10</block>
   <block id="8532afb409ba7a990336bdee27558254" category="paragraph">3.3(5a)</block>
   <block id="5dd04a70c599dd3aba4af817ed8f940a" category="summary">사이트 조사 및 계획 워크시트의 일부로 SDS CLI 스크립트에 대한 정보가 포함된 탭이 있어야 합니다.</block>
-  <block id="fcbc52c1e9e3f483b5dd4306a9c74eb7" category="doc">사이트 조사 및 계획 워크시트 SDS CLI 스크립트 탭</block>
   <block id="2c87f12de6046ab2b53a48c94446ddc6" category="paragraph">다음은 SDS CLI 스크립트 탭을 설정하는 방법의 예입니다.</block>
   <block id="8d1fc7e767a7204d770eb56c7989e03b" category="cell">컨트롤러 1</block>
   <block id="48ed192757d1bc6d4a36d16a10893f48" category="cell">컨트롤러 2</block>
@@ -143,7 +137,6 @@
   <block id="a73c68c63356315bd4ea581710355d69" category="paragraph">LUN이 iGroup에 매핑되지 않았으므로 /vol/bootcampvol/dm27_data2_LUN에 대해 # LUN 매핑을 건너뛰었습니다.</block>
   <block id="d349791b0d71ed5b5f5c14e0ca2c1683" category="doc">호스트 수정</block>
   <block id="0e307f6ea434bd4d2171f6accce0a9ba" category="summary">사이트 조사 및 계획 워크시트의 일부로, 초기 마이그레이션 설문지의 마이그레이션 프로젝트 정보가 포함된 탭이 있어야 합니다.</block>
-  <block id="a9045dbda21a2daa2214c339015b971e" category="doc">사이트 조사 및 계획 워크시트 질의 응답서 탭</block>
   <block id="10bb602bb2e1131312be193830955c41" category="paragraph">다음은 질의 응답서 탭을 설정하는 방법의 예입니다.</block>
   <block id="56693cf67971d000c20732a5b7bdbb95" category="cell">마이그레이션 프로젝트 정보</block>
   <block id="245fe794333c2b0d5c513129b346b93f" category="paragraph">프로젝트 유형</block>
@@ -224,7 +217,6 @@
   <block id="eda2c5ecf22611ccb137045fed3f3eb2" category="list-text">대상 스토리지에서 테스트 LUN을 삭제합니다.</block>
   <block id="ee32bef56e30ab9e874b38d1cd3c3d6c" category="paragraph">다른 호스트 LUN을 선택하지 않아야 합니다.</block>
   <block id="5adfe538d2e4bb2201ca3cd266686c4c" category="summary">사이트 조사 및 계획 워크시트의 일부로 LUN 세부 정보에 대한 정보가 포함된 탭이 있어야 합니다.</block>
-  <block id="e74172a70ff5d3d9f3c490416dc3bd83" category="doc">사이트 조사 및 계획 워크시트 LUN 세부 정보 탭</block>
   <block id="0c9aa58f5194cebe062fd903e101ba7f" category="paragraph">다음은 LUN 세부 정보 탭을 설정하는 방법의 예입니다.</block>
   <block id="72db9d9344319d56fe15f5a344ca2954" category="cell">LUN 세부 정보입니다</block>
   <block id="64d354dc5879cf570ce7b4ef676e75bd" category="paragraph">운영 체제</block>
@@ -268,7 +260,6 @@
   <block id="e206a54e97690cce50cc872dd70ee896" category="paragraph">리눅스</block>
   <block id="92963abd36c896b93a36b8e296ff3387" category="paragraph">VMware</block>
   <block id="d5fe299d7d92cd0254874c8e18bd6667" category="summary">사이트 조사 및 계획 워크시트의 일부로 마이그레이션 일정에 대한 정보가 포함된 탭이 있어야 합니다.</block>
-  <block id="9ae6059c986f115d805804d9750f95c8" category="doc">사이트 조사 및 계획 워크시트 마이그레이션 일정 탭</block>
   <block id="d658998d22d4a15ffcb56abb26b97f6c" category="paragraph">다음은 Migration Schedule 탭을 설정하는 방법의 예입니다.</block>
   <block id="fe04e35b1feab9596669e8b60e5143b8" category="cell">마이그레이션 일정</block>
   <block id="db5249c8de64163f6987af1bf7d7b50f" category="paragraph">마이그레이션 날짜</block>
@@ -280,7 +271,6 @@
   <block id="9299ae51d5e390720987a49406f73c6c" category="summary">NetApp은 프로페셔널 서비스 또는 파트너 프로페셔널 서비스, 마이그레이션 범위 지정 및 계획, FLI(Foreign LUN Import) 7-Mode를 사용하여 ONTAP로 데이터 마이그레이션을 수행하는 방법에 대한 고객 인력을 교육하는 것을 적극 권장합니다.</block>
   <block id="d1c7f10a927287be4073a34e717a5457" category="list-text">처리량을 극대화하기 위해 노드당 16개 이상의 마이그레이션을 동시에 실행하지 마십시오.</block>
   <block id="b84408b5a0a0c7cc2f546b003567651a" category="summary">사이트 조사 및 계획 워크시트의 일부로 HBA 및 영역 정보에 대한 정보가 포함된 탭을 설정해야 합니다.</block>
-  <block id="e73883227bd8b82a32f523f166de0ff8" category="doc">사이트 조사 및 계획 워크시트 HBA 및 영역 정보 탭</block>
   <block id="b40869fd3c3553f482c858fa5ac4d4f6" category="paragraph">다음은 HBA 및 영역 정보 탭을 설정하는 방법의 예입니다.</block>
   <block id="09eaea7cdd5eb7f40566ce88dd148114" category="cell">패브릭 세부 정보</block>
   <block id="b5a7adde1af5c87d7fd797b6245c2a39" category="paragraph">설명</block>
@@ -294,7 +284,6 @@
   <block id="5f3087cbd50e3ef143e7c737a425867a" category="paragraph">rx21_AMS2100</block>
   <block id="ec194d0acc244f4d9246902066321e8e" category="paragraph">rx21_flickDOT</block>
   <block id="d7da563f3152abd7a93b06abdd4d95c6" category="summary">사이트 조사 및 계획 워크시트의 일부로 마이그레이션 프로젝트 호스트 정보가 포함된 탭을 설정해야 합니다.</block>
-  <block id="36231dd03efc078aabef212947a5b33e" category="doc">사이트 조사 및 계획 워크시트 호스트 탭</block>
   <block id="396cb26dedacf281d09182445c92324a" category="paragraph">다음은 호스트 탭을 설정하는 방법의 예입니다.</block>
   <block id="8124579383e90243e4b06323d2b37f8d" category="cell">호스트</block>
   <block id="bc8586f2230ff2687e94e61c5bcb4855" category="paragraph">* 현재 *</block>
@@ -306,7 +295,6 @@
   <block id="c7e230d1422228fff3ce57e1b13d1d0c" category="paragraph">SnapManager</block>
   <block id="0f413e47bf69d6dd85e783e2bfc60184" category="paragraph">핫픽스</block>
   <block id="c614218c0adf7263666120fbe714869d" category="summary">사이트 조사 및 계획 워크시트의 일부로 집계 상태에 대한 정보가 포함된 탭이 있어야 합니다.</block>
-  <block id="acf867d4e1dc8af3eb922419a5b3fe21" category="doc">사이트 조사 및 계획 워크시트 집계 상태 탭</block>
   <block id="bceb4f070020d638ef1535978542228d" category="paragraph">다음은 집계 상태 탭을 설정하는 방법의 예입니다.</block>
   <block id="911f94bc298fc88538ecc2c44b5d778d" category="cell">NetApp 애그리게이트 정보</block>
   <block id="9bbf373797bf7cf7ba62c80023682e25" category="paragraph">컨트롤러</block>
@@ -316,7 +304,6 @@
   <block id="70ed673b65daa8d0437b28e534f4ec4e" category="paragraph">사용 가능(GB)</block>
   <block id="0d4f11be31f944fbc267afc1f7a2f666" category="paragraph">빌드 아웃 이전</block>
   <block id="8802080a4dc2981f17e7c4648f43afe7" category="summary">사이트 조사 및 계획 워크시트의 일부로 소스 LUN에 대한 정보가 포함된 탭을 설정해야 합니다.</block>
-  <block id="4037e8193f042717a79bf3fdefd4aae6" category="doc">사이트 조사 및 계획 워크시트 소스 LUN 탭</block>
   <block id="46fdb96658c0c805a565f783cb6eb4a2" category="paragraph">다음은 소스 LUN 탭을 설정하는 방법의 예입니다.</block>
   <block id="2d1ef22a8170261433e49f3f13fa84f0" category="cell">소스 LUN</block>
   <block id="40336b4a1c70e07af22b9f21262986c6" category="paragraph">마스킹된 LUN</block>
@@ -342,7 +329,6 @@
   <block id="558325bdc5d5119e93467e7fe7fcea48" category="paragraph">33619968</block>
   <block id="3498819c9e2fcba4d3ad19d511ca5791" category="paragraph">LUN15</block>
   <block id="af99c9abf614a82b80d08359e5e0a888" category="summary">사이트 조사 및 계획 워크시트의 일부로 LUN 레이아웃에 대한 정보가 포함된 탭을 설정해야 합니다.</block>
-  <block id="f01d3ff99f3ac13d61d7586c2e8dc665" category="doc">사이트 설문조사 및 계획 워크시트 NetApp LUN 레이아웃 탭</block>
   <block id="e672da4fadd27ee2f19017ef42dce852" category="paragraph">다음은 NetApp LUN Layouts 탭을 설정하는 방법의 예입니다.</block>
   <block id="f4dc3ce9f4d7c741a2ac13a451458d51" category="cell">NetApp LUN 정보</block>
   <block id="5a33fdd3ad048388d676b3cfe62a76b4" category="paragraph">볼륨 이름</block>
@@ -361,7 +347,6 @@
   <block id="c2ece9a18147c056e75e4008644a9526" category="paragraph">호스트 유형</block>
   <block id="16b78e95661c918bc1b982fd64852c02" category="paragraph">드라이브 문자</block>
   <block id="cd2ea2efb6e484e9f76aa6c911f083cf" category="summary">사이트 조사 및 계획 워크시트의 일부로 FAS 구성에 대한 정보가 포함된 탭이 있어야 합니다.</block>
-  <block id="d816e66cd7b51d120e7ae740a2d2b7d8" category="doc">사이트 조사 및 계획 워크시트 FAS 구성 탭</block>
   <block id="cb27b289fa8961c6a3dcd409d777c342" category="paragraph">다음은 FAS 구성 탭을 설정하는 방법의 예입니다.</block>
   <block id="b84efa9ec93a064c12da482ba494099b" category="cell">클러스터 관리 IP 주소입니다</block>
   <block id="9e12573417a5e1a70dacdfe728c09eaa" category="cell">클러스터 관리 자격 증명을 사용할 수 있습니다</block>
@@ -405,7 +390,6 @@
   <block id="1b6dec684aa1f6e66018baa0a87b5a75" category="list-text">실행 단계</block>
   <block id="4a906f3b5858522ee75dd08c0279ffaa" category="list-text">검증 단계</block>
   <block id="dbe84cd10fc78ddffac6c2603bb5e334" category="summary">마이그레이션 방법론의 분석 및 계획 단계에서는 사이트 조사 및 계획 워크시트를 사용하여 기존 구성, 타겟 구성, 차이, 개선 계획을 문서화해야 합니다.</block>
-  <block id="52d8ff059d88cc5b65a5a53537d4c524" category="doc">샘플 사이트 조사 및 계획 워크시트</block>
   <block id="7bafc2e73cbb5786f7652b776e4d06e8" category="paragraph">이 섹션에서는 사이트 조사 및 계획 스프레드시트에 포함해야 하는 정보 유형의 예를 제공합니다. 다음 탭을 사용하는 것이 좋습니다.</block>
   <block id="bbaff12800505b22a853e8b7f4eb6a22" category="list-text">연락처</block>
   <block id="179d692ef9707bcf6d92ff37fd394ec8" category="list-text">설문 조사</block>
@@ -416,11 +400,7 @@
   <block id="f22322f0d88fb0493fcb4b36d5e1c583" category="list-text">집계 상태</block>
   <block id="82911d14232afbf61871f222ca6c2a53" category="list-text">FAS 구성</block>
   <block id="6a1242268d67eaeac1c352b218f7960e" category="list-text">SDS CLI 스크립트</block>
-  <block id="3be720072e03679f7ed0f85258130b70" category="summary">ONTAP 외부 LUN 임포트</block>
   <block id="dbd3f1a817d137c052ec01ef60940131" category="doc">ONTAP 외부 LUN 임포트 설명서</block>
-  <block id="9273826bb0d876c78b121ff252c71f0e" category="sidebar">ONTAP FLI 문서</block>
-  <block id="3b878279a04dc47d60932cb294d96259" category="sidebar">개요</block>
-  <block id="8d98bee06f527b9e9c395ead1ae98be3" category="sidebar">외부 LUN 임포트</block>
   <block id="135b308ed83c53f1516b7c754566d1c4" category="sidebar">시작하기 전에</block>
   <block id="8c3b55fef9c0e25a2fe01d90beac075c" category="list-text">Assigned Logical Units * 창에서 테스트 LUN을 선택합니다.</block>
   <block id="e9c44bbfd795a5d63d74c6a77afee70d" category="summary">법적 고지 사항은 저작권 선언, 상표, 특허 등에 대한 액세스를 제공합니다.</block>
@@ -450,7 +430,6 @@
   <block id="2f60f93c0bb2f87f067f123be1aa8949" category="list-text">FC 어댑터 포트를 타겟 모드에서 이니시에이터 모드로 변환합니다.</block>
   <block id="938f1047c15f00fdd0cbfc8e4cfa15e1" category="paragraph">*예*</block>
   <block id="4020824310d3e82e0619ba8f6c0ff418" category="list-text">어댑터가 다시 온라인 상태이고 이니시에이터 모드인지 확인하십시오.</block>
-  <block id="222d7e5febe8f4e6f73f6044620d0122" category="doc">ONTAP FLI(Foreign LUN Import) 연결 및 배선</block>
   <block id="d2c21174503152dd8670ca67b8d64d0b" category="paragraph">FC를 통한 외부 LUN 가져오기는 대상 ONTAP 컨트롤러가 검색 및 가져오기 중에 외부 어레이 LUN에 안정적으로 액세스할 수 있도록 이중 패브릭 SAN 설계를 기반으로 합니다. 지원되는 배포 환경에서는 사용 중인 각 스토리지 컨트롤러에 두 패브릭 모두에 기본 활성 경로가 있어야 합니다. 즉, 소스 어레이 타겟 포트와 가져오기를 수행하는 노드의 ONTAP 이니시에이터 포트가 패브릭 A와 패브릭 B의 공통 영역에 있어야 합니다. ONTAP 클러스터의 모든 노드를 포함할 필요는 없으며, 실제로 LUN을 가져오고 마이그레이션할 노드만 포함하면 됩니다. 간접 경로도 작동할 수 있지만, 소스와 대상 간에 활성 최적화 경로를 사용하는 것이 가장 좋습니다.</block>
   <block id="1a10e21b90026ba7da0260204fc9970c" category="section-title">ONTAP FLI 권장 FC 배선 및 조닝 사례</block>
   <block id="ddbf253cffbc1b35811df4915daa4ef9" category="list-text">이중화를 위해 이중 패브릭(A 및 B)을 사용하십시오.</block>
@@ -474,7 +453,6 @@
   <block id="b3a3f4589f48a2d30102b5eb0df42fba" category="list-text">FLI 워크플로에서 요구하는 영역 모델에 맞는 적절한 물리적 포트 WWPN을 사용하십시오. 마이그레이션 영역 지침에서 명시적으로 허용되지 않는 경우 NPIV WWPN을 사용하지 마십시오.</block>
   <block id="69974507777b94693b1e9b10550b6733" category="image-alt">ONTAP FLI를 위한 FC 조닝 모델 예</block>
   <block id="939904c079e5426d15e2ddb0d0402edd" category="admonition">소스 타겟을 대상 이니시에이터에 맞게 영역화한 후에는 검색 명령을 통해 ONTAP에서 소스 스토리지가 표시되어야 합니다. 어레이가 처음 나타나지 않는 경우 일부 환경에서는 ONTAP 이니시에이터에 연결된 스위치 포트를 재설정해야 할 수 있습니다.</block>
-  <block id="d62c4d88e818e20e884188368abe0a19" category="doc">ONTAP Foreign LUN Import(FLI)에서 권장하는 FC 배선 및 조닝 방법</block>
   <block id="5c1fca0fc7986dddf497f2fe19cbfc2d" category="paragraph">ONTAP iSCSI FLI는 FLI 스택과 통합된 ONTAP 소프트웨어 iSCSI 이니시에이터를 사용하며, 백엔드 연결이 호스트 데이터 LIF가 아닌 인터클러스터 LIF 네트워킹에 의해 구동되는 인터클러스터 LIF에 아웃바운드 iSCSI 세션을 바인딩합니다.</block>
   <block id="b262c31fdeaba5bf2ea87682b7d98750" category="paragraph">세션은 인터클러스터 LIF를 기반으로 하므로, 인터클러스터 LIF 배치, 도달 가능성 및 이중화를 계획해야 합니다. 이는 일반적으로 LUN 소유 노드와 해당 HA 파트너 노드에서 수행되며, 단일 장애 지점을 방지하기 위해 포트 전반에 걸쳐 복원력이 뛰어난 배치를 고려해야 합니다. 세션을 생성하기 전에 인터클러스터 LIF IP와 외부 어레이 타겟 포털 IP 간의 VLAN 도달 가능성을 통해 엔드 투 엔드 라우팅을 검증해야 하며, 성공적인 네트워킹이 LUN 검색의 전제 조건이므로 TCP 포트 3260 허용을 포함해야 합니다.</block>
   <block id="dfe583d1386b5fe1068349b7c8085216" category="paragraph">세션은 타겟 포털 IP와 타겟 IQN을 모두 사용하여 명시적으로 생성해야 합니다. iSCSI 검색 세션은 사용되지 않습니다. 의도된 복원력 모델은 완전 메시 연결이며, 각 참여 ONTAP 노드는 각 외부 타겟 포털에 세션을 설정하여 가져오기를 시작하기 전에 외부 LUN이 사용 가능한 모든 경로를 통해 보이도록 합니다.</block>
@@ -503,7 +481,6 @@
   <block id="1f7e2afdd5005873644bb37a3ac9f046" category="list-text">외부 어레이의 연결을 확인하십시오.</block>
   <block id="45a909869405fe8ef132d26fc306a055" category="paragraph">이 단계에서 외부 스토리지 어레이 iSCSI 타겟은 NetApp iSCSI 이니시에이터에서 활성 로그인 및 세션을 감지하고 확인할 수 있어야 합니다. 외부 어레이에서 공급업체에서 권장하는 명령을 사용하여 이니시에이터가 연결되어 있고 세션이 정상인지 확인하십시오.</block>
   <block id="6e8e6a4392d50fc320af33541d5b911a" category="paragraph">*검색 체크포인트*: 세션이 설정되면 ONTAP는 스토리지 경로를 추가하고 스토리지 스택에서 외부 LUN을 검색해야 합니다. 이는 디스크를 외부 디스크로 표시하고 가져오기 워크플로를 진행하기 위한 필수 조건입니다.</block>
-  <block id="165bfafafc6e957d5e0754f65dda7b0f" category="summary">온라인 및 오프라인 마이그레이션 옵션과 SAN 환경을 위한 블록 수준 LUN 마이그레이션을 포함한 ONTAP FLI의 주요 기능과 이점에 대해 알아보십시오.</block>
   <block id="7f57df50c07d397c153ac86c88babe24" category="paragraph">ONTAP Foreign LUN Import(FLI)는 타사(서드파티) 어레이 LUN에서 ONTAP 네이티브 LUN으로 데이터를 복사하는 내장 블록 마이그레이션 기능으로, 오프라인 및 온라인 마이그레이션 방식을 모두 지원합니다. FLI는 다양한 타사 어레이의 SAN LUN을 ONTAP로 마이그레이션하도록 설계되었으며, 여러 호스트 및 어레이에서 계획, 실행 및 검증을 표준화하는 데 도움이 되는 일관된 마이그레이션 방법론을 제공합니다.</block>
   <block id="be01a357ae2c9752875b5385c732b017" category="section-title">주요 기능</block>
   <block id="6f85cdaea1ce05195fb644beb9b6e016" category="list-text">비즈니스 다운타임 요구 사항에 맞춘 온라인 및 오프라인 마이그레이션.</block>
@@ -576,7 +553,6 @@
   <block id="5e0a6f26caee0cc99e62c1641030b645" category="paragraph">오프라인 워크플로에서는 가져오기 전체 기간 동안 호스트 연결이 끊어집니다.</block>
   <block id="6fd02e7a6282ae060788d11e7f924787" category="paragraph-title">온라인 FLI 워크플로우</block>
   <block id="9672edc62c90b2277bb4c1b036da5b00" category="paragraph">온라인 워크플로우에서 호스트는 가져오기 작업이 복사 단계에서 완료 단계로 전환되는 짧은 전환 기간 동안에만 연결이 끊어집니다.</block>
-  <block id="369facb7b2f9e0e9004f0f614cfa7bfd" category="summary">ONTAP의 SAN 데이터 마이그레이션 옵션(Foreign LUN Import 포함)과 기간 계획 및 구성 검증을 위한 권장 도구를 살펴보십시오.</block>
   <block id="a925a3b763aaaa6fe447ade6f390d7e9" category="doc">ONTAP로 SAN 데이터 마이그레이션에 대해 알아보십시오</block>
   <block id="21f811674d967c4b45da23ea8ca6d6d5" category="paragraph">SAN 데이터 마이그레이션은 종종 촉박한 다운타임 기간, 운영 위험 및 제한된 전문 리소스로 인해 제약을 받습니다. ONTAP Foreign LUN Import(FLI)는 외부(타사) 어레이 LUN에서 ONTAP 네이티브 LUN으로 데이터를 복사하는 내장 블록 마이그레이션 기능으로, 오프라인 및 온라인 마이그레이션 방식을 모두 지원합니다. ONTAP는 전문 서비스 주도 마이그레이션을 요구하지 않지만, 특히 복잡한 환경의 경우 범위 설정, 계획 수립 및 교육을 위해 NetApp 또는 자격을 갖춘 파트너를 참여시키는 것이 여전히 강력히 권장됩니다.</block>
   <block id="425cf7f284241ed618d076f456939be1" category="section-title">적절한 마이그레이션 접근 방식 선택(상위 수준)</block>
@@ -587,7 +563,6 @@
   <block id="7699a77797b0ab6ea1ac16233a43ac2c" category="list-text">Data Transfer Appliance(DTA)</block>
   <block id="d03c0be8ae3e195bb3ea4e4be9fa05d8" category="list-text">SAN에 연결된 어플라이언스 모델로, 마이그레이션된 TB당 라이센스가 부여되며 오프라인 및 온라인 마이그레이션을 모두 지원합니다.</block>
   <block id="7d8daad43771792ab26009fb21686ca8" category="list-text">호스트 OS 또는 애플리케이션 기반 마이그레이션</block>
-  <block id="bfc71c0d817c858ea99158fc51f399c6" category="list-text">플랫폼에서 기본 이동성을 제공하거나 호스트 또는 애플리케이션 제어가 선호되는 경우에 유용합니다(예: VMware 스토리지 이동성 및 호스트 기반 복사 방식).</block>
   <block id="12a61ce147f37cdef06ca60fca2126c1" category="section-title">마이그레이션 기간 계획</block>
   <block id="ab5e38c0165fd6b9849993e469688bb5" category="paragraph">초기 계획 단계에서만 일반적으로 인용되는 벤치마크 가정은 총 ~2TB 용량의 LUN 8개를 사용하는 호스트의 경우 호스트당 ~5시간이며, 이는 대략 ~400GB/시간에 해당합니다. 이는 의도적으로 대략적인 계획 수치이며 모든 환경에 정확히 들어맞지는 않을 수 있습니다. 정확한 예측을 위해서는 다양한 규모의 테스트 마이그레이션을 여러 번 실행하여 실제 스토리지, 네트워크 및 호스트 환경에서 처리량을 측정하는 것이 좋습니다.</block>
   <block id="a4cefc4155fec80ce802dbe85fdfbb17" category="section-title">권장 도구(데이터 수집, 호환성, 자동화, 검증)</block>
@@ -600,7 +575,6 @@
   <block id="bb3114ffbc1b8e593b0955364cf66fff" category="list-text">블록 수준 마이그레이션 후 시스템에 업데이트된 조회 정보가 반영되도록 마이그레이션 후 VTOC 디스크 레이블을 업데이트합니다.</block>
   <block id="64ea75caa71920ec87ff578169f0075a" category="list-text">SAN LUN Migrate(FLI 프로젝트용 sanlunmigrate)</block>
   <block id="ff76beca36064e56282d13cd22862ba8" category="list-text">프로덕션 마이그레이션을 수행하기 전에 고객 환경에서 외부 어레이/LUN 동작의 유효성을 검사하기 위해 검증 방식을 사용하십시오. 이는 전송 또는 공급업체 동작이 다를 경우 특히 중요합니다.</block>
-  <block id="233991137dfdbb7ef01b6ac53fd5eb26" category="summary">ONTAP Foreign LUN Import를 위한 필수 요건(백엔드 연결, LUN 검색 및 가져오기 관계 요구 사항 포함)을 검토하십시오.</block>
   <block id="6d1cae9dd026a35e9f3c2b33e8998dc6" category="paragraph">ONTAP Foreign LUN Import(FLI)를 시작하기 전에 성공적인 마이그레이션을 보장하기 위해 몇 가지 필수 조건을 충족해야 합니다. 이러한 필수 조건에는 FLI 프로세스가 올바르게 작동하는 데 필수적인 호환성, 연결성 및 구성 요구 사항이 포함됩니다.</block>
   <block id="0621ec7ccdf71517b26fc85ecec39c14" category="list-text">선택한 전송 방식에 대해 백엔드 연결이 가능해야 합니다.</block>
   <block id="17f9cbbbf5f6b5f84d47d7ce5be8481b" category="list-text">FC FLI를 사용하려면 컨트롤러당 최소 1개의 FC 포트가 필요하며, 이 포트는 이니시에이터 모드로 작동해야 합니다(이중화를 위해 패브릭당 1개씩, 총 2개의 포트를 사용하는 것이 좋습니다).</block>
@@ -613,11 +587,8 @@
   <block id="875df9dde0081e2e8eb6dfd4f5af293d" category="list-text">대상 ONTAP LUN은 프런트엔드 프로토콜 계획에 따라 하나 이상의 igroup에 매핑되어야 호스트가 워크플로의 올바른 단계에서 연결될 수 있습니다.</block>
   <block id="cf282bc9d5e2cafd322cc0eab6aca317" category="list-text">가져오기 복사를 시작하기 전에 외부 LUN과 대상 ONTAP LUN을 가져오기 관계를 통해 연결해야 합니다.</block>
   <block id="882b8625fb0676274db3decc8486f6d7" category="paragraph">가져오기 관계를 생성하기 전에 대상 ONTAP LUN을 오프라인 상태로 유지하십시오. 관계가 생성된 후에는 온라인 FLI를 수행할 때만 LUN을 온라인 상태로 전환할 수 있으며, 이렇게 하면 복사가 진행되는 동안 호스트가 I/O를 재개할 수 있습니다.</block>
-  <block id="6cc95584903beea076e0f01f0960ebbc" category="summary">ONTAP FLI에서 지원하는 플랫폼 및 구성(FC 및 iSCSI 백엔드 옵션 포함)과 마이그레이션 계획을 위한 주요 제약 조건을 검토하십시오.</block>
   <block id="114e9c31f071edc22a1ebd2d95e7ac56" category="paragraph">ONTAP FLI는 예측 가능한 동작과 완벽한 지원 가능성을 보장하기 위해 지원되는 구성으로 배포해야 합니다.</block>
   <block id="a8a512b2fe98c374c8ce645e66e96c79" category="list-text">모든 FLI 마이그레이션은 LUN(블록) 수준에서 수행됩니다. 파일 및 프로토콜 수준 마이그레이션은 ONTAP FLI 범위를 벗어납니다.</block>
-  <block id="0223ac1546a1a57bee09547782d1dec3" category="list-text">노드당 최대 8개의 동시 가져오기를 계획하십시오. 실제 안전한 동시성은 관찰된 호스트 지연 시간과 가져오기 지연 시간에 따라 달라집니다.</block>
-  <block id="2011c83e3fce0d0c44dcd6bab161dbb8" category="list-text">가져오기의 최대 외부 LUN 크기는 LUN당 4TB입니다.</block>
   <block id="c7da8e3638b3d8bec6619fec0f6397a5" category="list-text">iSCSI 세션 확장 제한(백엔드 iSCSI):</block>
   <block id="142bbe83dcdddad04981129f50ea07ad" category="list-text">IC LIF당 1개의 이니시에이터</block>
   <block id="96425a0cf48bbfac682bc2597c729858" category="list-text">LIF당 최대 16개 세션</block>
@@ -635,7 +606,6 @@
   <block id="6d952fae28b2f6e37252cedc5f46cf30" category="list-text">호스트 지연 시간을 보호하기 위해 가져오기를 일시 중지했다가 재개할 수 있습니다</block>
   <block id="1a50fc38537ab121331841b20b2676ca" category="list-text">가능하면 마이그레이션은 피크 시간이 아닌 시간대에 예약해야 합니다.</block>
   <block id="16a0fcd0634e9d98b9de61b579ea5b9d" category="section-title">지원되는 구성 및 플랫폼</block>
-  <block id="e71a324035dfc6c7aaae52a91474d1db" category="paragraph">ONTAP FLI는 예측 가능한 동작과 완벽한 지원 가능성을 보장하기 위해 지원되는 구성으로 배포해야 합니다. 시간이 지남에 따라 새로운 구성이 검증되면서 지원되는 조합이 변경될 수 있습니다. 마이그레이션을 진행할 때마다 엔드 투 엔드 스택(소스 어레이 + 호스트 + 패브릭/네트워크 + ONTAP 타겟)을 최신 상호 운용성 지침에 따라 검증하십시오.</block>
   <block id="60275e850515ec6445d453446471e302" category="list-title">지원되는 대상(마이그레이션할 수 있는 위치)</block>
   <block id="31b1e937ec753ba0844224ec51b406af" category="list-text">ONTAP는 FLI 마이그레이션에서 지원되는 유일한 대상입니다. FLI는 ONTAP LUN으로 데이터를 가져오도록 설계되었으며, 타사 대상 스토리지로의 마이그레이션은 지원되지 않습니다.</block>
   <block id="b5421379fb9801395072f840c80c4b13" category="list-text">iSCSI FLI의 경우 iSCSI 소프트웨어 이니시에이터는 FLI 스택에 통합되어 있으며 iSCSI/TCP 백엔드 연결을 사용하여 외부 LUN 검색 및 가져오기를 지원하도록 특별히 설계되었습니다.</block>
@@ -730,7 +700,6 @@
   <block id="5d3f76a7a08e389eab72bac918401022" category="list-text">확인 중지(LUN을 온라인 상태로 전환하기 전에 필수):</block>
   <block id="8e9e5ec1440c677b8737da612be3f2ad" category="list-text">LUN을 온라인 상태로 전환합니다(중단 기간은 여기서 종료됩니다).</block>
   <block id="ac5ca742cf0c971c951be489b99b0a87" category="summary">호스트 및 SAN 스택 구성을 NetApp 상호 운용성 매트릭스와 비교하여 필요한 변경 사항을 식별하는 분석 단계에 대해 알아보세요.</block>
-  <block id="a0cf9d93b0627bff5a27ee9afc20088e" category="doc">ONTAP Foreign LUN Import(FLI) 분석 단계</block>
   <block id="1c875fa63302c8275b957732af8f5c6e" category="paragraph">분석 단계에서는 상세 마이그레이션 계획 및 실행 단계로 넘어가기 전에 수정해야 할 사항을 결정합니다. 이 단계의 주요 목표는 모든 호스트와 해당 호스트가 의존하는 전체 SAN 스택(OS, 볼륨 관리자, HBA, 다중 경로, 스위치 펌웨어 및 대상 ONTAP 릴리스)이 마이그레이션 후 지원되는 구성으로 전환될 수 있도록 하는 것입니다. 이를 위해 각 호스트의 현재 상태를 NetApp 상호 운용성 매트릭스(IMT)에서 지원되는 조합과 비교하고, 호스트별로 명확한 목표 구성(OS 수준, MPIO/ALUA 동작, HBA 드라이버/펌웨어 및 필요한 호스트 도구)을 정의한 다음, 해당 목표에 도달하는 데 필요한 정확한 변경 사항을 나열하는 격차 분석을 수행합니다.</block>
   <block id="fad187fdae563300b8b6ebe777c2b046" category="paragraph">애플리케이션 호환성 및 중단 계획에 영향을 미칠 수 있는 수정 변경 사항을 방지하기 위해 격차 분석 일정을 수립하고 검토하십시오. 많은 환경에서 OS 패치 또는 HBA 업데이트와 같은 일부 변경 사항은 마이그레이션 기간 전에 완료하는 것이 더 안전합니다. 그러나 다중 경로 스택 변경은 MPIO 동작 변경이 현재 어레이와의 지원 가능성에 영향을 미치고 롤백을 복잡하게 만들 수 있으므로 전환 또는 마이그레이션 후로 연기되는 경우가 많습니다.</block>
   <block id="3b539ba231a3912d3b8ec45beaba5268" category="paragraph">iSCSI FLI의 경우 분석 단계에서는 iSCSI 관련 준비 상태도 캡처해야 합니다.</block>
@@ -788,7 +757,6 @@
   <block id="d834ecd82f50589b3a142b7eb46d0781" category="list-text">해당하는 경우 사용자 환경과 관련된 호스트 유틸리티 및 툴링 요구 사항</block>
   <block id="41cb02d9e78bdaf5550268e87618ee26" category="paragraph">격차 분석은 신속하게 검토해야 합니다. 개선 조치에는 다운타임 기간이 필요할 수 있으며 애플리케이션 지원 요구 사항과 상호 작용할 수도 있기 때문입니다.</block>
   <block id="05b150074b327a7baccec3e557859a8f" category="summary">마이그레이션 계획의 기반을 마련하기 위해 소스 환경 및 연결에 대한 정보를 수집하는 검색 단계에 대해 알아보십시오.</block>
-  <block id="55af0622ab213baaf3057522b24d27e0" category="doc">ONTAP Foreign LUN Import(FLI) 검색 단계</block>
   <block id="fc79032502cbbccfa9568227b7ea9bcf" category="paragraph">ONTAP FLI 검색 단계는 마이그레이션 프로세스의 첫 번째 단계입니다. 원활한 마이그레이션을 위해서는 소스 환경, 연결 상태 및 대상 ONTAP 시스템에 대한 모든 필수 정보를 수집하는 것이 매우 중요합니다. 검색 단계는 마이그레이션 계획, 준비, 실행 및 검증을 위한 기반을 마련합니다.</block>
   <block id="0d85720e731a7f5d198d0d8360fc0ef6" category="section-title">ONTAP FLI를 사용하여 iSCSI 마이그레이션을 준비하세요</block>
   <block id="d96fd2346a4850898ade5cd6ad803229" category="paragraph">ONTAP FLI 검색 단계에서는 마이그레이션을 완료하는 데 필요한 기술 세부 정보를 수집합니다.</block>
@@ -832,7 +800,6 @@
   <block id="8625e1de7be14c39b1d14dc03d822497" category="inline-link-macro">툴</block>
   <block id="0a66f896342ea7f47d260394b6ad1b4b" category="paragraph"><block ref="0a66f896342ea7f47d260394b6ad1b4b" category="inline-link-macro-rx"></block></block>
   <block id="e8f511eaa2512ab9e62d0fba0e4609c4" category="summary">오프라인 또는 온라인 FLI 마이그레이션을 실행하고 호스트 액세스를 ONTAP로 전환하는 데 필요한 엔드 투 엔드 작업을 다루는 실행 단계에 대해 알아보십시오.</block>
-  <block id="95f7abfb0a974b90a472f20b5b729ea1" category="doc">ONTAP Foreign LUN Import(FLI) 실행 단계</block>
   <block id="d36f458b43304ed2a97d64e7a9a11390" category="paragraph">실행 단계는 마이그레이션이 수행되는 단계입니다. 이 단계에서는 오프라인 또는 온라인 Foreign LUN Import를 실행하고 호스트 액세스를 외부 어레이에서 ONTAP 어레이로 전환하는 데 필요한 모든 작업이 포함됩니다.</block>
   <block id="2c6249e25c55f7b0c94b984bd80d76b5" category="section-title">ONTAP FLI 실행 단계 작업</block>
   <block id="d69a01a57b5c3741168e311b2b16ac9b" category="paragraph">다음은 각 구성 요소에 대한 ONTAP FLI 실행 작업입니다.</block>
@@ -861,7 +828,6 @@
   <block id="318b34580548f8e2dcdc895e0c8d4666" category="paragraph">이 섹션에서는 구조화된 단계별 접근 방식을 사용하여 Foreign LUN Import(FLI) 마이그레이션을 실행하는 엔드 투 엔드 방법론을 설명합니다. 특히 iSCSI 백엔드 FLI에 중점을 둡니다. 검색, 분석, 계획 및 준비, 실행 및 검증 단계 전반에 걸쳐 목표, 입력, 검증 체크포인트 및 결과물을 설명하여 외부 스토리지 어레이에서 ONTAP로의 예측 가능하고 지원 가능하며 위험이 낮은 마이그레이션을 보장합니다.</block>
   <block id="616f44f9cac42c23c1acc19f0622813e" category="paragraph">이 워크플로는 사전 데이터 수집 및 상호 운용성 검증, 호스트 및 패브릭 준비 상태, 명확한 iSCSI 백엔드 설계 제약 조건(IC LIF 사용, 명확한 iSCSI 타겟 포털/IQN, 풀 메시 연결 및 확장성 제한), 그리고 애플리케이션 가용성과 롤백 옵션을 보호하기 위한 체계적인 변경 관리를 강조합니다. IMT 기반 지원 검증, 목표 지향적인 개선 계획 수립, 테스트 마이그레이션, 그리고 철저한 마이그레이션 후 정리 작업을 결합함으로써, 이 접근 방식은 FC 및 iSCSI 기반 FLI 시나리오 모두에서 마이그레이션이 성공적으로 완료되고, 완벽하게 지원되고, 문서화가 잘 되어 있으며, 운영상 깔끔한 마이그레이션 후 상태를 보장합니다.</block>
   <block id="fd8608bbb22ccea340655cd143a089cd" category="summary">탐색 및 분석 결과를 실행 가능한 마이그레이션 계획으로 전환하고 환경 준비 상태를 검증하는 계획 및 준비 단계에 대해 알아보십시오.</block>
-  <block id="313e596acc382dfaa062620985696574" category="doc">ONTAP Foreign LUN Import(FLI) 계획 및 준비 단계</block>
   <block id="1c2df568210409fb8aa79cb19258fc22" category="paragraph">계획 및 준비 단계에서는 탐색 및 분석 결과를 실행 가능한 마이그레이션 계획으로 전환하고 마이그레이션 기간에 맞춰 환경이 준비되었는지 확인합니다. 일반적으로 프로젝트 노력의 대부분은 이 단계에 집중되는데, 이는 온라인 또는 오프라인 전환 방식을 확정하고, 엔드 투 엔드 연결을 검증하며, 프로덕션 환경으로 이전하기 전에 하나 이상의 테스트 마이그레이션을 통해 워크플로를 입증하기 때문입니다.</block>
   <block id="77beacef8a48deffcb4df223b65d0dba" category="paragraph">iSCSI FLI의 경우, 이 단계에서는 iSCSI 백엔드 설계 제약 조건도 검증해야 합니다. ONTAP iSCSI 소프트웨어 이니시에이터는 IC LIF를 사용하고, 명시적인 타겟 포털 IP와 타겟 IQN이 필요하며, 검색 세션이 필요 없고, 정의된 확장성 제한(노드당 가져오기, LIF/노드당 세션, LIF당 이니시에이터, 최대 가져오기 크기) 내에서 실행되도록 설계되었습니다.</block>
   <block id="bd6961906e0f900da571a6829afc4387" category="section-title">ONTAP FLI 계획 및 준비 단계 결과</block>
@@ -1279,7 +1245,6 @@
   <block id="5ce73a5588f444f9a6774815e4fafde0" category="list-text">가상 머신의 전원을 켜보십시오. 가상 머신이 문제없이 온라인 상태가 되어야 합니다.</block>
   <block id="f54f8723cdd855de6b42f8c6088ea7cf" category="paragraph">Start-VM -Name &lt;VM_Name&gt;</block>
   <block id="3530aa78abbe00fb441a6a913266c4f5" category="summary">마이그레이션이 계획대로 완료되었는지 확인하고 마이그레이션 기간 동안 사용된 임시 구성을 제거하는 검증 단계에 대해 알아보십시오.</block>
-  <block id="c7b5ec48b58689a14b9ca8360ae61c36" category="doc">ONTAP 외부 LUN 가져오기(FLI) 검증 단계</block>
   <block id="312705c3917e0ecf74999294476290b4" category="paragraph">정리 작업의 일환으로 더 이상 필요하지 않은 소스 측 이니시에이터 레코드와 영역 설정을 제거하고, 운영 팀이 명확한 "완성된" 상태를 파악할 수 있도록 최종 구성을 문서화합니다.</block>
   <block id="f67442f7dd9efc703506d4e505684839" category="paragraph">iSCSI FLI의 경우, 검증 단계에서는 인터클러스터 LIF에 생성된 소프트웨어 iSCSI 이니시에이터 세션과 이니시에이터를 제거하는 작업도 포함되어야 합니다. 인터클러스터 LIF가 외부 LUN 가져오기만을 위해 생성된 경우, 해당 LIF도 삭제해야 합니다.</block>
   <block id="c8253ba169277559e143f0f27d32ba7a" category="section-title">ONTAP FLI 검증 단계 작업</block>
@@ -1475,19 +1440,11 @@
   <block id="ee001a59316150af276e4c324261dd99" category="list-text">매핑된 모든 호스트에 드라이브가 사용 가능하고 ONLINE 상태인지 확인하십시오.</block>
   <block id="59a30fddf92f777406c9eff6f1781bb2" category="list-text">디스크 관리를 다시 검색하면 모든 디스크가 연결됩니다.</block>
   <block id="bf6e2cf7dd3238c30a78f920f9b6db33" category="list-text">디스크를 선택하고 온라인 상태로 전환하면 모든 디스크가 온라인 상태가 되고 원래 이름과 디스크 문자를 받게 됩니다.</block>
-  <block id="39abfbcb8f794e6556653a316243e4a0" category="summary">SAN 데이터 마이그레이션을 위한 ONTAP의 새로운 기능에 대해 알아보십시오.</block>
-  <block id="d6c68509cd1238fb729ae14d92123e83" category="doc">SAN 데이터 마이그레이션을 위한 ONTAP의 새로운 기능</block>
   <block id="ea7f38fbe84ac28be0f7c90cca730a69" category="section-title">ONTAP 9.19.1</block>
   <block id="c03b12479929cc0eaa58c5ab80e27fd1" category="list-text">ONTAP 9.19.1부터 ONTAP FLI는 백엔드 연결을 위해 iSCSI 프로토콜을 지원합니다.</block>
   <block id="ea1ad38d91c2e87ef2e9571bd55654fd" category="section-title">ONTAP 9.17.1</block>
   <block id="c48f6bb5f2a6b62c3d142a871035bd10" category="list-text">ONTAP 9.17.1부터 ASA R2 시스템에서 FLI 마이그레이션이 지원됩니다.</block>
-  <block id="5dd03e8d039863e563e049be198c3fd3" category="sidebar">릴리스 노트</block>
   <block id="6ac40cb1ad8111f5c96838a8b9237e22" category="sidebar">SAN 데이터 마이그레이션을 위한 ONTAP의 새로운 기능</block>
-  <block id="e0c4332e8c13be976552a059f106354f" category="sidebar">시작하기</block>
-  <block id="417ff747c3d49e0a649bfd727e936822" category="sidebar">FLI 단계</block>
-  <block id="f90f37e42713bfc0dc52131faef7107c" category="sidebar">FLI 구성</block>
-  <block id="cc3f33b68a9c6ce80c40e4f3f6c8e1c4" category="sidebar">FLI 마이그레이션</block>
-  <block id="abb0bd5d7f81ab393f640d362f21c99b" category="sidebar">FLI 마이그레이션 후</block>
   <block id="2fc41ad59b94c124216aa8e6633771aa" category="sidebar">마이그레이션 후 정리 수행</block>
   <block id="e823fdf739fb5edf6da9a877f91b05af" category="sidebar">ESXi VMFSS ATS/CAW 문제 해결 수행</block>
   <block id="258b2584dfd26cd7e5ecfdd8544956db" category="sidebar">FLI 성능</block>
@@ -1495,11 +1452,7 @@
   <block id="2508d28e156f66cd4ca6a2b4abeb95a3" category="sidebar">FC 연결 및 배선</block>
   <block id="d87d23378ba30e257e3b48bce358eb71" category="sidebar">FC 조닝 모범 사례</block>
   <block id="e7b9a0f54244458403194a0fb34d0912" category="sidebar">iSCSI 백엔드 구성</block>
-  <block id="4d2b886016c0696388cb5a9bbde7fdd2" category="sidebar">SAN 데이터를 ONTAP로 마이그레이션</block>
   <block id="500091d9d4c213e75086f1fd00b56409" category="sidebar">7-Mode에서 ONTAP로 FLI 마이그레이션</block>
-  <block id="0e4395f2de244a3e68e98f9b5a3746bb" category="sidebar">주요 특징 및 장점</block>
-  <block id="3b96ee9dd133f64afb5632a8bafaef5d" category="sidebar">FLI 사전 요구 사항</block>
-  <block id="fd7c3742abee8ab17925ff747b729fae" category="sidebar">지원되는 구성 및 플랫폼</block>
   <block id="9f0671d0cf8775d206b8c08b4985cfa9" category="sidebar">FLI 마이그레이션</block>
   <block id="da2ebaaeec9841b4a44d8b0a368877dd" category="sidebar">외부 LUN 검색</block>
   <block id="d318f1f81c06c0ed2a327f578fc3ac40" category="sidebar">가져오기 관계 생성</block>
@@ -1521,8 +1474,6 @@
   <block id="40cd014b7b6251e3a22e6a45a73a64e1" category="sidebar">실행</block>
   <block id="5a750f86ef41f22f852c43351e3ff383" category="sidebar">확인</block>
   <block id="144e3bff2769f72c63f6e00004097fcc" category="sidebar">FLI 마이그레이션 후</block>
-  <block id="259c870f8a8594516755af0729eb847a" category="sidebar">마이그레이션 후 개요</block>
-  <block id="5d793778d9d63a7b0602b47ee814bd26" category="sidebar">SAN 데이터 마이그레이션의 새로운 기능</block>
   <block id="d6fe85b2a7716d9377c34dd3d6ea37c4" category="paragraph">검증 단계에서는 마이그레이션이 계획대로 완료되었는지 확인하고 마이그레이션 후 정리 작업에 집중합니다. 여기에는 애플리케이션 동작 검증, ONTAP LUN에 대한 올바른 호스트 액세스 및 경로 확인, 감사 및 문제 해결을 위한 마이그레이션 로그 수집, 마이그레이션에만 사용된 임시 연결 및 구성 제거 등이 포함됩니다.</block>
   <block id="52009bb7ee17227f566cd26a02caee56" category="inline-link-macro"><block ref="52009bb7ee17227f566cd26a02caee56" category="inline-link-rx"></block></block>
   <block id="a1a9afcf552a769c282769271829889a" category="paragraph"><block ref="a1a9afcf552a769c282769271829889a" category="inline-link-macro-rx"></block></block>
@@ -1536,11 +1487,7 @@
   <block id="4dbb6aad45c8e3f8971fa73b8fb1cb65" category="doc">ONTAP FLI FC 연결 및 배선 관련 모범 사례</block>
   <block id="f4c33d13d9f0daaebef59efa47d35887" category="doc">ONTAP FLI FC 구역 설정 모델 및 모범 사례</block>
   <block id="e5433016407dc6d5f7f37c33415d8dd8" category="doc">ONTAP FLI용 iSCSI 백엔드 연결을 설정합니다.</block>
-  <block id="076672f300ffdefd8a4b41ffe8bdb05c" category="doc">ONTAP 외부 LUN 가져오기의 주요 기능 및 이점</block>
   <block id="e5a84d75421369af41a6022dabb96e58" category="doc">외부 LUN 가져오기 7-Mode에서 ONTAP 전환에 대해 알아보기</block>
-  <block id="edcf274d613b1fd3721fb03b9159a221" category="doc">ONTAP 외부 LUN 가져오기를 위한 필수 조건</block>
-  <block id="035581abad561e88980523560196a593" category="doc">ONTAP 외부 LUN 가져오기에 지원되는 구성</block>
-  <block id="afe9db30e9034e965c6e02e6756b98f0" category="doc">ONTAP FLI 관련 법적 고지</block>
   <block id="754301ce7ba113a08fa49d266a9b75d8" category="doc">ONTAP FLI 마이그레이션을 위한 외부 LUN 검색</block>
   <block id="32cbbba88160bd8d4144465f439f9bf4" category="doc">ONTAP FLI LUN 가져오기를 실행하고 모니터링합니다.</block>
   <block id="b59970b095c3d11135d476b0588c57e4" category="doc">ONTAP FLI LUN 가져오기 관계를 확인하고 삭제합니다.</block>
@@ -1575,4 +1522,44 @@
   <block id="66a3fec0a9750426f0214cd67c946497" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 소스 저장 장치 탭</block>
   <block id="c0ebf75273b086525a388999bf478927" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 스토리지 그룹 탭</block>
   <block id="c9ab231f3a6a537a1fdc8be5ba0eaa5c" category="doc">ONTAP FLI 현장 조사 및 계획 워크시트 스위치 탭</block>
+  <block id="516f70ec805d7bb8aa14c794e96a1a44" category="list-text">플랫폼에서 기본 이동성을 제공하거나 호스트 또는 애플리케이션 제어가 선호되는 경우 유용합니다(예: VMware 스토리지 이동성 및 호스트 기반 복사 방식).</block>
+  <block id="267dcc9397ed4992a5f6de3164460880" category="section-title">ONTAP Foreign LUN Import의 주요 기능 및 이점에 대해 알아보십시오</block>
+  <block id="043d06edeed4fa95f43af01f2f2f6113" category="section-title">ONTAP 외부 LUN 가져오기 필수 요건에 대해 알아보십시오</block>
+  <block id="f07bea32571fee7ebcbee5f0dd81797f" category="section-title">ONTAP Foreign LUN Import에서 지원하는 구성 및 플랫폼에 대해 알아보십시오.</block>
+  <block id="072fe6a12766df05754602a47c7b750f" category="list-text">노드당 최대 8개의 동시 가져오기를 권장 시작점으로 계획하십시오. 최상의 조건에서는 노드당 16개의 동시 마이그레이션을 초과하지 않도록 하고, 호스트 지연 시간이나 가져오기 지연 시간이 증가하는 경우 동시 실행 수를 줄이십시오.</block>
+  <block id="16b59d73b18e2c1a984d60963400b789" category="inline-link-macro">FLI를 사용하여 16TB보다 큰 어레이 LUN을 마이그레이션할 수 없습니다.</block>
+  <block id="f49b99693fc191d8f86767cdc759d1a2" category="list-text">ONTAP 9.12.1 버전부터 외부 LUN 가져오기 최대 크기는 LUN당 125TB입니다. 자세한 내용은 기술 자료 문서 <block ref="d8105941975edebf152ce49ff43f8a15" category="inline-link-macro-rx"></block>를 참조하십시오.</block>
+  <block id="4c3ff86f9932f5d15b87eb3fe5bef469" category="paragraph">시간이 지남에 따라 새로운 구성이 검증되면서 지원되는 조합이 변경될 수 있습니다. 마이그레이션을 진행할 때마다 엔드 투 엔드 스택(소스 어레이 + 호스트 + 패브릭/네트워크 + ONTAP 타겟)을 최신 상호 운용성 지침에 따라 검증하십시오.</block>
+  <block id="b4de17ead867a3cf0b9d11e57e562672" category="section-title">기계 번역</block>
+  <block id="dd3918c571093dff2b94f7cef5066d01" category="inline-link-macro">netapp.com</block>
+  <block id="178761dc5a14b2537b196d4faff0398b" category="paragraph">현지화된 콘텐츠에 대한 중요 정보는 <block ref="3838f9aa83384410da26ac78c9080b24" category="inline-link-macro-rx"></block>을 참조하십시오.</block>
+  <block id="c910b0c602f4d79f37bcc17e3b225da2" category="summary">ONTAP의 외부 LUN 가져오기(FLI)에서 사용 가능한 새로운 기능에 대해 알아보십시오.</block>
+  <block id="4299cbe7da51d6fe5d6c531027e23fb9" category="doc">ONTAP FLI(Foreign LUN Import)의 새로운 기능</block>
+  <block id="be11c74c1dd7f307bb80183a90dc2067" category="sidebar">시작하기</block>
+  <block id="9b4859f81391751aa861e207472c37ed" category="sidebar">FLI 구성</block>
+  <block id="997000c257e78ce562e5bbb3c47655c3" category="sidebar">ONTAP FLI 연결 및 배선</block>
+  <block id="3994c035de26cf9743b3789acec26fc2" category="sidebar">샘플 사이트 조사 및 계획</block>
+  <block id="9a079bf50d1382cff875dfe6e33c7255" category="sidebar">샘플 현장 조사 및 계획 워크시트</block>
+  <block id="f19e56a975c9247e8e98b2a618a07fdb" category="sidebar">ONTAP Foreign LUN Import 문서</block>
+  <block id="9eec4014779de909ac7f85f3c58e0ebb" category="sidebar">ONTAP 데이터 마이그레이션에 대해 알아보기</block>
+  <block id="8a2553b01e76e6d371e08a17dae387bd" category="sidebar">외부 LUN 가져오기에 대해 알아보기</block>
+  <block id="e8d1a7b302822b03b874bd729b1f3e16" category="sidebar">계획 및 준비에 대해 알아보기</block>
+  <block id="185422fe75783a697193f0fa7d197559" category="sidebar">마이그레이션 후 작업에 대해 알아보기</block>
+  <block id="33871b6190a8d5adbe8b15282054766c" category="sidebar">새로운 소식</block>
+  <block id="8dfe62d694d9a9d551edff2e399a526d" category="sidebar">샘플 현장 조사 및 계획에 대해 알아보기</block>
+  <block id="e23785140a406495a9e6575cc2fc2ec7" category="sidebar">현장 조사 및 계획 워크시트 연락처 탭</block>
+  <block id="cfccc87352e11bc536f7c377e87d5861" category="sidebar">현장 조사 및 계획 워크시트 설문지 탭</block>
+  <block id="ad7a1e73bfb2d7b8d833ca98830d060a" category="sidebar">사이트 설문 조사 및 계획 워크시트 스위치 탭</block>
+  <block id="b89483c4b2d08bbbbcc33e0c77112600" category="sidebar">현장 조사 및 계획 워크시트 소스 저장 장치 탭</block>
+  <block id="7b09aa21e88886ffe9f52800535f25c2" category="sidebar">현장 조사 및 계획 워크시트 대상 저장 장치 탭</block>
+  <block id="25f70209fb08d78b79730237f0174638" category="sidebar">현장 조사 및 계획 워크시트 호스트 탭</block>
+  <block id="13d5bd0792c9b606b6882bd1dd3873f5" category="sidebar">사이트 조사 및 계획 워크시트 HBA 및 영역 정보 탭</block>
+  <block id="8f9c82fe9a9a42fe4aa0be6215fb30a6" category="sidebar">현장 조사 및 계획 워크시트 소스 LUN 탭</block>
+  <block id="6b9dded1d988328f873a38cca5f7e668" category="sidebar">현장 조사 및 계획 워크시트 저장 그룹 탭</block>
+  <block id="03f2f43ca4799283b2c368bc33a2806b" category="sidebar">현장 조사 및 계획 워크시트 LUN 세부 정보 탭</block>
+  <block id="293e3deed1e3cfa806e4447c4e96079d" category="sidebar">사이트 조사 및 계획 워크시트 NetApp LUN 레이아웃 탭</block>
+  <block id="17aef2bb4412a672071aae2a16c1738e" category="sidebar">현장 조사 및 계획 워크시트 마이그레이션 일정 탭</block>
+  <block id="b2d71f70e33627ee08a0e2d4adf8658d" category="sidebar">현장 조사 및 계획 워크시트 집계 상태 탭</block>
+  <block id="ac595b309538d10512c32f6682e101bc" category="sidebar">현장 조사 및 계획 워크시트 FAS 구성 탭</block>
+  <block id="89d6f5401c85b11327fdc2aaf07a23f3" category="sidebar">현장 조사 및 계획 워크시트 SDS CLI 스크립트 탭</block>
 </blocks>

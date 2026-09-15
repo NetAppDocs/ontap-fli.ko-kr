@@ -1,10 +1,11 @@
 ---
 indexpage:
   title: ONTAP 외부 LUN 임포트 설명서
-  summary: ONTAP 외부 LUN 임포트
   keywords: fli, ontap, array, fli-based, configuration, lun, import, san, migration,
     foreign
-  lead: ONTAP 외부 LUN 임포트
+  lead: Foreign LUN Import(FLI)는 외부 어레이 LUN에서 ONTAP LUN으로 사용자 데이터를 복사하여 블록 레벨(LUN)
+    데이터 마이그레이션을 가능하게 하는 ONTAP 기능입니다. ONTAP는 SCSI 이니시에이터 역할을 하여 외부 LUN에서 데이터를 읽고 대상
+    ONTAP LUN에 기록함으로써 마이그레이션을 수행합니다.
   tiles:
   - title: 릴리스 노트
     links:
@@ -14,27 +15,15 @@ indexpage:
     links:
     - title: ONTAP 데이터 마이그레이션 프로그램에 대해 알아보십시오
       url: "/get-started/learn-about-data-migration.html"
-    - title: ONTAP로 SAN 데이터 마이그레이션에 대해 알아보십시오
-      url: "/get-started/learn-about-san-data-migration.html"
     - title: ONTAP Foreign LUN Import에 대해 알아보십시오
       url: "/get-started/learn-about-fli.html"
-  - title: FLI 단계
-    links:
-    - title: ONTAP Foreign LUN Import(FLI) 검색 단계
-      url: "/phases/discovery-phase.html"
-    - title: ONTAP Foreign LUN Import(FLI) 분석 단계
-      url: "/phases/analyze-phase.html"
-    - title: ONTAP Foreign LUN Import(FLI) 계획 및 준비 단계
-      url: "/phases/plan-prepare-phase.html"
-    - title: ONTAP Foreign LUN Import(FLI) 실행 단계
-      url: "/phases/execute-phase.html"
-    - title: ONTAP 외부 LUN 가져오기(FLI) 검증 단계
-      url: "/phases/verify-phase.html"
+    - title: ONTAP FLI 단계에 대해 알아보세요
+      url: "/phases/phase-overview.html"
   - title: FLI 구성
     links:
-    - title: ONTAP FLI(Foreign LUN Import) 연결 및 배선
+    - title: ONTAP FLI 연결 및 배선
       url: "/configure/fc-connectivity-wiring.html"
-    - title: ONTAP Foreign LUN Import(FLI)에서 권장하는 FC 배선 및 조닝 방법
+    - title: ONTAP FLI 권장 FC 배선 및 조닝 사례
       url: "/configure/iscsi-setup-backend-connectivity.html"
   - title: FLI 마이그레이션
     links:
@@ -54,7 +43,7 @@ indexpage:
       url: "/post-migration-performance/esxi-remediation.html"
     - title: FLI 성능
       url: "/post-migration-performance/performance.html"
-  - title: 샘플 사이트 조사 및 계획 워크시트
+  - title: 샘플 사이트 조사 및 계획
     links:
-    - title: 개요
-      url: "/san-migration/reference_sample_site_survey_and_planning_worksheet.html"
+    - title: 샘플 현장 조사 및 계획 워크시트
+      url: "/sample-site/reference_sample_site_survey_and_planning_worksheet.html"

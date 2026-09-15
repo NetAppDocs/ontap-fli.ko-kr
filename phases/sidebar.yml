@@ -10,7 +10,7 @@ entries:
   url: "/phases/analyze-phase.html"
 - title: 계획 및 준비
   entries:
-  - title: 개요
+  - title: 계획 및 준비에 대해 알아보기
     url: "/phases/plan-overview.html"
   - title: 테스트 마이그레이션
     url: "/phases/plan-prepare-phase.html"
